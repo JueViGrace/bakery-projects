@@ -1,0 +1,33 @@
+CREATE TABLE IF NOT EXISTS bakery_cart (
+    id INT NOT NULL PRIMARY KEY,
+    total_amount REAL NOT NULL DEFAULT 0.0,
+    FOREIGN KEY(id) REFERENCES bakery_user(id)
+);
+
+findCartById:
+SELECT *
+FROM bakery_cart
+LEFT JOIN bakery_cart_products
+ON bakery_cart.id = bakery_cart_products.cart_id
+LEFT JOIN bakery_product
+ON bakery_cart_products.product_id = bakery_product.id
+WHERE bakery_cart.id = :id;
+
+insert:
+INSERT INTO bakery_cart(
+    id,
+    total_amount
+)
+VALUES ?
+RETURNING *;
+
+update:
+UPDATE bakery_cart
+SET total_amount = :totalAmount
+WHERE id = :id
+RETURNING *;
+
+delete:
+DELETE FROM bakery_cart
+WHERE id = :id
+RETURNING *;

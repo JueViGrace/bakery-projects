@@ -1,0 +1,81 @@
+[versions]
+app-version = "1.0.0"
+jdk = "21"
+junit = "4.13.2"
+kotlin = "2.0.0"
+ktor = "2.3.12"
+logback = "1.5.6"
+koin = "3.5.4"
+hikaricp = "5.1.0"
+kotlinx-coroutines-core = "1.8.0"
+kotlin-serialization = "1.6.2"
+sqldelight = "2.0.2"
+kotlin-wrappers = "1.0.0-pre.786"
+postgres = "42.7.3"
+kbcrypt = "1.0.9"
+htmx = "2.0.1"
+
+[libraries]
+# [TEST]
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+
+logback = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+# [KOTLINX]
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlin-serialization" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
+
+# [SERVER]
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-host-common = { module = "io.ktor:ktor-server-host-common-jvm", version.ref = "ktor" }
+ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages-jvm", version.ref = "ktor" }
+ktor-server-webjars = { module = "io.ktor:ktor-server-webjars-jvm", version.ref = "ktor" }
+ktor-server-cors = { module = "io.ktor:ktor-server-cors-jvm", version.ref = "ktor" }
+ktor-server-loggin = { module = "io.ktor:ktor-server-call-logging-jvm", version.ref = "ktor" }
+ktor-server-call-id = { module = "io.ktor:ktor-server-call-id-jvm", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-serialization-json = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+ktor-server-caching-headers = { module = "io.ktor:ktor-server-caching-headers", version.ref = "ktor" }
+ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-server-caching-headers-jvm = { module = "io.ktor:ktor-server-caching-headers-jvm", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
+ktor-server-auth-sessions = { module = "io.ktor:ktor-server-sessions", version.ref = "ktor" }
+
+# [Templating]
+ktor-server-thymeleaf = { module = "io.ktor:ktor-server-thymeleaf", version.ref = "ktor" }
+ktor-server-html-builder = { module = "io.ktor:ktor-server-html-builder", version.ref = "ktor" }
+htmx = { group = "org.webjars.npm", name = "htmx.org", version.ref = "htmx" }
+
+# [CLIENT]
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
+
+# [DEPENDENCY INJECTION]
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit5 = { module = "io.insert-koin:koin-test-junit5", version.ref = "koin" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-logger = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+
+# [DATABASE]
+sqldelight-driver = { group = "app.cash.sqldelight", name = "jdbc-driver", version.ref = "sqldelight" }
+sqldelight-coroutines-extensions = { group = "app.cash.sqldelight", name = "coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-async-extensions = { group = "app.cash.sqldelight", name = "async-extensions", version.ref = "sqldelight" }
+sqldelight-dialect = { group = "app.cash.sqldelight", name = "postgresql-dialect", version.ref = "sqldelight" }
+postgres = { module = "org.postgresql:postgresql", version.ref = "postgres" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
+
+kbcrypt = { group = "com.ToxicBakery.library.bcrypt", name = "bcrypt", version.ref = "kbcrypt" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref  = "sqldelight" }
+ktor = { id = "io.ktor.plugin", version.ref = "ktor" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

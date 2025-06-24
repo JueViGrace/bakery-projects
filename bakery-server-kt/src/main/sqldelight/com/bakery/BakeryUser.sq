@@ -1,0 +1,70 @@
+CREATE TABLE IF NOT EXISTS bakery_user(
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(30) NOT NULL,
+    lastname VARCHAR(30) NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    birth_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    phone VARCHAR(25) NOT NULL,
+    role varchar(10) NOT NULL DEFAULT 'user',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
+);
+
+findAll:
+SELECT *
+FROM bakery_user
+WHERE bakery_user.deleted_at IS NULL;
+
+findOneById:
+SELECT *
+FROM bakery_user
+WHERE
+bakery_user.id = :id
+AND
+bakery_user.deleted_at IS NULL;
+
+findOneByEmail:
+SELECT *
+FROM bakery_user
+WHERE
+bakery_user.email = :email;
+
+insert:
+INSERT INTO bakery_user (
+    name,
+    lastname,
+    email,
+    password,
+    birth_date,
+    phone
+)
+VALUES ?
+RETURNING *;
+
+update:
+UPDATE bakery_user
+SET
+    name = :name,
+    lastname = :lastname,
+    birth_date = :birth_date,
+    phone = :phone,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :id
+RETURNING *;
+
+softDelete:
+UPDATE bakery_user
+SET deleted_at = CURRENT_TIMESTAMP
+WHERE bakery_user.id = :id
+RETURNING *;
+
+deleteById:
+DELETE FROM bakery_user
+WHERE bakery_user.id = :id
+RETURNING *;
+
+delete:
+DELETE FROM bakery_user
+RETURNING *;

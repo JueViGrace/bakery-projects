@@ -1,0 +1,73 @@
+CREATE TABLE IF NOT EXISTS bakery_order (
+    id SERIAL NOT NULL PRIMARY KEY,
+    total_amount REAL NOT NULL,
+    payment_method VARCHAR(20) NOT NULL DEFAULT 'cash',
+    status VARCHAR(30) NOT NULL DEFAULT 'placed',
+    user_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL,
+    FOREIGN KEY(user_id) REFERENCES bakery_user(id)
+);
+
+findAllOrders:
+SELECT *
+FROM bakery_order
+LEFT JOIN bakery_order_products
+ON bakery_order.id = bakery_order_products.order_id
+LEFT JOIN bakery_product
+ON bakery_order_products.product_id = bakery_product.id
+WHERE bakery_order.deleted_at IS NULL;
+
+findOneOrder:
+SELECT *
+FROM bakery_order
+LEFT JOIN bakery_order_products
+ON bakery_order.id = bakery_order_products.order_id
+LEFT JOIN bakery_product
+ON bakery_order_products.product_id = bakery_product.id
+WHERE bakery_order.id = :id
+AND
+bakery_order.deleted_at IS NULL;
+
+findAllByUser:
+SELECT *
+FROM bakery_order
+LEFT JOIN bakery_order_products
+ON bakery_order.id = bakery_order_products.order_id
+LEFT JOIN bakery_product
+ON bakery_order_products.product_id = bakery_product.id
+WHERE bakery_order.user_id = :id
+AND
+bakery_order.deleted_at IS NULL;
+
+findOneById:
+SELECT *
+FROM bakery_order
+WHERE bakery_order.id = :id
+AND
+bakery_order.deleted_at IS NULL;
+
+insert:
+INSERT INTO bakery_order(
+    total_amount,
+    payment_method,
+    status,
+    user_id
+)
+VALUES ?
+RETURNING *;
+
+updateStatus:
+UPDATE bakery_order
+SET
+    status = :status,
+    updated_at = CURRENT_TIMESTAMP
+WHERE bakery_order.id = :id
+RETURNING *;
+
+softDelete:
+UPDATE bakery_order
+SET deleted_at = CURRENT_TIMESTAMP
+WHERE bakery_order.id = :id
+RETURNING *;

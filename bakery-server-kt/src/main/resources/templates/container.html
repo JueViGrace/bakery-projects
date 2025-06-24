@@ -1,0 +1,21 @@
+<section class="w-auto min-h-screen flex flex-col justify-center items-center" preload>
+    <div
+            hx-get="/components/header"
+            hx-swap="outerHTML"
+            hx-target="this"
+            hx-trigger="load"
+    ></div>
+    <div
+            hx-get="/components/main"
+            hx-swap="outerHTML"
+            hx-target="this"
+            hx-trigger="load"
+            preload
+    ></div>
+    <div
+            hx-get="/components/footer"
+            hx-swap="outerHTML"
+            hx-target="this"
+            hx-trigger="load"
+    ></div>
+</section>

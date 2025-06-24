@@ -1,0 +1,81 @@
+CREATE TABLE IF NOT EXISTS bakery_product (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    price REAL NOT NULL DEFAULT 0.0,
+    category VARCHAR(255) NOT NULL DEFAULT '',
+    stock INT NOT NULL DEFAULT 0,
+    image TEXT NOT NULL DEFAULT '',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
+);
+
+findAll:
+SELECT *
+FROM bakery_product
+WHERE bakery_product.deleted_at IS NULL;
+
+findOneById:
+SELECT *
+FROM bakery_product
+WHERE
+bakery_product.id = :id
+AND
+bakery_product.deleted_at IS NULL;
+
+findOneByName:
+SELECT *
+FROM bakery_product
+WHERE
+bakery_product.name = :name
+AND
+bakery_product.deleted_at IS NULL;
+
+insert:
+INSERT INTO bakery_product (
+    name,
+    description,
+    price,
+    category,
+    stock,
+    image
+)
+VALUES ?
+RETURNING *;
+
+update:
+UPDATE bakery_product
+SET
+    name = :name,
+    description = :description,
+    price = :price,
+    category = :category,
+    stock = :stock,
+    image = :image,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :id
+RETURNING *;
+
+updateStock:
+UPDATE bakery_product
+SET
+    stock = :stock,
+    updated_at = CURRENT_TIMESTAMP
+WHERE id = :id
+RETURNING *;
+
+softDelete:
+UPDATE bakery_product
+SET deleted_at = CURRENT_TIMESTAMP
+WHERE bakery_product.id = :id
+RETURNING *;
+
+deleteById:
+DELETE FROM bakery_product
+WHERE bakery_product.id = :id
+RETURNING *;
+
+delete:
+DELETE FROM bakery_product
+RETURNING *;
