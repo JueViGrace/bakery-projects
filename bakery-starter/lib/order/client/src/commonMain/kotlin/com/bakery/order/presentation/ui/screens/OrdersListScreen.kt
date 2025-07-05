@@ -13,15 +13,13 @@ import com.bakery.order.presentation.viewmodel.OrdersListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun OrdersListScreen(
-    viewModel: OrdersListViewModel = koinViewModel()
-) {
+fun OrdersListScreen(viewModel: OrdersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextComponent(
             text = "Orders List Screen",

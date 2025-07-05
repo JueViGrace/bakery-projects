@@ -14,7 +14,7 @@ import io.ktor.server.response.respond
 fun AuthenticationConfig.sessionAuth(
     name: JwtAuthName,
     jwt: Jwt,
-    dbHelper: DbHelper
+    dbHelper: DbHelper,
 ) {
     jwt(name = name.value) {
         realm = jwt.realm
@@ -36,16 +36,17 @@ fun AuthenticationConfig.sessionAuth(
                 dbHelper.withDatabase { db ->
                     db.transaction {
                         db.bakeryTokenQueries.deleteByToken(
-                            token.split(" ")[1]
+                            token.split(" ")[1],
                         )
                     }
                 }
             }
             call.respond(
                 status = HttpStatusCode.Unauthorized,
-                message = ServerResponse.unauthorized(
-                    message = "Token is invalid"
-                ) as APIResponse.Failure
+                message =
+                    ServerResponse.unauthorized(
+                        message = "Token is invalid",
+                    ) as APIResponse.Failure,
             )
         }
     }

@@ -93,7 +93,7 @@ actual fun AppScaffold(
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
-        }
+        },
     ) { innerPadding ->
         NavHost(
             modifier = modifier.padding(innerPadding),

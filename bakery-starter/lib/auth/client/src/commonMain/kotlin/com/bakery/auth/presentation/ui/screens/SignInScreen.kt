@@ -5,6 +5,4 @@ import com.bakery.auth.presentation.viewmodel.SignInViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-expect fun SignInScreen(
-    viewModel: SignInViewModel = koinViewModel()
-)
+expect fun SignInScreen(viewModel: SignInViewModel = koinViewModel())

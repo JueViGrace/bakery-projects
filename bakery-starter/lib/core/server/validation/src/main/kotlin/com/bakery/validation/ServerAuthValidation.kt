@@ -7,16 +7,19 @@ import com.bakery.validation.auth.authentication.adminAuth
 import com.bakery.validation.auth.authentication.sessionAuth
 import io.ktor.server.auth.AuthenticationConfig
 
-fun AuthenticationConfig.serverAuthValidation(jwt: Jwt, dbHelper: DbHelper) {
+fun AuthenticationConfig.serverAuthValidation(
+    jwt: Jwt,
+    dbHelper: DbHelper,
+) {
     sessionAuth(
         name = JwtAuthName.SESSION,
         jwt = jwt,
-        dbHelper = dbHelper
+        dbHelper = dbHelper,
     )
 
     adminAuth(
         name = JwtAuthName.ADMIN,
         jwt = jwt,
-        dbHelper = dbHelper
+        dbHelper = dbHelper,
     )
 }

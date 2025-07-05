@@ -8,5 +8,5 @@ data class UpdateOrderDto(
     @SerialName("id")
     val id: String,
     @SerialName("status")
-    val status: String
+    val status: String,
 )

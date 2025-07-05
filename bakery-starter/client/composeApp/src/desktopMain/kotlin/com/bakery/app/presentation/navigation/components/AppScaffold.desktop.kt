@@ -46,7 +46,7 @@ actual fun AppScaffold(
                                     navigator.navigateUp()
                                 }
                             }
-                        }
+                        },
                     )
                 }
                 Destination.Home -> {}
@@ -68,7 +68,7 @@ actual fun AppScaffold(
         },
         snackbarHost = {
             SnackbarHost(hostState = snackBarHostState)
-        }
+        },
     ) { innerPadding ->
         NavHost(
             modifier = modifier.padding(innerPadding),

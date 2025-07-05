@@ -25,52 +25,59 @@ class AppViewModel(
     val messages = messages.messages
 
     private var _state = MutableStateFlow(AppState())
-    val state = combine(
-        _state,
-        appRepository.validateSession(),
-    ) { state, session ->
-        when (session) {
-            is RequestState.Error -> {
-                delay(1000)
-                navigator.navigate(
-                    destination = Destination.SignIn,
-                    navOptions = NavOptions.Builder().apply {
-                        setPopUpTo(route = Destination.Splash, inclusive = true)
-                        setLaunchSingleTop(true)
-                    }.build()
-                )
-                state.copy(
-                    session = null,
-                    snackMessage = session.error.message,
-                    description = session.error.description ?: ""
-                )
+    val state =
+        combine(
+            _state,
+            appRepository.validateSession(),
+        ) { state, session ->
+            when (session) {
+                is RequestState.Error -> {
+                    delay(1000)
+                    navigator.navigate(
+                        destination = Destination.SignIn,
+                        navOptions =
+                            NavOptions
+                                .Builder()
+                                .apply {
+                                    setPopUpTo(route = Destination.Splash, inclusive = true)
+                                    setLaunchSingleTop(true)
+                                }.build(),
+                    )
+                    state.copy(
+                        session = null,
+                        snackMessage = session.error.message,
+                        description = session.error.description ?: "",
+                    )
+                }
+                is RequestState.Success -> {
+                    delay(1000)
+                    navigator.navigate(
+                        destination = Destination.Home,
+                        navOptions =
+                            NavOptions
+                                .Builder()
+                                .apply {
+                                    setPopUpTo(route = Destination.Splash, inclusive = true)
+                                    setLaunchSingleTop(true)
+                                }.build(),
+                    )
+                    state.copy(
+                        session = session.data,
+                        snackMessage = Res.string.welcome_back,
+                        description = session.data.user.firstName,
+                    )
+                }
+                else -> {
+                    state.copy(
+                        session = null,
+                        snackMessage = null,
+                        description = "",
+                    )
+                }
             }
-            is RequestState.Success -> {
-                delay(1000)
-                navigator.navigate(
-                    destination = Destination.Home,
-                    navOptions = NavOptions.Builder().apply {
-                        setPopUpTo(route = Destination.Splash, inclusive = true)
-                        setLaunchSingleTop(true)
-                    }.build()
-                )
-                state.copy(
-                    session = session.data,
-                    snackMessage = Res.string.welcome_back,
-                    description = session.data.user.firstName
-                )
-            }
-            else -> {
-                state.copy(
-                    session = null,
-                    snackMessage = null,
-                    description = ""
-                )
-            }
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5000),
-        AppState()
-    )
+        }.stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000),
+            AppState(),
+        )
 }

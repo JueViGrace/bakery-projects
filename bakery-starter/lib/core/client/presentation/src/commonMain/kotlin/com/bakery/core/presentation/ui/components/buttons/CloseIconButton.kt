@@ -15,15 +15,15 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun CloseIconButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
         modifier = modifier.size(size = 28.dp),
-        onClick = onClick
+        onClick = onClick,
     ) {
         IconComponent(
             painter = painterResource(Res.drawable.ic_x),
-            contentDescription = stringResource(Res.string.close)
+            contentDescription = stringResource(Res.string.close),
         )
     }
 }

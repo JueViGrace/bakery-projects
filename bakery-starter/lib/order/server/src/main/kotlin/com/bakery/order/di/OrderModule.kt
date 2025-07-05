@@ -9,8 +9,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun orderModule(): Module = module {
-    singleOf(::DefaultOrderStorage) bind OrderStorage::class
+fun orderModule(): Module =
+    module {
+        singleOf(::DefaultOrderStorage) bind OrderStorage::class
 
-    singleOf(::DefaultOrderHandler) bind OrderHandler::class
-}
+        singleOf(::DefaultOrderHandler) bind OrderHandler::class
+    }

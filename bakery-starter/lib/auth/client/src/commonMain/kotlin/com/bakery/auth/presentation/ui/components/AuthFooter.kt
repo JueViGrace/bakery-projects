@@ -14,13 +14,11 @@ import com.bakery.core.shared.types.Constants
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun AuthFooter(
-    modifier: Modifier = Modifier
-) {
+fun AuthFooter(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextComponent(
             text = stringResource(Res.string.app_name),

@@ -51,50 +51,58 @@ fun PasswordTextField(
         leadingIcon = {
             IconComponent(
                 painter = painterResource(Res.drawable.ic_lock),
-                contentDescription = stringResource(Res.string.password_text_field_icon)
+                contentDescription = stringResource(Res.string.password_text_field_icon),
             )
         },
         trailingIcon = {
             IconComponent(
-                painter = painterResource(
-                    resource = if (passwordVisibility) {
-                        Res.drawable.ic_eye_off
-                    } else {
-                        Res.drawable.ic_eye
-                    }
-                ),
-                contentDescription = stringResource(
-                    resource = if (passwordVisibility) {
-                        Res.string.hide_password
-                    } else {
-                        Res.string.show_password
-                    }
-                ),
-                onClick = onVisibilityChange
+                painter =
+                    painterResource(
+                        resource =
+                            if (passwordVisibility) {
+                                Res.drawable.ic_eye_off
+                            } else {
+                                Res.drawable.ic_eye
+                            },
+                    ),
+                contentDescription =
+                    stringResource(
+                        resource =
+                            if (passwordVisibility) {
+                                Res.string.hide_password
+                            } else {
+                                Res.string.show_password
+                            },
+                    ),
+                onClick = onVisibilityChange,
             )
         },
-        supportingText = if (errorMessage != null) {
-            {
-                TextComponent(text = errorMessage)
-            }
-        } else {
-            null
-        },
+        supportingText =
+            if (errorMessage != null) {
+                {
+                    TextComponent(text = errorMessage)
+                }
+            } else {
+                null
+            },
         isError = isError,
-        keyboardOptions = KeyboardOptions().copy(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done,
-        ),
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focus.clearFocus()
-            }
-        ),
+        keyboardOptions =
+            KeyboardOptions().copy(
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done,
+            ),
+        keyboardActions =
+            KeyboardActions(
+                onDone = {
+                    focus.clearFocus()
+                },
+            ),
         singleLine = true,
-        visualTransformation = if (passwordVisibility) {
-            VisualTransformation.None
-        } else {
-            PasswordVisualTransformation()
-        }
+        visualTransformation =
+            if (passwordVisibility) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
     )
 }

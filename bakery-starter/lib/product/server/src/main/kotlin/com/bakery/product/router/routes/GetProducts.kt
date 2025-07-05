@@ -17,22 +17,24 @@ fun Route.getProducts(handler: ProductHandler) {
             response = response,
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

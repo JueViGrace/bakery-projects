@@ -13,7 +13,7 @@ fun DrawerNavItem(
     title: String,
     icon: @Composable () -> Unit,
     selected: Boolean,
-    onSelect: () -> Unit
+    onSelect: () -> Unit,
 ) {
     NavigationDrawerItem(
         modifier = modifier,
@@ -23,6 +23,6 @@ fun DrawerNavItem(
         },
         icon = icon,
         label = { TextComponent(text = title) },
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     )
 }

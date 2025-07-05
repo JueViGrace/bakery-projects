@@ -11,12 +11,13 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun authModule(): Module = module {
-    singleOf(::DefaultAuthRepository) bind AuthRepository::class
+fun authModule(): Module =
+    module {
+        singleOf(::DefaultAuthRepository) bind AuthRepository::class
 
-    viewModelOf(::SignInViewModel)
+        viewModelOf(::SignInViewModel)
 
-    viewModelOf(::SignUpViewModel)
+        viewModelOf(::SignUpViewModel)
 
-    viewModelOf(::ForgotPasswordViewModel)
-}
+        viewModelOf(::ForgotPasswordViewModel)
+    }

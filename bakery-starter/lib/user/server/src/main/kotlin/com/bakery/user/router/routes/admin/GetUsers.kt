@@ -17,22 +17,24 @@ fun Route.getUsers(handler: UserHandler) {
             response = response,
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

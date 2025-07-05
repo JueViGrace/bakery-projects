@@ -40,21 +40,23 @@ fun UsernameTextField(
         leadingIcon = {
             IconComponent(
                 painter = painterResource(Res.drawable.ic_account),
-                contentDescription = stringResource(Res.string.username_text_field_icon)
+                contentDescription = stringResource(Res.string.username_text_field_icon),
             )
         },
-        supportingText = if (errorMessage != null) {
-            {
-                TextComponent(text = errorMessage)
-            }
-        } else {
-            null
-        },
+        supportingText =
+            if (errorMessage != null) {
+                {
+                    TextComponent(text = errorMessage)
+                }
+            } else {
+                null
+            },
         isError = isError,
-        keyboardOptions = KeyboardOptions().copy(
-            keyboardType = KeyboardType.Email,
-            imeAction = ImeAction.Next,
-        ),
+        keyboardOptions =
+            KeyboardOptions().copy(
+                keyboardType = KeyboardType.Email,
+                imeAction = ImeAction.Next,
+            ),
         singleLine = true,
     )
 }

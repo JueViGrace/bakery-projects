@@ -12,7 +12,7 @@ fun Application.configureTemplating() {
                 prefix = "templates/"
                 suffix = ".html"
                 characterEncoding = "utf-8"
-            }
+            },
         )
     }
 }

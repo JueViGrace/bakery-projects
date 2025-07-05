@@ -13,31 +13,34 @@ fun Route.createProduct(handler: ProductHandler) {
     // todo: get path for images
     post<CreateProductDto> { body ->
 //                    val multipart = call.receiveMultipart()
-        val response = handler.createProduct(
-            dto = body,
-            images = emptyList()
-        )
+        val response =
+            handler.createProduct(
+                dto = body,
+                images = emptyList(),
+            )
 
         call.applicationResponse(
             response = response,
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

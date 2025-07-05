@@ -19,7 +19,7 @@ fun Application.configureSecurity() {
                 environment.config.property("ktor.jwt.audience").getString(),
                 environment.config.property("ktor.jwt.realm").getString(),
             )
-        }
+        },
     )
 
     install(Authentication) {

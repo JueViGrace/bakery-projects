@@ -20,7 +20,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun Navigation(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    appViewModel: AppViewModel = koinViewModel()
+    appViewModel: AppViewModel = koinViewModel(),
 ) {
     val navigator = koinInject<Navigator>()
     val scope = rememberCoroutineScope()
@@ -63,6 +63,6 @@ fun Navigation(
         modifier = modifier,
         navController = navController,
         navigator = navigator,
-        snackBarHostState = snackBarHostState
+        snackBarHostState = snackBarHostState,
     )
 }

@@ -20,7 +20,7 @@ fun RowComponent(
     Row(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
-        verticalAlignment = verticalAlignment
+        verticalAlignment = verticalAlignment,
     ) {
         icon()
         title()

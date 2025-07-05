@@ -11,18 +11,31 @@ import kotlin.coroutines.CoroutineContext
 
 interface ProductHandler {
     suspend fun getProducts(): APIResponse<List<ProductDto>>
+
     suspend fun getProductById(id: String): APIResponse<ProductDto?>
+
     suspend fun getExistingProducts(): APIResponse<List<ProductDto>>
+
     suspend fun getExistingProductById(id: String): APIResponse<ProductDto?>
-    suspend fun createProduct(dto: CreateProductDto, images: List<String>): APIResponse<ProductDto?>
-    suspend fun updateProduct(dto: UpdateProductDto, images: List<String>): APIResponse<ProductDto?>
+
+    suspend fun createProduct(
+        dto: CreateProductDto,
+        images: List<String>,
+    ): APIResponse<ProductDto?>
+
+    suspend fun updateProduct(
+        dto: UpdateProductDto,
+        images: List<String>,
+    ): APIResponse<ProductDto?>
+
     suspend fun softDeleteProduct(id: String): APIResponse<String>
+
     suspend fun deleteProduct(id: String): APIResponse<String>
 }
 
 class DefaultProductHandler(
     private val coroutineContext: CoroutineContext,
-    private val store: ProductStorage
+    private val store: ProductStorage,
 ) : ProductHandler {
     override suspend fun getProducts(): APIResponse<List<ProductDto>> {
         return withContext(coroutineContext) {
@@ -31,13 +44,13 @@ class DefaultProductHandler(
             if (result.isEmpty()) {
                 return@withContext ServerResponse.notFound(
                     data = result,
-                    message = "Products were not found"
+                    message = "Products were not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -48,13 +61,13 @@ class DefaultProductHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Products with id $id was not found"
+                    message = "Products with id $id was not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -66,13 +79,13 @@ class DefaultProductHandler(
             if (result.isEmpty()) {
                 return@withContext ServerResponse.notFound(
                     data = result,
-                    message = "Products were not found"
+                    message = "Products were not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -83,53 +96,53 @@ class DefaultProductHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Products with id $id was not found"
+                    message = "Products with id $id was not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
 
     override suspend fun createProduct(
         dto: CreateProductDto,
-        images: List<String>
+        images: List<String>,
     ): APIResponse<ProductDto?> {
         return withContext(coroutineContext) {
             val result = store.createProduct(dto, images)
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Unable to create product, try again later"
+                    message = "Unable to create product, try again later",
                 )
             }
 
             ServerResponse.created(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
 
     override suspend fun updateProduct(
         dto: UpdateProductDto,
-        images: List<String>
+        images: List<String>,
     ): APIResponse<ProductDto?> {
         return withContext(coroutineContext) {
             val result = store.updateProduct(dto, images = emptyList())
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Unable to update product, try again later"
+                    message = "Unable to update product, try again later",
                 )
             }
 
             ServerResponse.accepted(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -140,13 +153,13 @@ class DefaultProductHandler(
 
             if (result != null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Unable to delete product, try again later"
+                    message = "Unable to delete product, try again later",
                 )
             }
 
             ServerResponse.ok(
                 data = "Product with id $id was deleted!",
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -157,13 +170,13 @@ class DefaultProductHandler(
 
             if (result != null) {
                 return@withContext ServerResponse.notFound(
-                    message = ""
+                    message = "",
                 )
             }
 
             ServerResponse.ok(
                 data = "Product with id $id was permanently deleted!",
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }

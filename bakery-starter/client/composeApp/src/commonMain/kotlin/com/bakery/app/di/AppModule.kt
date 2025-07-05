@@ -13,15 +13,16 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun appModule(): Module = module {
-    singleOf(::DefaultAppRepository) bind AppRepository::class
+fun appModule(): Module =
+    module {
+        singleOf(::DefaultAppRepository) bind AppRepository::class
 
-    viewModelOf(::AppViewModel)
+        viewModelOf(::AppViewModel)
 
-    includes(
-        authModule(),
-        userModule(),
-        productModule(),
-        orderModule(),
-    )
-}
+        includes(
+            authModule(),
+            userModule(),
+            productModule(),
+            orderModule(),
+        )
+    }

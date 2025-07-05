@@ -1,6 +1,8 @@
 package com.bakery.core.types.state
 
-enum class AppCodes(val value: Int) {
+enum class AppCodes(
+    val value: Int,
+) {
     Message(100),
     Ok(200),
     Created(201),

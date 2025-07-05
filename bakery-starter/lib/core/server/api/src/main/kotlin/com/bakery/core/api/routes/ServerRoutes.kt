@@ -23,7 +23,7 @@ fun Route.apiRoutes() {
     get("/health") {
         call.respond(
             status = HttpStatusCode.OK,
-            message = "Health is ok!"
+            message = "Health is ok!",
         )
     }
 
@@ -37,7 +37,7 @@ fun Route.webRoutes() {
     get {
         call.respond(
             status = HttpStatusCode.OK,
-            message = "Root"
+            message = "Root",
         )
     }
 }

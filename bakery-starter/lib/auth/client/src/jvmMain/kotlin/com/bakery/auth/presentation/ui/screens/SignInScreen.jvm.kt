@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
@@ -35,33 +33,33 @@ import org.jetbrains.compose.resources.stringResource
 
 // todo: improve responsive
 @Composable
-actual fun SignInScreen(
-    viewModel: SignInViewModel
-) {
+actual fun SignInScreen(viewModel: SignInViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
     DesktopAuthLayout(
         title = {
             AuthTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.3f),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.3f),
                 title = {
                     TextComponent(
                         text = stringResource(Res.string.welcome_back),
                         fontSize = MaterialTheme.typography.headlineLarge.fontSize,
                         fontWeight = MaterialTheme.typography.headlineLarge.fontWeight,
                     )
-                }
+                },
             )
         },
         content = {
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.5f),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.5f),
                 verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterVertically),
@@ -72,7 +70,7 @@ actual fun SignInScreen(
                         onValueChange = { newValue ->
                             onEvent(SignInEvents.OnSignInUsernameChanged(newValue))
                         },
-                        errorMessage = state.usernameError?.let { stringResource(it) }
+                        errorMessage = state.usernameError?.let { stringResource(it) },
                     )
 
                     PasswordTextField(
@@ -85,22 +83,23 @@ actual fun SignInScreen(
                         passwordVisibility = state.passwordVisibility,
                         onVisibilityChange = {
                             onEvent(SignInEvents.TogglePasswordVisibility)
-                        }
+                        },
                     )
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(0.4f),
                     horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextComponent(
-                        modifier = Modifier.clickable {
-                            onEvent(SignInEvents.OnNavigateToForgotPassword)
-                        },
+                        modifier =
+                            Modifier.clickable {
+                                onEvent(SignInEvents.OnNavigateToForgotPassword)
+                            },
                         text = stringResource(Res.string.forgot_password),
                         textDecoration = TextDecoration.Underline,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                 }
 
@@ -109,10 +108,10 @@ actual fun SignInScreen(
                     onClick = {
                         onEvent(SignInEvents.OnSignInSubmit)
                     },
-                    enabled = state.signInEnabled
+                    enabled = state.signInEnabled,
                 ) {
                     TextComponent(
-                        text = stringResource(Res.string.log_in)
+                        text = stringResource(Res.string.log_in),
                     )
                 }
 
@@ -122,16 +121,17 @@ actual fun SignInScreen(
                     screenText = "${stringResource(Res.string.sign_up)} ->",
                     onClick = {
                         onEvent(SignInEvents.OnNavigateToSignUp)
-                    }
+                    },
                 )
             }
         },
         footer = {
             AuthFooter(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.2f)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.2f),
             )
-        }
+        },
     )
 }

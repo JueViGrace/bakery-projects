@@ -18,7 +18,7 @@ interface Navigator {
 
     suspend fun navigate(
         destination: Destination,
-        navOptions: NavOptions? = null
+        navOptions: NavOptions? = null,
     )
 
     suspend fun navigateUp()
@@ -26,7 +26,7 @@ interface Navigator {
 
 class DefaultNavigator(
     override val startDestination: Destination,
-    override val stateHandle: SavedStateHandle
+    override val stateHandle: SavedStateHandle,
 ) : Navigator {
     private val _navigationActions = Channel<NavigationAction>()
     override val navigationActions: Flow<NavigationAction> = _navigationActions.receiveAsFlow()
@@ -36,7 +36,7 @@ class DefaultNavigator(
 
     override suspend fun navigate(
         destination: Destination,
-        navOptions: NavOptions?
+        navOptions: NavOptions?,
     ) {
         _stack.update { stack ->
             if (navOptions?.isPopUpToInclusive() == true) {
@@ -49,7 +49,7 @@ class DefaultNavigator(
 
             stack.destinations.add(destination)
             stack.copy(
-                currentDestination = stack.destinations.lastOrNull()
+                currentDestination = stack.destinations.lastOrNull(),
             )
         }
         _navigationActions.send(NavigationAction.Navigate(destination, navOptions))
@@ -62,7 +62,7 @@ class DefaultNavigator(
             }
             stack.destinations.removeLast()
             stack.copy(
-                currentDestination = stack.destinations.lastOrNull()
+                currentDestination = stack.destinations.lastOrNull(),
             )
         }
         _navigationActions.send(NavigationAction.NavigateUp)

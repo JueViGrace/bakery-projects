@@ -7,5 +7,5 @@ data class Order(
     val status: String,
     val userId: String,
     val createdAt: String,
-    val details: List<OrderDetails>
+    val details: List<OrderDetails>,
 )

@@ -6,8 +6,9 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
-fun databaseModule(): Module = module {
-    singleOf(::DriverFactory)
+fun databaseModule(): Module =
+    module {
+        singleOf(::DriverFactory)
 
-    singleOf(::DbHelper)
-}
+        singleOf(::DbHelper)
+    }

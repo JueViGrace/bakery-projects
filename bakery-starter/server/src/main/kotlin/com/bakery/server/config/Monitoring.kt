@@ -14,14 +14,19 @@ import org.slf4j.event.Level
 import java.util.concurrent.TimeUnit
 
 fun Application.configureMonitoring() {
-    val env = environment.config.property("ktor.development").getString().toBoolean()
+    val env =
+        environment.config
+            .property("ktor.development")
+            .getString()
+            .toBoolean()
 
     install(CallLogging) {
-        level = if (env) {
-            Level.DEBUG
-        } else {
-            Level.INFO
-        }
+        level =
+            if (env) {
+                Level.DEBUG
+            } else {
+                Level.INFO
+            }
         filter { call -> call.request.path().startsWith("/") }
         callIdMdc("call-id")
     }
@@ -34,7 +39,8 @@ fun Application.configureMonitoring() {
     }
 
     install(DropwizardMetrics) {
-        Slf4jReporter.forRegistry(registry)
+        Slf4jReporter
+            .forRegistry(registry)
             .outputTo(this@configureMonitoring.log)
             .convertRatesTo(TimeUnit.SECONDS)
             .convertDurationsTo(TimeUnit.MILLISECONDS)

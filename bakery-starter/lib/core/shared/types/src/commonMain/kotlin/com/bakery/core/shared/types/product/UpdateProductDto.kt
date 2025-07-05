@@ -26,5 +26,5 @@ data class UpdateProductDto(
     @SerialName("rating")
     val rating: Double,
     @SerialName("images")
-    val images: List<String>
+    val images: List<String>,
 )

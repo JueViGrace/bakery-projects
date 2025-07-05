@@ -11,35 +11,39 @@ import io.ktor.server.routing.get
 
 fun Route.adminGetProductById(handler: ProductHandler) {
     get("/{id}") {
-        val id = call.parameters["id"]
-            ?: return@get call.respond(
-                status = HttpStatusCode.BadRequest,
-                message = ServerResponse.badRequest<String?>(
-                    message = "Missing id"
+        val id =
+            call.parameters["id"]
+                ?: return@get call.respond(
+                    status = HttpStatusCode.BadRequest,
+                    message =
+                        ServerResponse.badRequest<String?>(
+                            message = "Missing id",
+                        ),
                 )
-            )
         val response = handler.getProductById(id)
 
         call.applicationResponse(
             response = response,
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

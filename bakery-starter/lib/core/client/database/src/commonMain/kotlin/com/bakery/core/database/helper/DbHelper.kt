@@ -13,36 +13,27 @@ import kotlin.coroutines.CoroutineContext
 
 class DbHelper(
     private val driver: DriverFactory,
-    private val coroutineContext: CoroutineContext
+    private val coroutineContext: CoroutineContext,
 ) {
     private var db: BakeryCliDb? = null
     private val mutex = Mutex()
 
-    suspend fun <Result> withDatabase(block: suspend DbHelper.(BakeryCliDb) -> Result): Result = mutex.withLock {
-        if (db == null) {
-            db = createDb()
+    suspend fun <Result> withDatabase(block: suspend DbHelper.(BakeryCliDb) -> Result): Result =
+        mutex.withLock {
+            if (db == null) {
+                db = createDb()
+            }
+
+            return@withLock block(db!!)
         }
 
-        return@withLock block(db!!)
-    }
+    private suspend fun createDb(): BakeryCliDb = BakeryCliDb(driver.createDriver())
 
-    private suspend fun createDb(): BakeryCliDb {
-        return BakeryCliDb(driver.createDriver())
-    }
+    fun <T : Any> executeOne(query: Query<T>): T? = query.executeAsOneOrNull()
 
-    fun <T : Any> executeOne(query: Query<T>): T? {
-        return query.executeAsOneOrNull()
-    }
+    fun <T : Any> executeOneAsFlow(query: Query<T>): Flow<T?> = query.asFlow().mapToOneOrNull(coroutineContext)
 
-    fun <T : Any> executeOneAsFlow(query: Query<T>): Flow<T?> {
-        return query.asFlow().mapToOneOrNull(coroutineContext)
-    }
+    fun <T : Any> executeList(query: Query<T>): List<T> = query.executeAsList()
 
-    fun <T : Any> executeList(query: Query<T>): List<T> {
-        return query.executeAsList()
-    }
-
-    fun <T : Any> executeListAsFlow(query: Query<T>): Flow<List<T>> {
-        return query.asFlow().mapToList(coroutineContext)
-    }
+    fun <T : Any> executeListAsFlow(query: Query<T>): Flow<List<T>> = query.asFlow().mapToList(coroutineContext)
 }

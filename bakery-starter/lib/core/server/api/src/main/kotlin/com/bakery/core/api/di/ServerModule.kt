@@ -6,12 +6,13 @@ import com.bakery.product.di.productModule
 import com.bakery.user.di.userModule
 import org.koin.core.module.Module
 
-fun serverModule(): List<Module> = listOf(
-    coroutinesModule(),
-    databaseModule(),
-    utilModule(),
-    authModule(),
-    userModule(),
-    productModule(),
-    orderModule(),
-)
+fun serverModule(): List<Module> =
+    listOf(
+        coroutinesModule(),
+        databaseModule(),
+        utilModule(),
+        authModule(),
+        userModule(),
+        productModule(),
+        orderModule(),
+    )

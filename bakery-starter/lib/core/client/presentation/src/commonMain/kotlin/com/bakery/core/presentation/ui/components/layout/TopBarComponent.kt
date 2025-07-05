@@ -12,12 +12,12 @@ fun TopBarComponent(
     modifier: Modifier = Modifier,
     title: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
-    navigationIcon: @Composable () -> Unit = {}
+    navigationIcon: @Composable () -> Unit = {},
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
         title = title,
         actions = actions,
-        navigationIcon = navigationIcon
+        navigationIcon = navigationIcon,
     )
 }

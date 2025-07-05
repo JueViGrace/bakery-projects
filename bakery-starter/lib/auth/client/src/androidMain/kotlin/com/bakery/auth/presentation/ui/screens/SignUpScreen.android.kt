@@ -10,9 +10,7 @@ import com.bakery.core.resources.resources.generated.resources.welcome
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-actual fun SignUpScreen(
-    viewModel: SignUpViewModel
-) {
+actual fun SignUpScreen(viewModel: SignUpViewModel) {
     MobileAuthLayout(
         title = {
             TextComponent(
@@ -23,6 +21,6 @@ actual fun SignUpScreen(
             )
         },
         content = {},
-        footer = {}
+        footer = {},
     )
 }

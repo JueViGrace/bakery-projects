@@ -18,7 +18,7 @@ sealed class APIResponse<out T> {
         @SerialName("message")
         val message: String? = null,
         @SerialName("time")
-        val time: String = Constants.currentTime
+        val time: String = Constants.currentTime,
     ) : APIResponse<T>()
 
     @Serializable
@@ -32,153 +32,159 @@ sealed class APIResponse<out T> {
         @SerialName("message")
         val message: String? = null,
         @SerialName("time")
-        val time: String = Constants.currentTime
+        val time: String = Constants.currentTime,
     ) : APIResponse<Nothing>()
 }
 
 object ServerResponse {
-    inline fun <reified T>ok(data: T? = null, message: String? = null): APIResponse<T> {
-        return APIResponse.Success(
+    inline fun <reified T> ok(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        APIResponse.Success(
             status = HttpStatusCode.OK.value,
             description = HttpStatusCode.OK.description,
             data = data,
-            message = message
+            message = message,
         )
-    }
 
-    inline fun <reified T>created(data: T? = null, message: String? = null): APIResponse<T> {
-        return APIResponse.Success(
+    inline fun <reified T> created(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        APIResponse.Success(
             status = HttpStatusCode.Created.value,
             description = HttpStatusCode.Created.description,
             data = data,
-            message = message
+            message = message,
         )
-    }
 
-    inline fun <reified T>accepted(data: T? = null, message: String? = null): APIResponse<T> {
-        return APIResponse.Success(
+    inline fun <reified T> accepted(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        APIResponse.Success(
             status = HttpStatusCode.Accepted.value,
             description = HttpStatusCode.Accepted.description,
             data = data,
-            message = message
+            message = message,
         )
-    }
 
-    inline fun <reified T>noContent(data: T? = null, message: String? = null): APIResponse<T> {
-        return APIResponse.Success(
+    inline fun <reified T> noContent(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        APIResponse.Success(
             status = HttpStatusCode.NoContent.value,
             description = HttpStatusCode.NoContent.description,
             data = data,
-            message = message
+            message = message,
         )
-    }
 
-    inline fun<reified T> badRequest(data: T? = null, message: String? = null): APIResponse<T> {
-        return if (data != null) {
+    inline fun <reified T> badRequest(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        if (data != null) {
             APIResponse.Success(
                 status = HttpStatusCode.BadRequest.value,
                 description = HttpStatusCode.BadRequest.description,
                 data = data,
-                message = message
+                message = message,
             )
         } else {
             APIResponse.Failure(
                 status = HttpStatusCode.BadRequest.value,
                 description = HttpStatusCode.BadRequest.description,
                 data = data,
-                message = message
+                message = message,
             )
         }
-    }
 
-    fun unauthorized(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun unauthorized(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.Unauthorized.value,
             description = HttpStatusCode.Unauthorized.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun forbidden(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun forbidden(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.Forbidden.value,
             description = HttpStatusCode.Forbidden.description,
-            message = message
+            message = message,
         )
-    }
 
-    inline fun <reified T> notFound(data: T? = null, message: String? = null): APIResponse<T> {
-        return if (data != null) {
+    inline fun <reified T> notFound(
+        data: T? = null,
+        message: String? = null,
+    ): APIResponse<T> =
+        if (data != null) {
             APIResponse.Success(
                 status = HttpStatusCode.NotFound.value,
                 description = HttpStatusCode.NotFound.description,
                 data = data,
-                message = message
+                message = message,
             )
         } else {
             APIResponse.Failure(
                 status = HttpStatusCode.NotFound.value,
                 description = HttpStatusCode.NotFound.description,
                 data = data,
-                message = message
+                message = message,
             )
         }
-    }
 
-    fun methodNotAllowed(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun methodNotAllowed(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.MethodNotAllowed.value,
             description = HttpStatusCode.MethodNotAllowed.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun notAcceptable(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun notAcceptable(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.NotAcceptable.value,
             description = HttpStatusCode.NotAcceptable.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun requestTimeout(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun requestTimeout(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.RequestTimeout.value,
             description = HttpStatusCode.RequestTimeout.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun conflict(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun conflict(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.Conflict.value,
             description = HttpStatusCode.Conflict.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun unsupportedMediaType(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun unsupportedMediaType(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.UnsupportedMediaType.value,
             description = HttpStatusCode.UnsupportedMediaType.description,
-            message = message
+            message = message,
         )
-    }
 
-    fun internalServerError(data: String? = null, message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun internalServerError(
+        data: String? = null,
+        message: String? = null,
+    ): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.InternalServerError.value,
             description = HttpStatusCode.InternalServerError.description,
             data = data,
-            message = message
+            message = message,
         )
-    }
 
-    fun serviceUnavailable(message: String? = null): APIResponse<Nothing> {
-        return APIResponse.Failure(
+    fun serviceUnavailable(message: String? = null): APIResponse<Nothing> =
+        APIResponse.Failure(
             status = HttpStatusCode.ServiceUnavailable.value,
             description = HttpStatusCode.ServiceUnavailable.description,
-            message = message
+            message = message,
         )
-    }
 }

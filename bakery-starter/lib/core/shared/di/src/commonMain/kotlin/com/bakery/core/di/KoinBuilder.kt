@@ -5,7 +5,9 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 
-class KoinBuilder(private val app: KoinApplication) {
+class KoinBuilder(
+    private val app: KoinApplication,
+) {
     fun addModule(modules: List<Module>): KoinBuilder {
         app.modules(modules)
         return this

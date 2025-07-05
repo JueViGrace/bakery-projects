@@ -6,4 +6,3 @@ fun RequestValidationConfig.authValidation() {
     validateSignInDto()
     validateSignUpDto()
 }
-

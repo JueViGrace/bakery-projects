@@ -8,15 +8,20 @@ import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
 fun Application.configureKoin() {
-    val env = environment.config.property("ktor.development").getString().toBoolean()
+    val env =
+        environment.config
+            .property("ktor.development")
+            .getString()
+            .toBoolean()
 
     install(Koin) {
         slf4jLogger(
-            level = if (env) {
-                Level.DEBUG
-            } else {
-                Level.INFO
-            }
+            level =
+                if (env) {
+                    Level.DEBUG
+                } else {
+                    Level.INFO
+                },
         )
         modules(serverModule())
     }

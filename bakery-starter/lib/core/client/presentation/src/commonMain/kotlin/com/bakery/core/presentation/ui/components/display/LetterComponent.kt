@@ -19,24 +19,24 @@ fun LetterComponent(
     modifier: Modifier = Modifier,
     letter: String,
     fontSize: TextUnit = MaterialTheme.typography.titleLarge.fontSize,
-    fontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight
+    fontWeight: FontWeight? = MaterialTheme.typography.titleLarge.fontWeight,
 ) {
     Box(
-        modifier = modifier
-            .size(50.dp)
-            .background(
-                color = MaterialTheme.colorScheme.primaryContainer,
-                shape = CircleShape
-            )
-            .clip(CircleShape)
-            .padding(10.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            modifier
+                .size(50.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = CircleShape,
+                ).clip(CircleShape)
+                .padding(10.dp),
+        contentAlignment = Alignment.Center,
     ) {
         TextComponent(
             text = letter,
             fontSize = fontSize,
             fontWeight = fontWeight,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }

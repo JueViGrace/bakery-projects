@@ -10,7 +10,7 @@ fun RowScope.BottomTabNavigationItem(
     icon: @Composable () -> Unit,
     selected: Boolean,
     alwaysShowLabel: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     NavigationBarItem(
         selected = selected,

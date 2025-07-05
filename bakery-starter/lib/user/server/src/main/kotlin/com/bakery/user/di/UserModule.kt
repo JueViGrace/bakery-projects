@@ -9,8 +9,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun userModule(): Module = module {
-    singleOf(::DefaultUserStorage) bind UserStorage::class
+fun userModule(): Module =
+    module {
+        singleOf(::DefaultUserStorage) bind UserStorage::class
 
-    singleOf(::DefaultUserHandler) bind UserHandler::class
-}
+        singleOf(::DefaultUserHandler) bind UserHandler::class
+    }

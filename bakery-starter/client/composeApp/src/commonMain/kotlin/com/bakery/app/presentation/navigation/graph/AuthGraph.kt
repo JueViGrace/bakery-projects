@@ -10,7 +10,7 @@ import com.bakery.core.presentation.navigation.Destination
 
 fun NavGraphBuilder.authGraph() {
     navigation<Destination.AuthGraph>(
-        startDestination = Destination.SignIn
+        startDestination = Destination.SignIn,
     ) {
         composable<Destination.SignIn> {
             SignInScreen()

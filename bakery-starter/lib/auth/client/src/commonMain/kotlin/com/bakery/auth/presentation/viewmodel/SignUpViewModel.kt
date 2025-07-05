@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class SignUpViewModel(
     private val navigator: Navigator,
     private val messages: Messages,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SignUpState())
     val state = _state.asStateFlow()
@@ -48,10 +48,13 @@ class SignUpViewModel(
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.SignIn,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(route = Destination.SignUp, inclusive = true)
-                    setLaunchSingleTop(true)
-                }.build()
+                navOptions =
+                    NavOptions
+                        .Builder()
+                        .apply {
+                            setPopUpTo(route = Destination.SignUp, inclusive = true)
+                            setLaunchSingleTop(true)
+                        }.build(),
             )
         }
     }
@@ -59,7 +62,7 @@ class SignUpViewModel(
     private fun signUpFirstNameChanged(value: String) {
         _state.update { state ->
             state.copy(
-                firstName = value
+                firstName = value,
             )
         }
     }
@@ -67,7 +70,7 @@ class SignUpViewModel(
     private fun signUpLastNameChanged(value: String) {
         _state.update { state ->
             state.copy(
-                lastName = value
+                lastName = value,
             )
         }
     }
@@ -75,7 +78,7 @@ class SignUpViewModel(
     private fun signUpUsernameChanged(value: String) {
         _state.update { state ->
             state.copy(
-                username = value
+                username = value,
             )
         }
     }
@@ -83,7 +86,7 @@ class SignUpViewModel(
     private fun signUpEmailChanged(value: String) {
         _state.update { state ->
             state.copy(
-                email = value
+                email = value,
             )
         }
     }
@@ -91,7 +94,7 @@ class SignUpViewModel(
     private fun signUpPasswordChanged(value: String) {
         _state.update { state ->
             state.copy(
-                password = value
+                password = value,
             )
         }
     }
@@ -99,7 +102,7 @@ class SignUpViewModel(
     private fun signUpPhoneNumberChanged(value: String) {
         _state.update { state ->
             state.copy(
-                phoneNumber = value
+                phoneNumber = value,
             )
         }
     }
@@ -107,7 +110,7 @@ class SignUpViewModel(
     private fun signUpBirthDateChanged(value: String) {
         _state.update { state ->
             state.copy(
-                birthDate = value
+                birthDate = value,
             )
         }
     }
@@ -115,7 +118,7 @@ class SignUpViewModel(
     private fun signUpAddress1Changed(value: String) {
         _state.update { state ->
             state.copy(
-                address1 = value
+                address1 = value,
             )
         }
     }
@@ -123,7 +126,7 @@ class SignUpViewModel(
     private fun signUpAddress2Changed(value: String) {
         _state.update { state ->
             state.copy(
-                address2 = value
+                address2 = value,
             )
         }
     }
@@ -131,7 +134,7 @@ class SignUpViewModel(
     private fun signUpGenderChanged(value: String) {
         _state.update { state ->
             state.copy(
-                gender = value
+                gender = value,
             )
         }
     }
@@ -139,27 +142,29 @@ class SignUpViewModel(
     private fun onSignUpSubmit() {
         if (onSignUpError()) return
         viewModelScope.launch {
-            val call = authRepository.signUp(
-                signUpDto = SignUpDto(
-                    firstName = _state.value.firstName,
-                    lastName = _state.value.lastName,
-                    username = _state.value.username,
-                    email = _state.value.email,
-                    password = _state.value.password,
-                    phoneNumber = _state.value.phoneNumber,
-                    birthDate = _state.value.birthDate,
-                    address1 = _state.value.address1,
-                    address2 = _state.value.address2,
-                    gender = _state.value.gender,
+            val call =
+                authRepository.signUp(
+                    signUpDto =
+                        SignUpDto(
+                            firstName = _state.value.firstName,
+                            lastName = _state.value.lastName,
+                            username = _state.value.username,
+                            email = _state.value.email,
+                            password = _state.value.password,
+                            phoneNumber = _state.value.phoneNumber,
+                            birthDate = _state.value.birthDate,
+                            address1 = _state.value.address1,
+                            address2 = _state.value.address2,
+                            gender = _state.value.gender,
+                        ),
                 )
-            )
 
             when (call) {
                 is RequestState.Error -> {
                     _state.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = call.error.message
+                            errorMessage = call.error.message,
                         )
                     }
                     messages.sendMessage(call.error)
@@ -168,17 +173,20 @@ class SignUpViewModel(
                     _state.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = null
+                            errorMessage = null,
                         )
                     }
 
                     messages.sendMessage(call.data)
                     navigator.navigate(
                         destination = Destination.Home,
-                        navOptions = NavOptions.Builder().apply {
-                            setPopUpTo(route = Destination.AuthGraph, inclusive = true)
-                            setLaunchSingleTop(true)
-                        }.build()
+                        navOptions =
+                            NavOptions
+                                .Builder()
+                                .apply {
+                                    setPopUpTo(route = Destination.AuthGraph, inclusive = true)
+                                    setLaunchSingleTop(true)
+                                }.build(),
                     )
 
                     resetState()
@@ -187,7 +195,7 @@ class SignUpViewModel(
                     _state.update { state ->
                         state.copy(
                             isLoading = true,
-                            errorMessage = null
+                            errorMessage = null,
                         )
                     }
                 }
@@ -196,32 +204,35 @@ class SignUpViewModel(
     }
 
     private fun onSignUpError(): Boolean {
-        val validation = AuthValidator.validateSignUp(
-            signUp = SignUp(
-                firstName = _state.value.firstName,
-                lastName = _state.value.lastName,
-                username = _state.value.username,
-                email = _state.value.email,
-                password = _state.value.password,
-                phoneNumber = _state.value.phoneNumber,
-                birthDate = _state.value.birthDate,
-                address1 = _state.value.address1,
-                address2 = _state.value.address2,
-                gender = _state.value.gender,
+        val validation =
+            AuthValidator.validateSignUp(
+                signUp =
+                    SignUp(
+                        firstName = _state.value.firstName,
+                        lastName = _state.value.lastName,
+                        username = _state.value.username,
+                        email = _state.value.email,
+                        password = _state.value.password,
+                        phoneNumber = _state.value.phoneNumber,
+                        birthDate = _state.value.birthDate,
+                        address1 = _state.value.address1,
+                        address2 = _state.value.address2,
+                        gender = _state.value.gender,
+                    ),
             )
-        )
-        val errors = listOfNotNull(
-            validation.firstNameError,
-            validation.lastNameError,
-            validation.usernameError,
-            validation.emailError,
-            validation.passwordError,
-            validation.phoneNumberError,
-            validation.birthDateError,
-            validation.address1Error,
-            validation.address2Error,
-            validation.genderError
-        )
+        val errors =
+            listOfNotNull(
+                validation.firstNameError,
+                validation.lastNameError,
+                validation.usernameError,
+                validation.emailError,
+                validation.passwordError,
+                validation.phoneNumberError,
+                validation.birthDateError,
+                validation.address1Error,
+                validation.address2Error,
+                validation.genderError,
+            )
         _state.update { state ->
             state.copy(
                 firstNameError = validation.firstNameError,
@@ -233,7 +244,7 @@ class SignUpViewModel(
                 birthDateError = validation.birthDateError,
                 address1Error = validation.address1Error,
                 address2Error = validation.address2Error,
-                genderError = validation.genderError
+                genderError = validation.genderError,
             )
         }
         return errors.isNotEmpty()

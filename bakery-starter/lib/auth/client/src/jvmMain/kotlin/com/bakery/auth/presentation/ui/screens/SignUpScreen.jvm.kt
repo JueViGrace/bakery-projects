@@ -15,9 +15,7 @@ import com.bakery.auth.presentation.viewmodel.SignUpViewModel
 import com.bakery.core.presentation.ui.components.display.TextComponent
 
 @Composable
-actual fun SignUpScreen(
-    viewModel: SignUpViewModel
-) {
+actual fun SignUpScreen(viewModel: SignUpViewModel) {
     ElevatedCard(
         modifier = Modifier.fillMaxSize().wrapContentSize(),
         shape = RoundedCornerShape(16),
@@ -25,7 +23,7 @@ actual fun SignUpScreen(
         Column(
             modifier = Modifier.padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             TextComponent(text = "Jvm Sign Up")
         }

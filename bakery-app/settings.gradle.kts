@@ -1,48 +1,82 @@
-rootProject.name = "bakeryApp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        google()
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
         mavenCentral()
+        gradlePluginPortal()
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 
-include(":composeApp")
-include(":lib")
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 
-// core client library
-include(":lib:core:api")
-include(":lib:core:database")
-include(":lib:core:di")
-include(":lib:core:presentation")
-include(":lib:core:resources")
-include(":lib:core:types")
+rootProject.name = "bakery-app"
+
+include(
+    ":app",
+)
+
+// core library
+include(
+    ":core:network",
+    ":core:database",
+    ":core:resources",
+    ":core:types",
+    ":core:ui",
+    ":core:util",
+)
+
+// feature library
 
 // auth library
-
-//  auth client
-include(":lib:auth")
-
-// user library
-
-// user client
-include(":lib:user")
-
-// product library
-
-// product client
-include(":lib:product")
+include(
+    ":feature:auth",
+    ":feature:auth:database-auth",
+    ":feature:auth:network-auth",
+)
 
 // order library
+include(
+    ":feature:order",
+    ":feature:order:network-order",
+)
 
-// order client
-include(":lib:order")
+// product library
+include(
+    ":feature:product",
+    ":feature:product:network-product",
+)
+
+// user library
+include(
+    ":feature:user",
+    ":feature:user:network-user",
+)

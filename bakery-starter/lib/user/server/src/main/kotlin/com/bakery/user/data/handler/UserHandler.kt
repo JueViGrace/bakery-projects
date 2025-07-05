@@ -11,16 +11,21 @@ import kotlin.coroutines.CoroutineContext
 // todo: check for conflicts
 interface UserHandler {
     suspend fun getUsers(): APIResponse<List<UserDto>>
+
     suspend fun getUserById(id: String): APIResponse<UserDto?>
+
     suspend fun getExistingUserById(id: String): APIResponse<UserDto?>
+
     suspend fun updateUser(dto: UpdateUserDto): APIResponse<UserDto?>
+
     suspend fun softDeleteUser(id: String): APIResponse<String>
+
     suspend fun deleteUser(id: String): APIResponse<String>
 }
 
 class DefaultUserHandler(
     private val coroutineContext: CoroutineContext,
-    private val store: UserStorage
+    private val store: UserStorage,
 ) : UserHandler {
     override suspend fun getUsers(): APIResponse<List<UserDto>> {
         return withContext(coroutineContext) {
@@ -29,7 +34,7 @@ class DefaultUserHandler(
             if (result.isEmpty()) {
                 return@withContext ServerResponse.notFound(
                     data = result,
-                    message = "No users were found"
+                    message = "No users were found",
                 )
             }
 
@@ -39,10 +44,11 @@ class DefaultUserHandler(
 
     override suspend fun getUserById(id: String): APIResponse<UserDto?> {
         return withContext(coroutineContext) {
-            val result = store.getUserById(id)
-                ?: return@withContext ServerResponse.notFound(
-                    message = "User with id $id was not found"
-                )
+            val result =
+                store.getUserById(id)
+                    ?: return@withContext ServerResponse.notFound(
+                        message = "User with id $id was not found",
+                    )
 
             ServerResponse.ok(data = result, message = "Processed successfully")
         }
@@ -50,10 +56,11 @@ class DefaultUserHandler(
 
     override suspend fun getExistingUserById(id: String): APIResponse<UserDto?> {
         return withContext(coroutineContext) {
-            val result = store.getExistingUserById(id)
-                ?: return@withContext ServerResponse.notFound(
-                    message = "User with id $id was not found"
-                )
+            val result =
+                store.getExistingUserById(id)
+                    ?: return@withContext ServerResponse.notFound(
+                        message = "User with id $id was not found",
+                    )
 
             ServerResponse.ok(data = result, message = "Processed successfully")
         }
@@ -61,10 +68,11 @@ class DefaultUserHandler(
 
     override suspend fun updateUser(dto: UpdateUserDto): APIResponse<UserDto?> {
         return withContext(coroutineContext) {
-            val result = store.updateUser(dto)
-                ?: return@withContext ServerResponse.notFound(
-                    message = "Unable to update user, try again later"
-                )
+            val result =
+                store.updateUser(dto)
+                    ?: return@withContext ServerResponse.notFound(
+                        message = "Unable to update user, try again later",
+                    )
 
             ServerResponse.accepted(data = result, message = "Processed successfully")
         }
@@ -76,7 +84,7 @@ class DefaultUserHandler(
 
             if (result != null) {
                 return@withContext ServerResponse.badRequest(
-                    message = "Unable to delete user, try again later"
+                    message = "Unable to delete user, try again later",
                 )
             }
 
@@ -90,7 +98,7 @@ class DefaultUserHandler(
 
             if (result != null) {
                 return@withContext ServerResponse.badRequest(
-                    message = "Unable to delete user, try again later"
+                    message = "Unable to delete user, try again later",
                 )
             }
 

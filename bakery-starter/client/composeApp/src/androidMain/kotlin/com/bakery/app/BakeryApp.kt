@@ -16,11 +16,12 @@ class BakeryApp : Application() {
         KoinBuilder(koinApplication())
             .addConfig(appDeclaration = {
                 androidLogger(
-                    level = if (BuildConfig.DEBUG) {
-                        Level.DEBUG
-                    } else {
-                        Level.NONE
-                    }
+                    level =
+                        if (BuildConfig.DEBUG) {
+                            Level.DEBUG
+                        } else {
+                            Level.NONE
+                        },
                 )
                 androidContext(this@BakeryApp)
             })

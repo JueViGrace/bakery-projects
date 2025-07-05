@@ -13,7 +13,7 @@ fun App() {
     KoinContext {
         AppTheme {
             Surface(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Navigation()
             }

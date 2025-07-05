@@ -18,22 +18,24 @@ fun Route.cancelOrder(handler: OrderHandler) {
             response = response,
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

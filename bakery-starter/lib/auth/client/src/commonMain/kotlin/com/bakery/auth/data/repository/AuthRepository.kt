@@ -24,7 +24,9 @@ import kotlin.coroutines.CoroutineContext
 
 interface AuthRepository : Repository {
     suspend fun signIn(signInDto: SignInDto): RequestState<DataCodes>
+
     suspend fun signUp(signUpDto: SignUpDto): RequestState<DataCodes>
+
     suspend fun forgotPassword(forgotPasswordDto: ForgotPasswordDto): RequestState<DataCodes>
 }
 
@@ -35,12 +37,13 @@ class DefaultAuthRepository(
     override val scope: CoroutineScope,
 ) : AuthRepository {
     override suspend fun signIn(signInDto: SignInDto): RequestState<DataCodes> {
-        val call = ktorClient.call<AuthDto> {
-            post(
-                urlString = "/api/auth/signIn",
-                body = signInDto
-            )
-        }
+        val call =
+            ktorClient.call<AuthDto> {
+                post(
+                    urlString = "/api/auth/signIn",
+                    body = signInDto,
+                )
+            }
 
         return call.display(
             onFailure = { code ->
@@ -49,112 +52,121 @@ class DefaultAuthRepository(
             onSuccess = { res ->
                 if (res.data == null) {
                     return@display RequestState.Error(
-                        error = DataCodes.NullError(
-                            msg = Res.string.unknown_error,
-                            desc = res.message
-                        )
+                        error =
+                            DataCodes.NullError(
+                                msg = Res.string.unknown_error,
+                                desc = res.message,
+                            ),
                     )
                 }
 
                 saveSession(res.data!!.dtoToDomain())
 
                 RequestState.Success(
-                    data = DataCodes.CustomMessage(
-                        msg = Res.string.welcome,
-                        desc = res.message
-                    )
+                    data =
+                        DataCodes.CustomMessage(
+                            msg = Res.string.welcome,
+                            desc = res.message,
+                        ),
                 )
-            }
+            },
         )
     }
 
     override suspend fun signUp(signUpDto: SignUpDto): RequestState<DataCodes> {
-        val call = ktorClient.call<AuthDto> {
-            post(
-                urlString = "/api/auth/signUp",
-                body = signUpDto
-            )
-        }
+        val call =
+            ktorClient.call<AuthDto> {
+                post(
+                    urlString = "/api/auth/signUp",
+                    body = signUpDto,
+                )
+            }
 
         return call.display(
             onFailure = { code ->
                 RequestState.Error(
-                    error = code
+                    error = code,
                 )
             },
             onSuccess = { res ->
                 if (res.data == null) {
                     return@display RequestState.Error(
-                        error = DataCodes.NullError(
-                            msg = Res.string.unknown_error,
-                            desc = res.message
-                        )
+                        error =
+                            DataCodes.NullError(
+                                msg = Res.string.unknown_error,
+                                desc = res.message,
+                            ),
                     )
                 }
                 saveSession(res.data!!.dtoToDomain())
 
                 RequestState.Success(
-                    data = DataCodes.CustomMessage(
-                        msg = Res.string.welcome_back,
-                        desc = res.message
-                    )
+                    data =
+                        DataCodes.CustomMessage(
+                            msg = Res.string.welcome_back,
+                            desc = res.message,
+                        ),
                 )
-            }
+            },
         )
     }
 
     override suspend fun forgotPassword(forgotPasswordDto: ForgotPasswordDto): RequestState<DataCodes> {
-        val call = ktorClient.call<AuthDto> {
-            post(
-                urlString = "/api/auth/forgotPassword",
-                body = forgotPasswordDto
-            )
-        }
+        val call =
+            ktorClient.call<AuthDto> {
+                post(
+                    urlString = "/api/auth/forgotPassword",
+                    body = forgotPasswordDto,
+                )
+            }
 
         return call.display(
             onFailure = { code ->
                 RequestState.Error(
-                    error = code
+                    error = code,
                 )
             },
             onSuccess = { res ->
                 if (res.data == null) {
                     return@display RequestState.Error(
-                        error = DataCodes.NullError(
-                            msg = Res.string.unknown_error,
-                            desc = res.message
-                        )
+                        error =
+                            DataCodes.NullError(
+                                msg = Res.string.unknown_error,
+                                desc = res.message,
+                            ),
                     )
                 }
                 saveSession(res.data!!.dtoToDomain())
 
                 RequestState.Success(
-                    data = DataCodes.CustomMessage(
-                        msg = Res.string.welcome_back,
-                        desc = res.message
-                    )
+                    data =
+                        DataCodes.CustomMessage(
+                            msg = Res.string.welcome_back,
+                            desc = res.message,
+                        ),
                 )
-            }
+            },
         )
     }
 
     private suspend fun saveSession(session: Session) {
-        scope.async {
-            dbHelper.withDatabase { db ->
-                db.transaction {
-                    db.bakerySessionQueries.insert(
-                        bakery_session = session.sessionToDb()
-                    )
-                        .executeAsOneOrNull()
-                        ?: rollback()
+        scope
+            .async {
+                dbHelper.withDatabase { db ->
+                    db.transaction {
+                        db.bakerySessionQueries
+                            .insert(
+                                bakery_session = session.sessionToDb(),
+                            ).executeAsOneOrNull()
+                            ?: rollback()
 
-                    db.bakeryUserQueries.insert(
-                        bakery_user = session.user.domainToDb()
-                    )
-                        .executeAsOneOrNull()
-                        ?: rollback()
+                        db.bakeryUserQueries
+                            .insert(
+                                bakery_user = session.user.domainToDb(),
+                            ).executeAsOneOrNull()
+                            ?: rollback()
+                    }
                 }
-            }
-        }.await()
+            }.await()
     }
 }

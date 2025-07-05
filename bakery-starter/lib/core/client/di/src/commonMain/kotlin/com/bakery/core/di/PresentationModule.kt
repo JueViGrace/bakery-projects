@@ -9,19 +9,20 @@ import com.bakery.core.presentation.navigation.Navigator
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun presentationModule(): Module = module {
-    single {
-        SavedStateHandle()
-    }
+fun presentationModule(): Module =
+    module {
+        single {
+            SavedStateHandle()
+        }
 
-    single<Navigator> {
-        DefaultNavigator(
-            startDestination = Destination.Splash,
-            stateHandle = get(),
-        )
-    }
+        single<Navigator> {
+            DefaultNavigator(
+                startDestination = Destination.Splash,
+                stateHandle = get(),
+            )
+        }
 
-    single<Messages> {
-        DefaultMessages()
+        single<Messages> {
+            DefaultMessages()
+        }
     }
-}

@@ -17,114 +17,129 @@ import kotlinx.coroutines.async
 
 interface OrderStorage {
     suspend fun getOrders(): List<OrderDto>
+
     suspend fun getOrderWithLines(id: String): OrderDto?
+
     suspend fun getOrdersByUser(userId: String): List<OrderDto>
-    suspend fun getOrderByUserWithLines(orderId: String, userId: String): OrderDto?
+
+    suspend fun getOrderByUserWithLines(
+        orderId: String,
+        userId: String,
+    ): OrderDto?
+
     suspend fun createOrder(dto: CreateOrderDto): OrderDto?
+
     suspend fun updateOrderStatus(dto: UpdateOrderDto): OrderDto?
 }
 
 class DefaultOrderStorage(
     private val scope: CoroutineScope,
-    private val dbHelper: DbHelper
+    private val dbHelper: DbHelper,
 ) : OrderStorage {
-    override suspend fun getOrders(): List<OrderDto> {
-        return dbHelper.withDatabase { db ->
-            dbHelper.executeList(
-                query = db.bakeryOrderQueries.findOrders()
-            ).map { order ->
-                order.orderLinesToDto()
-            }
-        }
-    }
-
-    override suspend fun getOrderWithLines(id: String): OrderDto? {
-        return dbHelper.withDatabase { db ->
-            dbHelper.executeList(
-                query = db.bakeryOrderQueries.findOrderWithLines(id)
-            ).orderLinesToDto()
-        }
-    }
-
-    override suspend fun getOrdersByUser(userId: String): List<OrderDto> {
-        return dbHelper.withDatabase { db ->
-            dbHelper.executeList(
-                query = db.bakeryOrderQueries.findOrdersByUser(userId)
-            ).map { order ->
-                order.orderLinesToDto()
-            }
-        }
-    }
-
-    override suspend fun getOrderByUserWithLines(orderId: String, userId: String): OrderDto? {
-        return dbHelper.withDatabase { db ->
-            dbHelper.executeList(
-                query = db.bakeryOrderQueries.findOrderByUserWithLines(
-                    id = orderId,
-                    user_id = userId
-                )
-            ).orderByUserToDto()
-        }
-    }
-
-    override suspend fun createOrder(dto: CreateOrderDto): OrderDto? {
-        return scope.async {
-            dbHelper.withDatabase { db ->
-                db.transactionWithResult {
-                    val order = insertOrder(db, dto)
-                    insertOrderLines(db, dto.details, order.id)
-                    updateProductStock(db, dto.details)
-                    order
+    override suspend fun getOrders(): List<OrderDto> =
+        dbHelper.withDatabase { db ->
+            dbHelper
+                .executeList(
+                    query = db.bakeryOrderQueries.findOrders(),
+                ).map { order ->
+                    order.orderLinesToDto()
                 }
-            }
-        }.await()
-    }
+        }
 
-    override suspend fun updateOrderStatus(dto: UpdateOrderDto): OrderDto? {
-        return scope.async {
-            dbHelper.withDatabase { db ->
-                db.transactionWithResult {
-                    val order = executeList(
-                        query = db.bakeryOrderQueries.findOrderWithLines(dto.id)
-                    ).orderLinesToDto()
-                    if (order == null) {
-                        rollback(null)
-                    }
+    override suspend fun getOrderWithLines(id: String): OrderDto? =
+        dbHelper.withDatabase { db ->
+            dbHelper
+                .executeList(
+                    query = db.bakeryOrderQueries.findOrderWithLines(id),
+                ).orderLinesToDto()
+        }
 
-                    // todo: product stock updates could be broke down into one or separate functions
-                    val updatedOrder: OrderDto? = when (OrderStatus.valueOf(dto.status)) {
-                        OrderStatus.PLACED -> null
-                        OrderStatus.CANCELLED -> onOrderCancel(db, order)
-                        OrderStatus.DISPATCHED -> onOrderDispatched(db, order)
-                        OrderStatus.DELIVERED -> onOrderDelivered(db, order.id)
-                    }
-
-                    updatedOrder
+    override suspend fun getOrdersByUser(userId: String): List<OrderDto> =
+        dbHelper.withDatabase { db ->
+            dbHelper
+                .executeList(
+                    query = db.bakeryOrderQueries.findOrdersByUser(userId),
+                ).map { order ->
+                    order.orderLinesToDto()
                 }
-            }
-        }.await()
-    }
+        }
+
+    override suspend fun getOrderByUserWithLines(
+        orderId: String,
+        userId: String,
+    ): OrderDto? =
+        dbHelper.withDatabase { db ->
+            dbHelper
+                .executeList(
+                    query =
+                        db.bakeryOrderQueries.findOrderByUserWithLines(
+                            id = orderId,
+                            user_id = userId,
+                        ),
+                ).orderByUserToDto()
+        }
+
+    override suspend fun createOrder(dto: CreateOrderDto): OrderDto? =
+        scope
+            .async {
+                dbHelper.withDatabase { db ->
+                    db.transactionWithResult {
+                        val order = insertOrder(db, dto)
+                        insertOrderLines(db, dto.details, order.id)
+                        updateProductStock(db, dto.details)
+                        order
+                    }
+                }
+            }.await()
+
+    override suspend fun updateOrderStatus(dto: UpdateOrderDto): OrderDto? =
+        scope
+            .async {
+                dbHelper.withDatabase { db ->
+                    db.transactionWithResult {
+                        val order =
+                            executeList(
+                                query = db.bakeryOrderQueries.findOrderWithLines(dto.id),
+                            ).orderLinesToDto()
+                        if (order == null) {
+                            rollback(null)
+                        }
+
+                        // todo: product stock updates could be broke down into one or separate functions
+                        val updatedOrder: OrderDto? =
+                            when (OrderStatus.valueOf(dto.status)) {
+                                OrderStatus.PLACED -> null
+                                OrderStatus.CANCELLED -> onOrderCancel(db, order)
+                                OrderStatus.DISPATCHED -> onOrderDispatched(db, order)
+                                OrderStatus.DELIVERED -> onOrderDelivered(db, order.id)
+                            }
+
+                        updatedOrder
+                    }
+                }
+            }.await()
 
     private fun SuspendingTransactionWithReturn<OrderDto?>.insertOrder(
         db: BakerySvDb,
-        dto: CreateOrderDto
+        dto: CreateOrderDto,
     ): OrderDto {
-        val totalAmount = dto.details.sumOf { detail ->
-            calculateOrderTotalAmount(
-                quantity = detail.quantity,
-                price = detail.price,
-                discount = detail.discount
-            )
-        }
-
-        val order = db.bakeryOrderQueries
-            .insert(
-                dto.toDb(
-                    totalAmount = totalAmount
+        val totalAmount =
+            dto.details.sumOf { detail ->
+                calculateOrderTotalAmount(
+                    quantity = detail.quantity,
+                    price = detail.price,
+                    discount = detail.discount,
                 )
-            )
-            .executeAsOneOrNull()
-            ?.orderLinesToDto()
+            }
+
+        val order =
+            db.bakeryOrderQueries
+                .insert(
+                    dto.toDb(
+                        totalAmount = totalAmount,
+                    ),
+                ).executeAsOneOrNull()
+                ?.orderLinesToDto()
         if (order == null) {
             rollback(null)
         }
@@ -135,21 +150,23 @@ class DefaultOrderStorage(
     private fun SuspendingTransactionWithReturn<OrderDto?>.insertOrderLines(
         db: BakerySvDb,
         details: List<CreateOrderDetailsDto>,
-        orderId: String
+        orderId: String,
     ) {
-        val list = details.map { detail ->
-            db.bakeryOrderProductsQueries.insert(
-                detail.toDbDetails(
-                    orderId = orderId,
-                    totalPrice = calculateOrderTotalAmount(
-                        quantity = detail.quantity,
-                        price = detail.price,
-                        discount = detail.discount
-                    )
-                )
-            )
-                .executeAsOneOrNull()
-        }
+        val list =
+            details.map { detail ->
+                db.bakeryOrderProductsQueries
+                    .insert(
+                        detail.toDbDetails(
+                            orderId = orderId,
+                            totalPrice =
+                                calculateOrderTotalAmount(
+                                    quantity = detail.quantity,
+                                    price = detail.price,
+                                    discount = detail.discount,
+                                ),
+                        ),
+                    ).executeAsOneOrNull()
+            }
 
         if (list.isEmpty() || list.contains(null)) {
             rollback(null)
@@ -158,36 +175,39 @@ class DefaultOrderStorage(
 
     private fun SuspendingTransactionWithReturn<OrderDto?>.updateProductStock(
         db: BakerySvDb,
-        details: List<CreateOrderDetailsDto>
+        details: List<CreateOrderDetailsDto>,
     ) {
-        val list = details.map { detail ->
-            val product = db.bakeryProductQueries
-                .findProduct(detail.productId)
-                .executeAsOneOrNull()
+        val list =
+            details.map { detail ->
+                val product =
+                    db.bakeryProductQueries
+                        .findProduct(detail.productId)
+                        .executeAsOneOrNull()
 
-            if (product == null) {
-                return@map null
+                if (product == null) {
+                    return@map null
+                }
+
+                val stock = product.stock - detail.quantity
+                if (stock < 0) {
+                    return@map null
+                }
+
+                val updatedProduct =
+                    db.bakeryProductQueries
+                        .updateStock(
+                            stock = stock,
+                            issued = product.issued + detail.quantity,
+                            has_stock = if (stock > 0) 1 else 0,
+                            id = product.id,
+                        ).executeAsOneOrNull()
+
+                if (updatedProduct == null) {
+                    return@map null
+                }
+
+                return@map updatedProduct
             }
-
-            val stock = product.stock - detail.quantity
-            if (stock < 0) {
-                return@map null
-            }
-
-            val updatedProduct = db.bakeryProductQueries.updateStock(
-                stock = stock,
-                issued = product.issued + detail.quantity,
-                has_stock = if (stock > 0) 1 else 0,
-                id = product.id
-            )
-                .executeAsOneOrNull()
-
-            if (updatedProduct == null) {
-                return@map null
-            }
-
-            return@map updatedProduct
-        }
 
         if (list.isEmpty() || list.contains(null)) {
             rollback(null)
@@ -197,48 +217,50 @@ class DefaultOrderStorage(
     private fun calculateOrderTotalAmount(
         quantity: Int,
         price: Double,
-        discount: Double
-    ): Double {
-        return quantity * (price - (price * discount / 100))
-    }
+        discount: Double,
+    ): Double = quantity * (price - (price * discount / 100))
 
     // todo: add date constraint to cancellation
     private fun SuspendingTransactionWithReturn<OrderDto?>.onOrderCancel(
         db: BakerySvDb,
-        order: OrderDto
+        order: OrderDto,
     ): OrderDto {
-        val updatedOrder = db.bakeryOrderQueries.updateStatus(
-            status = OrderStatus.CANCELLED.name,
-            id = order.id
-        )
-            .executeAsOneOrNull()
+        val updatedOrder =
+            db.bakeryOrderQueries
+                .updateStatus(
+                    status = OrderStatus.CANCELLED.name,
+                    id = order.id,
+                ).executeAsOneOrNull()
         if (updatedOrder == null) {
             rollback(null)
         }
 
-        val list = order.details.map { detail ->
-            val product = db.bakeryProductQueries
-                .findProduct(detail.productId)
-                .executeAsOneOrNull()
-            if (product == null) {
-                return@map null
+        val list =
+            order.details.map { detail ->
+                val product =
+                    db.bakeryProductQueries
+                        .findProduct(detail.productId)
+                        .executeAsOneOrNull()
+                if (product == null) {
+                    return@map null
+                }
+
+                val stock = product.stock + detail.quantity
+
+                val updatedProduct =
+                    db.bakeryProductQueries
+                        .updateStock(
+                            stock = stock,
+                            issued = product.issued - detail.quantity,
+                            has_stock = if (stock > 0) 1 else 0,
+                            id = product.id,
+                        ).executeAsOneOrNull()
+                if (updatedProduct == null) {
+                    return@map null
+                }
+
+                return@map updatedProduct
             }
-
-            val stock = product.stock + detail.quantity
-
-            val updatedProduct = db.bakeryProductQueries.updateStock(
-                stock = stock,
-                issued = product.issued - detail.quantity,
-                has_stock = if (stock > 0) 1 else 0,
-                id = product.id
-            )
-                .executeAsOneOrNull()
-            if (updatedProduct == null) {
-                return@map null
-            }
-
-            return@map updatedProduct
-        }
         if (list.isEmpty() || list.contains(null)) {
             rollback(null)
         }
@@ -248,36 +270,40 @@ class DefaultOrderStorage(
 
     private fun SuspendingTransactionWithReturn<OrderDto?>.onOrderDispatched(
         db: BakerySvDb,
-        order: OrderDto
+        order: OrderDto,
     ): OrderDto {
-        val updatedOrder = db.bakeryOrderQueries.updateStatus(
-            status = OrderStatus.DISPATCHED.name,
-            id = order.id
-        )
-            .executeAsOneOrNull()
+        val updatedOrder =
+            db.bakeryOrderQueries
+                .updateStatus(
+                    status = OrderStatus.DISPATCHED.name,
+                    id = order.id,
+                ).executeAsOneOrNull()
         if (updatedOrder == null) {
             rollback(null)
         }
 
-        val list = order.details.map { detail ->
-            val product = db.bakeryProductQueries
-                .findProduct(detail.productId)
-                .executeAsOneOrNull()
-            if (product == null) {
-                return@map null
-            }
+        val list =
+            order.details.map { detail ->
+                val product =
+                    db.bakeryProductQueries
+                        .findProduct(detail.productId)
+                        .executeAsOneOrNull()
+                if (product == null) {
+                    return@map null
+                }
 
-            val updatedProduct = db.bakeryProductQueries.updateIssued(
-                issued = product.issued - detail.quantity,
-                id = product.id
-            )
-                .executeAsOneOrNull()
-            if (updatedProduct == null) {
-                return@map null
-            }
+                val updatedProduct =
+                    db.bakeryProductQueries
+                        .updateIssued(
+                            issued = product.issued - detail.quantity,
+                            id = product.id,
+                        ).executeAsOneOrNull()
+                if (updatedProduct == null) {
+                    return@map null
+                }
 
-            return@map updatedProduct
-        }
+                return@map updatedProduct
+            }
         if (list.isEmpty() || list.contains(null)) {
             rollback(null)
         }
@@ -287,13 +313,14 @@ class DefaultOrderStorage(
 
     private fun SuspendingTransactionWithReturn<OrderDto?>.onOrderDelivered(
         db: BakerySvDb,
-        orderId: String
+        orderId: String,
     ): OrderDto {
-        val updatedOrder = db.bakeryOrderQueries.updateStatus(
-            status = OrderStatus.DELIVERED.name,
-            id = orderId
-        )
-            .executeAsOneOrNull()
+        val updatedOrder =
+            db.bakeryOrderQueries
+                .updateStatus(
+                    status = OrderStatus.DELIVERED.name,
+                    id = orderId,
+                ).executeAsOneOrNull()
         if (updatedOrder == null) {
             rollback(null)
         }

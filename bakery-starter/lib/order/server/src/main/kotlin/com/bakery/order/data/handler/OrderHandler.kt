@@ -1,26 +1,34 @@
 package com.bakery.order.data.handler
 
-import com.bakery.core.types.APIResponse
-import com.bakery.core.types.ServerResponse
-import com.bakery.order.data.storage.OrderStorage
 import com.bakery.core.shared.types.order.CreateOrderDto
 import com.bakery.core.shared.types.order.OrderDto
 import com.bakery.core.shared.types.order.UpdateOrderDto
+import com.bakery.core.types.APIResponse
+import com.bakery.core.types.ServerResponse
+import com.bakery.order.data.storage.OrderStorage
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 interface OrderHandler {
     suspend fun getOrders(): APIResponse<List<OrderDto>>
+
     suspend fun getOrderWithLines(id: String): APIResponse<OrderDto?>
+
     suspend fun getOrdersByUser(userId: String): APIResponse<List<OrderDto>>
-    suspend fun getOrderByUserWithLines(orderId: String, userId: String): APIResponse<OrderDto?>
+
+    suspend fun getOrderByUserWithLines(
+        orderId: String,
+        userId: String,
+    ): APIResponse<OrderDto?>
+
     suspend fun createOrder(dto: CreateOrderDto): APIResponse<OrderDto?>
+
     suspend fun updateOrderStatus(dto: UpdateOrderDto): APIResponse<OrderDto?>
 }
 
 class DefaultOrderHandler(
     private val coroutineContext: CoroutineContext,
-    private val storage: OrderStorage
+    private val storage: OrderStorage,
 ) : OrderHandler {
     override suspend fun getOrders(): APIResponse<List<OrderDto>> {
         return withContext(coroutineContext) {
@@ -28,13 +36,13 @@ class DefaultOrderHandler(
 
             if (result.isEmpty()) {
                 return@withContext ServerResponse.notFound(
-                    message = "No orders were found"
+                    message = "No orders were found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -45,13 +53,13 @@ class DefaultOrderHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Order with id $id was not found"
+                    message = "Order with id $id was not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -62,13 +70,13 @@ class DefaultOrderHandler(
 
             if (result.isEmpty()) {
                 return@withContext ServerResponse.notFound(
-                    message = "No orders were found"
+                    message = "No orders were found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -82,13 +90,13 @@ class DefaultOrderHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Order with id $orderId was not found"
+                    message = "Order with id $orderId was not found",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -99,13 +107,13 @@ class DefaultOrderHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Unable to create order, try again later"
+                    message = "Unable to create order, try again later",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }
@@ -116,13 +124,13 @@ class DefaultOrderHandler(
 
             if (result == null) {
                 return@withContext ServerResponse.notFound(
-                    message = "Unable to update order status, try again later"
+                    message = "Unable to update order status, try again later",
                 )
             }
 
             ServerResponse.ok(
                 data = result,
-                message = "Processed successfully"
+                message = "Processed successfully",
             )
         }
     }

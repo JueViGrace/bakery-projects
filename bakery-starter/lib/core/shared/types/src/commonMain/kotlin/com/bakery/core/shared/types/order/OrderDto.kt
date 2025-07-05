@@ -18,5 +18,5 @@ data class OrderDto(
     @SerialName("created_at")
     val createdAt: String,
     @SerialName("details")
-    val details: List<OrderDetailsDto>
+    val details: List<OrderDetailsDto>,
 )

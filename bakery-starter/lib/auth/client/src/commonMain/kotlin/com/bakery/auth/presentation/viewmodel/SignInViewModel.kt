@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 class SignInViewModel(
     private val navigator: Navigator,
     private val authRepository: AuthRepository,
-    private val messages: Messages
+    private val messages: Messages,
 ) : ViewModel() {
     private val _state = MutableStateFlow(SignInState())
     val state = _state.asStateFlow()
@@ -42,10 +42,13 @@ class SignInViewModel(
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.ForgotPassword,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(route = Destination.SignIn, inclusive = false)
-                    setLaunchSingleTop(true)
-                }.build()
+                navOptions =
+                    NavOptions
+                        .Builder()
+                        .apply {
+                            setPopUpTo(route = Destination.SignIn, inclusive = false)
+                            setLaunchSingleTop(true)
+                        }.build(),
             )
         }
     }
@@ -55,10 +58,13 @@ class SignInViewModel(
         viewModelScope.launch {
             navigator.navigate(
                 destination = Destination.SignUp,
-                navOptions = NavOptions.Builder().apply {
-                    setPopUpTo(route = Destination.SignIn, inclusive = false)
-                    setLaunchSingleTop(true)
-                }.build()
+                navOptions =
+                    NavOptions
+                        .Builder()
+                        .apply {
+                            setPopUpTo(route = Destination.SignIn, inclusive = false)
+                            setLaunchSingleTop(true)
+                        }.build(),
             )
         }
     }
@@ -67,7 +73,7 @@ class SignInViewModel(
         _state.update { state ->
             state.copy(
                 username = value,
-                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
+                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty(),
             )
         }
     }
@@ -76,7 +82,7 @@ class SignInViewModel(
         _state.update { state ->
             state.copy(
                 password = value,
-                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty()
+                signInEnabled = state.username.isNotEmpty() && state.password.isNotEmpty(),
             )
         }
     }
@@ -84,7 +90,7 @@ class SignInViewModel(
     private fun togglePasswordVisibility() {
         _state.update { state ->
             state.copy(
-                passwordVisibility = !state.passwordVisibility
+                passwordVisibility = !state.passwordVisibility,
             )
         }
     }
@@ -92,18 +98,20 @@ class SignInViewModel(
     private fun signInSubmit() {
         if (onSignInError()) return
         viewModelScope.launch {
-            val call = authRepository.signIn(
-                signInDto = SignInDto(
-                    username = _state.value.username,
-                    password = _state.value.password
+            val call =
+                authRepository.signIn(
+                    signInDto =
+                        SignInDto(
+                            username = _state.value.username,
+                            password = _state.value.password,
+                        ),
                 )
-            )
             when (call) {
                 is RequestState.Error -> {
                     _state.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = call.error.message
+                            errorMessage = call.error.message,
                         )
                     }
                     messages.sendMessage(call.error)
@@ -112,17 +120,20 @@ class SignInViewModel(
                     _state.update { state ->
                         state.copy(
                             isLoading = false,
-                            errorMessage = null
+                            errorMessage = null,
                         )
                     }
 
                     messages.sendMessage(call.data)
                     navigator.navigate(
                         destination = Destination.Home,
-                        navOptions = NavOptions.Builder().apply {
-                            setPopUpTo(route = Destination.AuthGraph, inclusive = true)
-                            setLaunchSingleTop(true)
-                        }.build()
+                        navOptions =
+                            NavOptions
+                                .Builder()
+                                .apply {
+                                    setPopUpTo(route = Destination.AuthGraph, inclusive = true)
+                                    setLaunchSingleTop(true)
+                                }.build(),
                     )
 
                     resetState()
@@ -131,7 +142,7 @@ class SignInViewModel(
                     _state.update { state ->
                         state.copy(
                             isLoading = true,
-                            errorMessage = null
+                            errorMessage = null,
                         )
                     }
                 }
@@ -140,20 +151,23 @@ class SignInViewModel(
     }
 
     private fun onSignInError(): Boolean {
-        val validation = AuthValidator.validateSignIn(
-            signIn = SignIn(
-                username = _state.value.username,
-                password = _state.value.password,
+        val validation =
+            AuthValidator.validateSignIn(
+                signIn =
+                    SignIn(
+                        username = _state.value.username,
+                        password = _state.value.password,
+                    ),
             )
-        )
-        val errors = listOfNotNull(
-            validation.usernameError,
-            validation.passwordError
-        )
+        val errors =
+            listOfNotNull(
+                validation.usernameError,
+                validation.passwordError,
+            )
         _state.update { state ->
             state.copy(
                 usernameError = validation.usernameError,
-                passwordError = validation.passwordError
+                passwordError = validation.passwordError,
             )
         }
         return errors.isNotEmpty()
@@ -167,7 +181,7 @@ class SignInViewModel(
                 usernameError = null,
                 passwordError = null,
                 passwordVisibility = false,
-                signInEnabled = false
+                signInEnabled = false,
             )
         }
     }

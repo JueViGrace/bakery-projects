@@ -21,19 +21,19 @@ import org.jetbrains.compose.resources.painterResource
 fun SplashScreen() {
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         ImageComponent(
-            modifier = Modifier
-                .fillMaxWidth(0.5f)
-                .background(
-                    color = MaterialTheme.colorScheme.onSurface,
-                    shape = RoundedCornerShape(20)
-                )
-                .clip(RoundedCornerShape(20))
-                .padding(4.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth(0.5f)
+                    .background(
+                        color = MaterialTheme.colorScheme.onSurface,
+                        shape = RoundedCornerShape(20),
+                    ).clip(RoundedCornerShape(20))
+                    .padding(4.dp),
             painter = painterResource(Res.drawable.reimu),
-            contentDescription = "Logo"
+            contentDescription = "Logo",
         )
     }
 }

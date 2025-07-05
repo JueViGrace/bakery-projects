@@ -39,96 +39,102 @@ class DefaultAppRepository(
         return flow {
             emit(RequestState.Loading)
 
-            val session = dbHelper.withDatabase { db ->
-                executeOne(
-                    query = db.bakerySessionQueries.findActiveAccount()
-                )
-            }
+            val session =
+                dbHelper.withDatabase { db ->
+                    executeOne(
+                        query = db.bakerySessionQueries.findActiveAccount(),
+                    )
+                }
 
             if (session != null) {
-                val refreshCall = refresh(session.refresh_token).display(
-                    onFailure = { code ->
-                        endSession()
-                        RequestState.Error(
-                            error = code
-                        )
-                    },
-                    onSuccess = { res ->
-                        if (res.data == null) {
+                val refreshCall =
+                    refresh(session.refresh_token).display(
+                        onFailure = { code ->
                             endSession()
-                            return@display RequestState.Error(
-                                error = DataCodes.NullError(
-                                    msg = Res.string.session_expired,
-                                    desc = res.message
-                                )
+                            RequestState.Error(
+                                error = code,
                             )
-                        }
-                        handleSuccessRefresh(
-                            session = res.data!!.dtoToDomain(),
-                        )
-                    }
-                )
+                        },
+                        onSuccess = { res ->
+                            if (res.data == null) {
+                                endSession()
+                                return@display RequestState.Error(
+                                    error =
+                                        DataCodes.NullError(
+                                            msg = Res.string.session_expired,
+                                            desc = res.message,
+                                        ),
+                                )
+                            }
+                            handleSuccessRefresh(
+                                session = res.data!!.dtoToDomain(),
+                            )
+                        },
+                    )
                 emit(refreshCall)
             }
             emit(
                 RequestState.Error(
-                    error = DataCodes.NullError(
-                        desc = "Session is null"
-                    )
-                )
+                    error =
+                        DataCodes.NullError(
+                            desc = "Session is null",
+                        ),
+                ),
             )
         }.flowOn(coroutineContext)
     }
 
-    private suspend fun refresh(refreshToken: String): ApiOperation<AuthDto> {
-        return ktorClient.call {
+    private suspend fun refresh(refreshToken: String): ApiOperation<AuthDto> =
+        ktorClient.call {
             post(
                 urlString = "/api/auth/refresh",
-                body = RefreshTokenDto(
-                    refreshToken = refreshToken
-                )
+                body =
+                    RefreshTokenDto(
+                        refreshToken = refreshToken,
+                    ),
             )
         }
-    }
 
-    private suspend fun handleSuccessRefresh(
-        session: Session,
-    ): RequestState<Session> {
-        scope.async {
-            dbHelper.withDatabase { db ->
-                db.transactionWithResult {
-                    db.bakeryUserQueries.insert(
-                        bakery_user = session.user.domainToDb()
-                    )
-                        .executeAsOneOrNull()
-                        ?: rollback(null)
+    private suspend fun handleSuccessRefresh(session: Session): RequestState<Session> {
+        scope
+            .async {
+                dbHelper.withDatabase { db ->
+                    db.transactionWithResult {
+                        db.bakeryUserQueries
+                            .insert(
+                                bakery_user = session.user.domainToDb(),
+                            ).executeAsOneOrNull()
+                            ?: rollback(null)
 
-                    db.bakerySessionQueries.insert(
-                        bakery_session = session.copy(active = true).sessionToDb()
-                    )
-                        .executeAsOneOrNull()
-                        ?: rollback(null)
+                        db.bakerySessionQueries
+                            .insert(
+                                bakery_session = session.copy(active = true).sessionToDb(),
+                            ).executeAsOneOrNull()
+                            ?: rollback(null)
+                    }
                 }
-            }
-        }.await()
+            }.await()
             ?: return RequestState.Error(
-                error = DataCodes.NullError(
-                    msg = Res.string.unexpected_error,
-                    desc = "Unable to update session"
-                )
+                error =
+                    DataCodes.NullError(
+                        msg = Res.string.unexpected_error,
+                        desc = "Unable to update session",
+                    ),
             )
 
-        val newSession = dbHelper.withDatabase { db ->
-            executeOne(
-                query = db.bakerySessionQueries.findActiveAccount()
-            )
-        }
-            ?: return RequestState.Error(
-                error = DataCodes.NullError(
-                    msg = Res.string.unknown_error,
-                    desc = "Unable to find session"
+        val newSession =
+            dbHelper.withDatabase { db ->
+                executeOne(
+                    query = db.bakerySessionQueries.findActiveAccount(),
                 )
-            )
+            }
+                ?: return RequestState.Error(
+                    error =
+                        DataCodes.NullError(
+                            msg = Res.string.unknown_error,
+                            desc = "Unable to find session",
+                        ),
+                )
 
         return RequestState.Success(newSession.findToDomain())
     }

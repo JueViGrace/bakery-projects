@@ -39,13 +39,13 @@ fun RowButton(
         elevation = elevation,
         border = border,
         contentPadding = contentPadding,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
         RowComponent(
             icon = icon,
             title = title,
             actions = actions,
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.SpaceEvenly,
         )
     }
 }

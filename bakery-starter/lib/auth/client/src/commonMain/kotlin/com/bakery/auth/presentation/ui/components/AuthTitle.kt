@@ -23,13 +23,13 @@ fun AuthTitle(
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         title()
         ImageComponent(
             modifier = Modifier.size(100.dp),
             painter = painterResource(Res.drawable.reimu),
-            contentDescription = stringResource(Res.string.app_logo)
+            contentDescription = stringResource(Res.string.app_logo),
         )
     }
 }

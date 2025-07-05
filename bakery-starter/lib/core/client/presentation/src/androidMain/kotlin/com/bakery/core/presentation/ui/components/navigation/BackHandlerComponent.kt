@@ -9,7 +9,7 @@ import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.launch
 
 @Composable
-fun BackHandlerComponent(navigator: Navigator){
+fun BackHandlerComponent(navigator: Navigator) {
     val scope = rememberCoroutineScope()
     BackHandler {
         scope.launch(Dispatchers.Main.immediate) {

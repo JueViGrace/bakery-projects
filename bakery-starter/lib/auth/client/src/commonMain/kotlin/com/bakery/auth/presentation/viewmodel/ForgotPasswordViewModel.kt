@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 class ForgotPasswordViewModel(
     val navigator: Navigator,
     private val messages: Messages,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val _state = MutableStateFlow(ForgotPasswordState())
     private val state = _state.asStateFlow()

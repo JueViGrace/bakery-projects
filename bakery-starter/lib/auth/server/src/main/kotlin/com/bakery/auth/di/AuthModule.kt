@@ -9,8 +9,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun authModule(): Module = module {
-    singleOf(::DefaultAuthStore) bind AuthStore::class
+fun authModule(): Module =
+    module {
+        singleOf(::DefaultAuthStore) bind AuthStore::class
 
-    singleOf(::DefaultAuthHandler) bind AuthHandler::class
-}
+        singleOf(::DefaultAuthHandler) bind AuthHandler::class
+    }

@@ -8,20 +8,19 @@ import com.bakery.core.types.state.RequestState
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun String.capitalizeString(): String {
-    return this
+fun String.capitalizeString(): String =
+    this
         .lowercase()
         .split(" ")
         .joinToString(
             separator = " ",
-            transform = { it.capitalize(Locale.current) }
+            transform = { it.capitalize(Locale.current) },
         )
-}
 
 suspend inline fun <reified T> Flow<RequestState<T>>.unwrapResult(
     crossinline onSuccess: (T) -> Unit,
     crossinline onError: (DataCodes) -> Unit,
-    crossinline onLoading: () -> Unit
+    crossinline onLoading: () -> Unit,
 ) {
     collect { value ->
         when (value) {

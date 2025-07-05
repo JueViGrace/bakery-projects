@@ -8,16 +8,17 @@ import com.bakery.core.di.KoinBuilder
 import com.bakery.core.di.coreModule
 import org.koin.dsl.koinApplication
 
-fun main() = application {
-    KoinBuilder(koinApplication())
-        .addModule(coreModule())
-        .addModule(appModule())
-        .build()
+fun main() =
+    application {
+        KoinBuilder(koinApplication())
+            .addModule(coreModule())
+            .addModule(appModule())
+            .build()
 
-    Window(
-        onCloseRequest = ::exitApplication,
-        title = "Bakery and Deserts",
-    ) {
-        App()
+        Window(
+            onCloseRequest = ::exitApplication,
+            title = "Bakery and Deserts",
+        ) {
+            App()
+        }
     }
-}

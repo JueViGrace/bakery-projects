@@ -27,9 +27,10 @@ fun Application.configureRouting() {
             logger.error("Unhandled error at: ${call.request.path()}", cause)
             call.respond(
                 status = HttpStatusCode.InternalServerError,
-                message = internalServerError(
-                    message = "Something unexpected happened, try again later."
-                ) as APIResponse.Failure
+                message =
+                    internalServerError(
+                        message = "Something unexpected happened, try again later.",
+                    ) as APIResponse.Failure,
             )
         }
 
@@ -37,38 +38,47 @@ fun Application.configureRouting() {
             logger.error("Validation error", cause)
             call.respond(
                 status = HttpStatusCode.BadRequest,
-                message = badRequest(
-                    data = cause.reasons.joinToString(", "),
-                    message = "Invalid request."
-                ) as APIResponse.Failure
+                message =
+                    badRequest(
+                        data = cause.reasons.joinToString(", "),
+                        message = "Invalid request.",
+                    ) as APIResponse.Failure,
             )
         }
 
         status(HttpStatusCode.Unauthorized) {
-            val id = call.principal<JWTPrincipal>()?.payload?.getClaim("user_claims")?.asMap()["user_id"]
+            val id =
+                call
+                    .principal<JWTPrincipal>()
+                    ?.payload
+                    ?.getClaim("user_claims")
+                    ?.asMap()["user_id"]
             if (id != null) {
                 return@status call.respond(
                     status = HttpStatusCode.Forbidden,
-                    message = forbidden(
-                        message = "You are not allowed to access this resource"
-                    ) as APIResponse.Failure
+                    message =
+                        forbidden(
+                            message = "You are not allowed to access this resource",
+                        ) as APIResponse.Failure,
                 )
             }
 
             call.respond(
                 status = HttpStatusCode.Unauthorized,
-                message = unauthorized(
-                    message = "You are not authorized to access this endpoint"
-                ) as APIResponse.Failure
+                message =
+                    unauthorized(
+                        message = "You are not authorized to access this endpoint",
+                    ) as APIResponse.Failure,
             )
         }
 
         status(HttpStatusCode.Forbidden) {
             call.respond(
                 status = HttpStatusCode.Forbidden,
-                message = forbidden(
-                    message = "You are not allowed to access this resource"
-                ) as APIResponse.Failure
+                message =
+                    forbidden(
+                        message = "You are not allowed to access this resource",
+                    ) as APIResponse.Failure,
             )
         }
     }

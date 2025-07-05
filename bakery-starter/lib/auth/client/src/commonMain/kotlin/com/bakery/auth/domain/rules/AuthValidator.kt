@@ -5,7 +5,6 @@ import com.bakery.auth.domain.model.SignUp
 import org.jetbrains.compose.resources.StringResource
 
 object AuthValidator {
-
     fun validateSignIn(signIn: SignIn): SignInValidationError {
         val result = SignInValidationError()
 

@@ -11,31 +11,34 @@ import io.ktor.server.routing.patch
 
 fun Route.updateProduct(handler: ProductHandler) {
     patch<UpdateProductDto> { body ->
-        val response = handler.updateProduct(
-            dto = body,
-            images = emptyList()
-        )
+        val response =
+            handler.updateProduct(
+                dto = body,
+                images = emptyList(),
+            )
 
         call.applicationResponse(
             response = response,
             onFailure = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
             },
             onSuccess = { res ->
                 call.respond(
-                    status = HttpStatusCode(
-                        value = res.status,
-                        description = res.description
-                    ),
-                    message = res
+                    status =
+                        HttpStatusCode(
+                            value = res.status,
+                            description = res.description,
+                        ),
+                    message = res,
                 )
-            }
+            },
         )
     }
 }

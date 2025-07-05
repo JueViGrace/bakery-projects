@@ -8,10 +8,11 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import kotlin.coroutines.CoroutineContext
 
-fun coroutinesModule(): Module = module {
-    single<CoroutineContext> {
-        Dispatchers.IO
-    }
+fun coroutinesModule(): Module =
+    module {
+        single<CoroutineContext> {
+            Dispatchers.IO
+        }
 
-    singleOf(::CoroutineScope) bind CoroutineScope::class
-}
+        singleOf(::CoroutineScope) bind CoroutineScope::class
+    }

@@ -13,15 +13,13 @@ import com.bakery.user.presentation.viewmodel.UsersListViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun UsersListScreen(
-    viewModel: UsersListViewModel = koinViewModel()
-) {
+fun UsersListScreen(viewModel: UsersListViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextComponent(
             text = "Users List Screen",

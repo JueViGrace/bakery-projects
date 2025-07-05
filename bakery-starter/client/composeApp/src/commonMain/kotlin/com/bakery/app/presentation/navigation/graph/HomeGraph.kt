@@ -13,7 +13,7 @@ import com.bakery.user.presentation.ui.screens.UsersListScreen
 
 fun NavGraphBuilder.homeGraph() {
     navigation<Destination.HomeGraph>(
-        startDestination = Destination.Home
+        startDestination = Destination.Home,
     ) {
         composable<Destination.Home> {
         }

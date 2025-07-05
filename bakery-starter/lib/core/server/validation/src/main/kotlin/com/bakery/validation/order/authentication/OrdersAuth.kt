@@ -12,7 +12,7 @@ fun AuthenticationConfig.ordersAuth(
     name: String,
     jwt: Jwt,
     userCall: suspend (String) -> UserIdValidation?,
-    orderCall: suspend (String) -> OrderDataValidation?
+    orderCall: suspend (String) -> OrderDataValidation?,
 ) {
     jwt(name = name) {
         realm = jwt.realm

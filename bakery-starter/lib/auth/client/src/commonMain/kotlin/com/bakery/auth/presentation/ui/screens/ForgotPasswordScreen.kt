@@ -5,6 +5,4 @@ import com.bakery.auth.presentation.viewmodel.ForgotPasswordViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-expect fun ForgotPasswordScreen(
-    viewModel: ForgotPasswordViewModel = koinViewModel()
-)
+expect fun ForgotPasswordScreen(viewModel: ForgotPasswordViewModel = koinViewModel())

@@ -13,15 +13,13 @@ import com.bakery.product.presentation.viewmodel.ProductDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ProductDetailsScreen(
-    viewModel: ProductDetailsViewModel = koinViewModel()
-) {
+fun ProductDetailsScreen(viewModel: ProductDetailsViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         TextComponent(
             text = "Product Details Screen",

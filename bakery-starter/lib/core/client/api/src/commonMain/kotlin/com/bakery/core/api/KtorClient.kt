@@ -31,32 +31,33 @@ import kotlin.coroutines.coroutineContext
 class KtorClient {
     private val baseUrl = "http://localhost:5000/"
 
-    fun client(): HttpClient = HttpClient(CIO) {
-        install(Logging) {
-            logger = Logger.SIMPLE
-            level = LogLevel.BODY
+    fun client(): HttpClient =
+        HttpClient(CIO) {
+            install(Logging) {
+                logger = Logger.SIMPLE
+                level = LogLevel.BODY
 
-            sanitizeHeader { header -> header == HttpHeaders.Authorization }
+                sanitizeHeader { header -> header == HttpHeaders.Authorization }
+            }
+
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        prettyPrint = true
+                        ignoreUnknownKeys = true
+                        encodeDefaults = true
+                        explicitNulls = true
+                    },
+                )
+            }
+
+            install(DefaultRequest) {
+                url(baseUrl)
+            }
         }
 
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    ignoreUnknownKeys = true
-                    encodeDefaults = true
-                    explicitNulls = true
-                }
-            )
-        }
-
-        install(DefaultRequest) {
-            url(baseUrl)
-        }
-    }
-
-    suspend inline fun<reified T> call(callBack: KtorClient.() -> APIResponse<T>): ApiOperation<T> {
-        return try {
+    suspend inline fun <reified T> call(callBack: KtorClient.() -> APIResponse<T>): ApiOperation<T> =
+        try {
             val body = callBack()
             when (body.status) {
                 HttpStatusCode.InternalServerError.value -> {
@@ -74,30 +75,27 @@ class KtorClient {
             e.log("Network call exception")
             ApiOperation.Failure(error = AppCodes.UnexpectedError)
         }
-    }
 
-    suspend inline fun<reified T> get(
+    suspend inline fun <reified T> get(
         urlString: String,
-        headers: Map<String, String> = emptyMap()
-    ): T {
-        return client()
+        headers: Map<String, String> = emptyMap(),
+    ): T =
+        client()
             .get(urlString = urlString) {
                 headers.forEach { (key, value) ->
                     headers {
                         append(key, value)
                     }
                 }
-            }
-            .body<T>()
-    }
+            }.body<T>()
 
-    suspend inline fun<reified T, reified R> post(
+    suspend inline fun <reified T, reified R> post(
         urlString: String,
         body: T,
         headers: Map<String, String> = emptyMap(),
-        contentType: ContentType = ContentType.Application.Json
-    ): R {
-        return client()
+        contentType: ContentType = ContentType.Application.Json,
+    ): R =
+        client()
             .post(urlString = urlString) {
                 headers.forEach { (key, value) ->
                     headers {
@@ -106,17 +104,15 @@ class KtorClient {
                 }
                 contentType(contentType)
                 setBody(body)
-            }
-            .body<R>()
-    }
+            }.body<R>()
 
     suspend inline fun <reified T, reified R> patch(
         urlString: String,
         body: T,
         headers: Map<String, String> = emptyMap(),
-        contentType: ContentType = ContentType.Application.Json
-    ): R {
-        return client()
+        contentType: ContentType = ContentType.Application.Json,
+    ): R =
+        client()
             .patch(urlString = urlString) {
                 headers.forEach { (key, value) ->
                     headers {
@@ -125,17 +121,15 @@ class KtorClient {
                 }
                 contentType(contentType)
                 setBody(body)
-            }
-            .body<R>()
-    }
+            }.body<R>()
 
     suspend inline fun <reified T, reified R> delete(
         urlString: String,
         body: T,
         headers: Map<String, String> = emptyMap(),
-        contentType: ContentType = ContentType.Application.Json
-    ): R {
-        return client()
+        contentType: ContentType = ContentType.Application.Json,
+    ): R =
+        client()
             .delete(urlString = urlString) {
                 headers.forEach { (key, value) ->
                     headers {
@@ -144,7 +138,5 @@ class KtorClient {
                 }
                 contentType(contentType)
                 setBody(body)
-            }
-            .body<R>()
-    }
+            }.body<R>()
 }

@@ -5,12 +5,10 @@ import kotlinx.datetime.LocalDateTime
 fun Throwable.log(tag: String) =
     println(
         """
-            $tag, 
-            Message: ${this.message}\n
-            Localized Message: ${this.localizedMessage}
-        """.trimIndent()
+        $tag, 
+        Message: ${this.message}\n
+        Localized Message: ${this.localizedMessage}
+        """.trimIndent(),
     )
 
-fun LocalDateTime.formatDate(): String {
-    return "${this.date} ${this.time}"
-}
+fun LocalDateTime.formatDate(): String = "${this.date} ${this.time}"

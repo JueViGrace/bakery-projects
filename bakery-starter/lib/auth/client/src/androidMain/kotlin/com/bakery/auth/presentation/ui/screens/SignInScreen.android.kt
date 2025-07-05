@@ -34,17 +34,16 @@ import com.bakery.core.resources.resources.generated.resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-actual fun SignInScreen(
-    viewModel: SignInViewModel
-) {
+actual fun SignInScreen(viewModel: SignInViewModel) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val onEvent = viewModel::onEvent
     MobileAuthLayout(
         title = {
             AuthTitle(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.3f),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.3f),
                 title = {
                     TextComponent(
                         text = stringResource(Res.string.welcome_back),
@@ -56,25 +55,25 @@ actual fun SignInScreen(
                         fontSize = MaterialTheme.typography.titleLarge.fontSize,
                         fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
                     )
-                }
+                },
             )
         },
         content = {
             Column(
                 modifier = Modifier.fillMaxWidth().weight(0.6f),
                 verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(18.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     UsernameTextField(
                         value = state.username,
                         onValueChange = { newValue ->
                             onEvent(SignInEvents.OnSignInUsernameChanged(newValue))
                         },
-                        errorMessage = state.usernameError?.let { stringResource(it) }
+                        errorMessage = state.usernameError?.let { stringResource(it) },
                     )
 
                     PasswordTextField(
@@ -86,22 +85,23 @@ actual fun SignInScreen(
                         passwordVisibility = state.passwordVisibility,
                         onVisibilityChange = {
                             onEvent(SignInEvents.TogglePasswordVisibility)
-                        }
+                        },
                     )
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     TextComponent(
-                        modifier = Modifier.clickable {
-                            onEvent(SignInEvents.OnNavigateToForgotPassword)
-                        },
+                        modifier =
+                            Modifier.clickable {
+                                onEvent(SignInEvents.OnNavigateToForgotPassword)
+                            },
                         text = stringResource(Res.string.forgot_password),
                         textDecoration = TextDecoration.Underline,
-                        color = MaterialTheme.colorScheme.secondary
+                        color = MaterialTheme.colorScheme.secondary,
                     )
                 }
 
@@ -110,10 +110,10 @@ actual fun SignInScreen(
                     onClick = {
                         onEvent(SignInEvents.OnSignInSubmit)
                     },
-                    enabled = state.signInEnabled
+                    enabled = state.signInEnabled,
                 ) {
                     TextComponent(
-                        text = stringResource(Res.string.log_in)
+                        text = stringResource(Res.string.log_in),
                     )
                 }
 
@@ -122,16 +122,17 @@ actual fun SignInScreen(
                     screenText = "${stringResource(Res.string.sign_up)} ->",
                     onClick = {
                         onEvent(SignInEvents.OnNavigateToSignUp)
-                    }
+                    },
                 )
             }
         },
         footer = {
             AuthFooter(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.1f),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(0.1f),
             )
-        }
+        },
     )
 }

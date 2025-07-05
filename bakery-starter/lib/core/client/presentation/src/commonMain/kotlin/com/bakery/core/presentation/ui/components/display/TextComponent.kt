@@ -23,7 +23,7 @@ fun TextComponent(
     color: Color = LocalContentColor.current,
     textDecoration: TextDecoration = TextDecoration.None,
     softWrap: Boolean = true,
-    overflow: TextOverflow = TextOverflow.Clip
+    overflow: TextOverflow = TextOverflow.Clip,
 ) {
     Text(
         text = text,
@@ -35,6 +35,6 @@ fun TextComponent(
         modifier = modifier,
         textDecoration = textDecoration,
         softWrap = softWrap,
-        overflow = overflow
+        overflow = overflow,
     )
 }

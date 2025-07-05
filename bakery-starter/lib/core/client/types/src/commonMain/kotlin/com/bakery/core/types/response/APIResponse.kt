@@ -15,5 +15,5 @@ data class APIResponse<T>(
     @SerialName("message")
     val message: String? = null,
     @SerialName("time")
-    val time: String = Constants.currentTime
+    val time: String = Constants.currentTime,
 )

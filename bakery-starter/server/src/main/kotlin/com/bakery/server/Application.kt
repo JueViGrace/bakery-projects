@@ -31,11 +31,12 @@ fun Application.module() {
 }
 
 fun setupDotenv() {
-    val dotenv = dotenv {
-        directory = "./src/main/resources"
-        filename = ".env"
-        ignoreIfMissing = true
-    }
+    val dotenv =
+        dotenv {
+            directory = "./src/main/resources"
+            filename = ".env"
+            ignoreIfMissing = true
+        }
 
     dotenv.entries().forEach { entry ->
         System.setProperty(entry.key, entry.value)

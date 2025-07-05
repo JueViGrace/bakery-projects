@@ -1,0 +1,12 @@
+insert:
+INSERT OR REPLACE INTO order_products(
+    order_id,
+    product_id,
+    product_name,
+    total_price,
+    price,
+    discount,
+    quantity,
+    rating
+)
+VALUES ?;

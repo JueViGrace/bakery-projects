@@ -10,15 +10,13 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun BackArrowButton(
-    onClick: () -> Unit
-) {
+fun BackArrowButton(onClick: () -> Unit) {
     IconButton(
-        onClick = onClick
+        onClick = onClick,
     ) {
         IconComponent(
             painter = painterResource(Res.drawable.ic_chevron_left),
-            contentDescription = stringResource(Res.string.go_back)
+            contentDescription = stringResource(Res.string.go_back),
         )
     }
 }

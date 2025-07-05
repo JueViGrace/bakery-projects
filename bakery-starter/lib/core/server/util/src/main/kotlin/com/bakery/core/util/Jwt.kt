@@ -15,7 +15,7 @@ class Jwt(
     private val secret: String,
     private val issuer: String,
     private val audience: String,
-    val realm: String
+    val realm: String,
 ) {
     companion object {
         private const val ACCESS_EXPIRES_IN: String = "3600000ms"
@@ -30,27 +30,38 @@ class Jwt(
             .withIssuer(issuer)
             .build()
 
-    fun createAccessToken(claims: Map<String, String>): String =
-        createJwt(claims, ACCESS_EXPIRES_IN)
+    fun createAccessToken(claims: Map<String, String>): String = createJwt(claims, ACCESS_EXPIRES_IN)
 
-    fun createRefreshToken(claims: Map<String, String>): String =
-        createJwt(claims, REFRESH_EXPIRES_IN)
+    fun createRefreshToken(claims: Map<String, String>): String = createJwt(claims, REFRESH_EXPIRES_IN)
 
-    private fun createJwt(claims: Map<String, String>, expiresIn: String): String {
-        return JWT.create()
+    private fun createJwt(
+        claims: Map<String, String>,
+        expiresIn: String,
+    ): String =
+        JWT
+            .create()
             .withAudience(audience)
             .withIssuer(issuer)
             .withClaim("user_claims", claims)
             .withSubject(claims["user_id"])
-            .withExpiresAt(Clock.System.now().plus(Duration.parse(expiresIn)).toJavaInstant())
-            .sign(Algorithm.HMAC256(secret))
-    }
+            .withExpiresAt(
+                Clock.System
+                    .now()
+                    .plus(Duration.parse(expiresIn))
+                    .toJavaInstant(),
+            ).sign(Algorithm.HMAC256(secret))
 
     fun extractId(credential: JWTCredential): String? =
-        credential.payload.getClaim("user_claims").asMap()["user_id"]?.toString()
+        credential.payload
+            .getClaim("user_claims")
+            .asMap()["user_id"]
+            ?.toString()
 
-    suspend fun validateCredential(credential: JWTCredential, block: suspend Jwt.() -> JWTPrincipal?): JWTPrincipal? {
-        return when {
+    suspend fun validateCredential(
+        credential: JWTCredential,
+        block: suspend Jwt.() -> JWTPrincipal?,
+    ): JWTPrincipal? =
+        when {
             !credential.payload.claims.containsKey("user_claims") -> null
             credential.payload.claims["user_id"]?.isNull == true -> null
             !credential.payload.audience.contains(audience) || credential.payload.audience.size > 1 -> null
@@ -59,7 +70,6 @@ class Jwt(
             credential.payload.expiresAtAsInstant < Clock.System.now().toJavaInstant() -> null
             else -> this.block()
         }
-    }
 
     fun verifyToken(token: String): Token? {
         val decodedToken: DecodedJWT = jwtVerifier.verify(token) ?: return null

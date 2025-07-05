@@ -22,5 +22,5 @@ data class CreateProductDto(
     @SerialName("discount")
     val discount: Double,
     @SerialName("images")
-    val images: List<String>
+    val images: List<String>,
 )

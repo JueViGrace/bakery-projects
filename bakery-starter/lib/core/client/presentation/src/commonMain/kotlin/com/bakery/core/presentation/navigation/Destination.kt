@@ -37,13 +37,17 @@ sealed interface Destination {
     data object Users : Destination
 
     @Serializable
-    data class UserDetails(val id: String) : Destination
+    data class UserDetails(
+        val id: String,
+    ) : Destination
 
     @Serializable
     data object Products : Destination
 
     @Serializable
-    data class ProductDetails(val id: String) : Destination
+    data class ProductDetails(
+        val id: String,
+    ) : Destination
 
     @Serializable
     data object Cart : Destination
@@ -55,5 +59,7 @@ sealed interface Destination {
     data object Orders : Destination
 
     @Serializable
-    data class OrderDetails(val id: String) : Destination
+    data class OrderDetails(
+        val id: String,
+    ) : Destination
 }

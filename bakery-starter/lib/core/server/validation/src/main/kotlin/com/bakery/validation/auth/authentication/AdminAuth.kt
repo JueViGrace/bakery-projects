@@ -16,7 +16,7 @@ import io.ktor.server.response.respond
 fun AuthenticationConfig.adminAuth(
     name: JwtAuthName,
     jwt: Jwt,
-    dbHelper: DbHelper
+    dbHelper: DbHelper,
 ) {
     jwt(name = name.value) {
         realm = jwt.realm
@@ -25,8 +25,9 @@ fun AuthenticationConfig.adminAuth(
 
         validate { credential ->
             jwt.validateCredential(credential) {
-                val user = getUserId(credential, dbHelper)
-                    ?: return@validateCredential null
+                val user =
+                    getUserId(credential, dbHelper)
+                        ?: return@validateCredential null
 
                 if (user.role == Role.ADMIN) {
                     JWTPrincipal(credential.payload)
@@ -37,9 +38,10 @@ fun AuthenticationConfig.adminAuth(
         challenge { _, _ ->
             call.respond(
                 status = HttpStatusCode.Forbidden,
-                message = ServerResponse.forbidden(
-                    message = "Forbidden resource"
-                ) as APIResponse.Failure
+                message =
+                    ServerResponse.forbidden(
+                        message = "Forbidden resource",
+                    ) as APIResponse.Failure,
             )
         }
     }

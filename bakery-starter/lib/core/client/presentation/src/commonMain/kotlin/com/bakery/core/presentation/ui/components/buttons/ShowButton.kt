@@ -18,23 +18,24 @@ import org.jetbrains.compose.resources.stringResource
 fun ShowButton(
     modifier: Modifier = Modifier,
     state: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
         modifier = modifier,
-        onClick = onClick
+        onClick = onClick,
     ) {
         AnimatedContent(
             targetState = state,
         ) {
             IconComponent(
                 modifier = Modifier.size(24.dp),
-                painter = if (it) {
-                    painterResource(Res.drawable.ic_caret_down)
-                } else {
-                    painterResource(Res.drawable.ic_caret_up)
-                },
-                contentDescription = stringResource(Res.string.show)
+                painter =
+                    if (it) {
+                        painterResource(Res.drawable.ic_caret_down)
+                    } else {
+                        painterResource(Res.drawable.ic_caret_up)
+                    },
+                contentDescription = stringResource(Res.string.show),
             )
         }
     }

@@ -7,13 +7,13 @@ import com.bakery.core.presentation.ui.components.display.LetterComponent
 @Composable
 fun AccountButton(
     letter: String = "C",
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
-        onClick = onClick
+        onClick = onClick,
     ) {
         LetterComponent(
-            letter = letter
+            letter = letter,
         )
     }
 }
