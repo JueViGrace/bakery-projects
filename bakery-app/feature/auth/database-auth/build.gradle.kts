@@ -17,7 +17,7 @@ kotlin {
              * Projects
              */
 
-            api(projects.core.database)
+            implementation(projects.core.database)
         }
     }
 }

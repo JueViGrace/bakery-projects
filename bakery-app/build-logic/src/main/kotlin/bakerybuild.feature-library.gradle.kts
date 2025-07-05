@@ -17,6 +17,12 @@ kotlin {
              * Projects
              */
 
+            // Database
+            api(project(":core:database"))
+
+            // Network
+            api(project(":core:network"))
+
             // Resources
             api(project(":core:resources"))
 

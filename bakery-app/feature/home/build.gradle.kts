@@ -1,6 +1,5 @@
 plugins {
-    id("bakerybuild.library-convention")
-    alias(libs.plugins.kotlin.serialization)
+    id("bakerybuild.feature-library")
 }
 
 kotlin {
@@ -14,11 +13,13 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(projects.core.network)
+            /*
+             * Projects
+             */
         }
     }
 }
 
 android {
-    namespace = "com.bakery.auth.network"
+    namespace = "com.bakery.home"
 }

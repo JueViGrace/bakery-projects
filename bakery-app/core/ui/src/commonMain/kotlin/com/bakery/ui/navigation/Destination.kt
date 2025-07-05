@@ -40,6 +40,12 @@ sealed interface Destination {
         sealed interface TabGraph : HomeGraph {
             @Serializable
             data object Graph : TabGraph
+
+            @Serializable
+            sealed interface BottomGraph : TabGraph {
+                @Serializable
+                data object Dashboard : BottomGraph
+            }
         }
     }
 }
@@ -55,3 +61,5 @@ typealias ForgotPasswordRoute = Destination.AuthGraph.ForgotPassword
 typealias HomeGraphRoute = Destination.HomeGraph.Graph
 typealias HomeRoute = Destination.HomeGraph.Home
 typealias HomeTabGraphRoute = Destination.HomeGraph.TabGraph.Graph
+
+typealias DashboardRoute = Destination.HomeGraph.TabGraph.BottomGraph.Dashboard

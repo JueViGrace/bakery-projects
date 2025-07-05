@@ -63,6 +63,11 @@ include(
     ":feature:auth:network-auth",
 )
 
+// home library
+include(
+    ":feature:home"
+)
+
 // order library
 include(
     ":feature:order",
