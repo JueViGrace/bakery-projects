@@ -19,6 +19,31 @@ kotlin {
         }
 
         commonMain.dependencies {
+            /*
+             * Projects
+             */
+
+            // Database
+            implementation(project(":core:database"))
+
+            // Network
+            implementation(project(":core:network"))
+
+            // Resources
+            implementation(project(":core:resources"))
+
+            // Types
+            implementation(project(":core:types"))
+
+            // UI
+            implementation(project(":core:ui"))
+
+            // Util
+            implementation(project(":core:util"))
+            /*
+             * Dependencies
+             */
+
             // Koin
             implementation(libs.koin.core)
             implementation(libs.koin.compose)

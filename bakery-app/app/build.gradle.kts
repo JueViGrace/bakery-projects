@@ -31,11 +31,8 @@ kotlin {
             // Auth
             implementation(projects.feature.auth)
 
-            // Database
-            implementation(projects.core.database)
-
-            // Network
-            implementation(projects.core.network)
+            // Home
+            implementation(projects.feature.home)
 
             // Order
             implementation(projects.feature.order)
@@ -43,20 +40,8 @@ kotlin {
             // Product
             implementation(projects.feature.product)
 
-            // Resources
-            implementation(projects.core.resources)
-
-            // Types
-            implementation(projects.core.types)
-
-            // UI
-            implementation(projects.core.ui)
-
             // User
             implementation(projects.feature.user)
-
-            // Util
-            implementation(projects.core.util)
         }
 
         desktopMain.dependencies {

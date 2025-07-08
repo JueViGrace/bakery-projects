@@ -6,9 +6,6 @@ import com.bakery.ui.layout.bars.NavBarState
 data class HomeState(
     val user: User? = null,
 
-    // Top nav logic
-    val topBarState: NavBarState = NavBarState(),
-
     // Bottom nav
     val bottomBarState: NavBarState = NavBarState(),
 

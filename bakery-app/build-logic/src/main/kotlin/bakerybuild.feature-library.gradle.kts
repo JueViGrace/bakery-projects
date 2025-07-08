@@ -18,22 +18,22 @@ kotlin {
              */
 
             // Database
-            api(project(":core:database"))
+            implementation(project(":core:database"))
 
             // Network
-            api(project(":core:network"))
+            implementation(project(":core:network"))
 
             // Resources
-            api(project(":core:resources"))
+            implementation(project(":core:resources"))
 
             // Types
-            api(project(":core:types"))
+            implementation(project(":core:types"))
 
             // UI
-            api(project(":core:ui"))
+            implementation(project(":core:ui"))
 
             // Util
-            api(project(":core:util"))
+            implementation(project(":core:util"))
 
             /*
              * Dependencies

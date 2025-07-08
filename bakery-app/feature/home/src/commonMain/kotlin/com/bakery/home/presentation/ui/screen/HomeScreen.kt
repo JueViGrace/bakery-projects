@@ -9,6 +9,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.bakery.home.presentation.state.HomeState
 import com.bakery.home.presentation.ui.components.layout.HomeScaffold
+import com.bakery.home.presentation.viewmodel.HomeViewModel
 import com.bakery.ui.components.containers.ScaffoldContainer
 import com.bakery.ui.components.navigation.delayedComposable
 import com.bakery.ui.components.observable.ObserveAsEvents
@@ -18,7 +19,6 @@ import com.bakery.ui.navigation.NavigationAction
 import com.bakery.ui.navigation.navigator.LocalTabNavigator
 import com.bakery.ui.navigation.tab.TabNavigator
 import org.koin.compose.viewmodel.koinViewModel
-import org.rotau.presencia.home.presentation.viewmodel.HomeViewModel
 
 @Composable
 fun HomeScreen(

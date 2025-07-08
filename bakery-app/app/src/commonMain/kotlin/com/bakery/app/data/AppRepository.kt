@@ -1,7 +1,7 @@
 package com.bakery.app.data
 
 import com.bakery.auth.database.helper.AuthHelper
-import com.bakery.auth.domain.model.mappers.database.toSession
+import com.bakery.auth.types.mappers.database.toSession
 import com.bakery.types.auth.Session
 import com.bakery.types.data.Repository
 import com.bakery.types.state.RequestState

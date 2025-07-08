@@ -9,7 +9,7 @@ import com.bakery.ui.layout.bars.NavBarState
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeTopBar(
-    state: NavBarState,
+    state: NavBarState = NavBarState(),
     navigationIcon: @Composable () -> Unit = {},
     title: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},

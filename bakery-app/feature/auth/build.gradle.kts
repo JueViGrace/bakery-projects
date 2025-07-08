@@ -17,11 +17,20 @@ kotlin {
              * Projects
              */
 
-            // Database
-            api(projects.feature.auth.databaseAuth)
+            // Forgot
+            implementation(projects.feature.auth.forgot)
 
-            // Network
-            implementation(projects.feature.auth.networkAuth)
+            // Onboarding
+            implementation(projects.feature.auth.onboarding)
+
+            // Sign in
+            implementation(projects.feature.auth.signIn)
+
+            // Sign up
+            implementation(projects.feature.auth.signUp)
+
+            // Types
+            api(projects.feature.auth.typesAuth)
         }
     }
 }

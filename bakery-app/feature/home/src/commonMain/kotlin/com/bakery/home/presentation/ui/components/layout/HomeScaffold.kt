@@ -41,7 +41,6 @@ fun HomeScaffold(
     DefaultScaffold(
         topBar = {
             HomeTopBar(
-                state = state.topBarState,
                 navigationIcon = {
                     IconButton(
                         onClick = {

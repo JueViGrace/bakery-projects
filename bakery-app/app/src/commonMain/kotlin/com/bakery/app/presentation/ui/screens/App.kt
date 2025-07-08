@@ -7,6 +7,7 @@ import com.bakery.app.presentation.ui.components.navigation.Navigation
 import com.bakery.app.presentation.ui.screens.splash.SplashScreen
 import com.bakery.app.presentation.viewmodel.AppViewModel
 import com.bakery.auth.presentation.ui.components.navigation.graph.authGraph
+import com.bakery.home.presentation.ui.components.navigation.graph.homeGraph
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.compose_multiplatform
 import com.bakery.ui.navigation.AuthGraphRoute
@@ -36,6 +37,6 @@ fun App() {
             )
         }
         authGraph()
-//        homeGraph()
+        homeGraph()
     }
 }

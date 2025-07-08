@@ -59,13 +59,18 @@ include(
 // auth library
 include(
     ":feature:auth",
+    ":feature:auth:forgot",
     ":feature:auth:database-auth",
     ":feature:auth:network-auth",
+    ":feature:auth:onboarding",
+    ":feature:auth:sign-in",
+    ":feature:auth:sign-up",
+    ":feature:auth:types-auth",
 )
 
 // home library
 include(
-    ":feature:home"
+    ":feature:home",
 )
 
 // order library
