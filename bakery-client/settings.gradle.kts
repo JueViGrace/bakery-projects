@@ -38,10 +38,10 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
-rootProject.name = "bakery-app"
+rootProject.name = "bakery-client"
 
 include(
-    ":app",
+    ":apps:composeApp",
 )
 
 // core library
