@@ -16,19 +16,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SignUpScreen(
-    viewModel: SignUpViewModel = koinViewModel()
-) {
+fun SignUpScreen(viewModel: SignUpViewModel = koinViewModel()) {
     val state: SignUpState by viewModel.state.collectAsStateWithLifecycle()
     SignUpContent(
-        state = state
+        state = state,
     )
 }
 
 @Composable
-fun SignUpContent(
-    state: SignUpState,
-) {
+fun SignUpContent(state: SignUpState) {
     val navigator = LocalNavigator.current
     val scope = rememberCoroutineScope()
     ScaffoldContainer {
@@ -37,10 +33,10 @@ fun SignUpContent(
                 scope.launch {
                     navigator.navigateUp()
                 }
-            }
+            },
         ) {
             Text(
-                text = "Go back"
+                text = "Go back",
             )
         }
     }
@@ -51,7 +47,7 @@ fun SignUpContent(
 fun SignUpScreenPreview() {
     AppContainer {
         SignUpContent(
-            state = SignUpState()
+            state = SignUpState(),
         )
     }
 }

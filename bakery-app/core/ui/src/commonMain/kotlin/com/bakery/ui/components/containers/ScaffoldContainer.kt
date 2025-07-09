@@ -6,7 +6,7 @@ import com.bakery.ui.components.layout.scaffold.DefaultScaffold
 
 typealias ScaffoldType = @Composable (
     snackbarHost: @Composable () -> Unit,
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) -> Unit
 
 @Composable
@@ -14,12 +14,8 @@ expect fun ScaffoldContainer(
     scaffold: ScaffoldType = { snackbarHost, content ->
         DefaultScaffold(
             snackbarHost = snackbarHost,
-            content = content
+            content = content,
         )
     },
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 )
-
-
-
-

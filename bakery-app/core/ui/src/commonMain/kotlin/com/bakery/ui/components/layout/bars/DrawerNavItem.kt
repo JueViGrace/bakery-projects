@@ -8,19 +8,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DrawerNavItem(
-    modifier: Modifier,
-    title: String,
-    icon: @Composable () -> Unit,
-    selected: Boolean,
-    onClick: () -> Unit
-) {
+fun DrawerNavItem(modifier: Modifier, title: String, icon: @Composable () -> Unit, selected: Boolean, onClick: () -> Unit) {
     NavigationDrawerItem(
         modifier = modifier,
         selected = selected,
         onClick = onClick,
         icon = icon,
         label = { Text(text = title) },
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
     )
 }

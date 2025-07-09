@@ -33,7 +33,7 @@ fun App() {
             }
 
             SplashScreen(
-                painter = painterResource(Res.drawable.compose_multiplatform)
+                painter = painterResource(Res.drawable.compose_multiplatform),
             )
         }
         authGraph()

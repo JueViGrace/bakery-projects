@@ -12,7 +12,7 @@ import com.bakery.ui.components.display.RowDisplay
 import com.bakery.ui.model.TableCell
 
 @Composable
-fun<H, T> TableRow(
+fun <H, T> TableRow(
     cells: Map<H, TableCell<T>>,
     modifier: Modifier = Modifier,
     isHeader: Boolean = false,
@@ -26,10 +26,10 @@ fun<H, T> TableRow(
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
                     Color.Unspecified
-                }
+                },
             ),
         contentPadding = contentPadding,
-        horizontalArrangement = Arrangement.SpaceAround
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
         cells.forEach { cell ->
             cellContent(cell.key, cell.value)
@@ -38,7 +38,7 @@ fun<H, T> TableRow(
 }
 
 @Composable
-fun<H, T> TableRow(
+fun <H, T> TableRow(
     cells: Map<H, TableCell<T>>,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -53,11 +53,11 @@ fun<H, T> TableRow(
                     MaterialTheme.colorScheme.primaryContainer
                 } else {
                     Color.Unspecified
-                }
+                },
             )
             .then(modifier),
         onClick = onClick,
-        contentPadding = contentPadding
+        contentPadding = contentPadding,
     ) {
         cells.forEach { cell ->
             cellContent(cell.key, cell.value)

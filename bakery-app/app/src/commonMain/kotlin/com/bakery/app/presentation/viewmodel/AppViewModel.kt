@@ -10,9 +10,9 @@ import com.bakery.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class AppViewModel(
-    private val repository: AppRepository,
-) : BaseViewModel, ViewModel() {
+class AppViewModel(private val repository: AppRepository) :
+    ViewModel(),
+    BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 
     fun checkSession() {
@@ -24,7 +24,7 @@ class AppViewModel(
                         inclusive = true
                     }
                     launchSingleTop = true
-                }
+                },
             )
         }
     }

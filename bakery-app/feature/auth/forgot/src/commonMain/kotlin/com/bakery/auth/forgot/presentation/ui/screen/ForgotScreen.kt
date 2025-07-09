@@ -5,8 +5,5 @@ import com.bakery.auth.forgot.presentation.viewmodel.ForgotViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ForgotScreen(
-    viewModel: ForgotViewModel = koinViewModel()
-){
-
+fun ForgotScreen(viewModel: ForgotViewModel = koinViewModel()) {
 }

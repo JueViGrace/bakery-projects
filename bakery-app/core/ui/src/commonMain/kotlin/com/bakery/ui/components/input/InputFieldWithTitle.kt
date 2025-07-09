@@ -66,7 +66,7 @@ fun InputFieldWithTitle(
                 {
                     IconComponent(
                         painter = icon,
-                        contentDescription = title
+                        contentDescription = title,
                     )
                 }
             },
@@ -74,7 +74,7 @@ fun InputFieldWithTitle(
                 {
                     IconComponent(
                         painter = icon,
-                        contentDescription = title
+                        contentDescription = title,
                     )
                 }
             },
@@ -107,7 +107,7 @@ fun InputFieldWithTitle(
             keyboardActions = keyboardActions,
             interactionSource = interactionSource,
             shape = shape,
-            colors = colors
+            colors = colors,
 
         )
     }

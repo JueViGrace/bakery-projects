@@ -18,10 +18,7 @@ import com.bakery.ui.window.LocalWindowUtils
 import com.bakery.ui.window.WindowUtils
 
 @Composable
-fun AppContainer(
-    navController: NavHostController = rememberNavController(),
-    content: @Composable () -> Unit
-) {
+fun AppContainer(navController: NavHostController = rememberNavController(), content: @Composable () -> Unit) {
     ProvidersContainer(
         LocalMessages provides Messages.instance,
         LocalNavigator provides Navigator.instance,

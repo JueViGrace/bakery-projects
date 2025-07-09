@@ -19,46 +19,42 @@ import kotlinx.serialization.json.Json
 * Ktor client Android implementation.
 * @param baseUrl Base url for the client.
 * */
-actual class KtorClientImpl actual constructor(
-    actual override val baseUrl: String,
-) : KtorClient {
-    actual override fun client(baseUrl: String?): HttpClient {
-        return HttpClient(OkHttp) {
-            install(Logging) {
-                logger = Logger.ANDROID
-                level = LogLevel.ALL
-            }
+actual class KtorClientImpl actual constructor(actual override val baseUrl: String) : KtorClient {
+    actual override fun client(baseUrl: String?): HttpClient = HttpClient(OkHttp) {
+        install(Logging) {
+            logger = Logger.ANDROID
+            level = LogLevel.ALL
+        }
 
-            install(HttpTimeout) {
-                requestTimeoutMillis = KtorClient.TIMEOUT
-                connectTimeoutMillis = KtorClient.TIMEOUT
-                socketTimeoutMillis = KtorClient.TIMEOUT
-            }
+        install(HttpTimeout) {
+            requestTimeoutMillis = KtorClient.TIMEOUT
+            connectTimeoutMillis = KtorClient.TIMEOUT
+            socketTimeoutMillis = KtorClient.TIMEOUT
+        }
 
-            install(ResponseObserver) {
-                onResponse { response ->
-                    val tag = this::class.simpleName ?: "KtorClientImpl"
-                    Logs.info(tag = tag, msg = "HTTP response: $response")
-                    Logs.info(tag = tag, msg = "HTTP body: ${response.body<Any>()}")
-                    Logs.info(tag = tag, msg = "HTTP status: ${response.status.value}")
-                    Logs.info(tag = tag, msg = "HTTP description: ${response.status.description}")
-                }
+        install(ResponseObserver) {
+            onResponse { response ->
+                val tag = this::class.simpleName ?: "KtorClientImpl"
+                Logs.info(tag = tag, msg = "HTTP response: $response")
+                Logs.info(tag = tag, msg = "HTTP body: ${response.body<Any>()}")
+                Logs.info(tag = tag, msg = "HTTP status: ${response.status.value}")
+                Logs.info(tag = tag, msg = "HTTP description: ${response.status.description}")
             }
+        }
 
-            install(ContentNegotiation) {
-                json(
-                    Json {
-                        prettyPrint = true
-                        ignoreUnknownKeys = true
-                        encodeDefaults = true
-                        explicitNulls = true
-                    }
-                )
-            }
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    prettyPrint = true
+                    ignoreUnknownKeys = true
+                    encodeDefaults = true
+                    explicitNulls = true
+                },
+            )
+        }
 
-            defaultRequest {
-                url(baseUrl ?: this@KtorClientImpl.baseUrl)
-            }
+        defaultRequest {
+            url(baseUrl ?: this@KtorClientImpl.baseUrl)
         }
     }
 }

@@ -13,21 +13,19 @@ interface AppRepository : Repository {
     suspend fun endSession()
 }
 
-class DefaultAppRepository(
-    private val authHelper: AuthHelper,
-) : AppRepository {
+class DefaultAppRepository(private val authHelper: AuthHelper) : AppRepository {
     override val session: Flow<RequestState<Session>> = startFlow {
         val session: Session = authHelper.getSession()?.toSession()
             ?: return@startFlow emit(
                 RequestState.Error(
-                    error = "Session not found"
-                )
+                    error = "Session not found",
+                ),
             )
 
         emit(
             RequestState.Success(
-                data = session
-            )
+                data = session,
+            ),
         )
     }
 

@@ -43,7 +43,7 @@ fun RowScope.DigitContainer(
             else -> MaterialTheme.colorScheme.outline
         },
         label = "Border Color",
-        animationSpec = tween(durationMillis = 200)
+        animationSpec = tween(durationMillis = 200),
     )
 
     val animatedBorderWidth by animateDpAsState(
@@ -53,7 +53,7 @@ fun RowScope.DigitContainer(
             else -> 1.dp
         },
         label = "BorderWidth",
-        animationSpec = tween(durationMillis = 200)
+        animationSpec = tween(durationMillis = 200),
     )
 
     Box(
@@ -64,14 +64,14 @@ fun RowScope.DigitContainer(
             .border(
                 width = animatedBorderWidth,
                 color = animatedColor,
-                shape = RoundedCornerShape(14.dp)
+                shape = RoundedCornerShape(14.dp),
             )
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(14.dp)
+                shape = RoundedCornerShape(14.dp),
             )
             .padding(2.dp),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         if (isMasked && digit.isNotBlank()) {
             mask?.invoke()
@@ -80,7 +80,7 @@ fun RowScope.DigitContainer(
                         .align(Alignment.Center)
                         .size(8.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onBackground)
+                        .background(MaterialTheme.colorScheme.onBackground),
                 )
         } else {
             Text(

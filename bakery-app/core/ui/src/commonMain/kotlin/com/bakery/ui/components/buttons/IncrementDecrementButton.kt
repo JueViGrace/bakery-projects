@@ -26,12 +26,12 @@ fun IncrementDecrementButton(
     onDecrement: () -> Unit,
     addEnabled: Boolean = true,
     subtractEnabled: Boolean = true,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(2.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Box(
             modifier = Modifier
@@ -39,11 +39,11 @@ fun IncrementDecrementButton(
                     enabled = addEnabled,
                     onClick = onIncrement,
                     onClickLabel = stringResource(Res.string.add),
-                    role = Role.Button
+                    role = Role.Button,
                 )
                 .weight(1f)
                 .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp)),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             IconComponent(
                 painter = painterResource(Res.drawable.ic_chevron_up),
@@ -60,7 +60,7 @@ fun IncrementDecrementButton(
                 )
                 .weight(1f)
                 .clip(RoundedCornerShape(bottomStart = 8.dp, bottomEnd = 8.dp)),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             IconComponent(
                 painter = painterResource(Res.drawable.ic_chevron_down),

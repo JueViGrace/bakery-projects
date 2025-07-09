@@ -20,9 +20,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(
-    private val repository: HomeRepository
-) : BaseViewModel, ViewModel() {
+class HomeViewModel(private val repository: HomeRepository) :
+    ViewModel(),
+    BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 
     private val bottomBarState: MutableStateFlow<NavBarState> = MutableStateFlow(NavBarState())
@@ -30,7 +30,7 @@ class HomeViewModel(
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = combine(
         _state,
-        bottomBarState
+        bottomBarState,
     ) { state, bottomState ->
         state.copy(
             bottomBarState = bottomState,
@@ -38,7 +38,7 @@ class HomeViewModel(
     }.stateIn(
         scope,
         SharingStarted.WhileSubscribed(5000),
-        _state.value
+        _state.value,
     )
 
     fun onEvent(event: HomeEvents) {
@@ -66,10 +66,10 @@ class HomeViewModel(
                                         inclusive = false
                                     }
                                     launchSingleTop = true
-                                }
+                                },
                             )
                         }
-                    }
+                    },
                 )
             }
             NavBars.SideBar -> {}
@@ -77,11 +77,7 @@ class HomeViewModel(
         }
     }
 
-    private fun updateBarState(
-        barState: MutableStateFlow<NavBarState>,
-        index: Int,
-        onUpdated: (destination: Tab) -> Unit = {}
-    ) {
+    private fun updateBarState(barState: MutableStateFlow<NavBarState>, index: Int, onUpdated: (destination: Tab) -> Unit = {}) {
         val tab: Tab = barState.value.tabs[index]
         if (barState.value.selectedTab == tab) return
         barState.update { state ->
@@ -96,7 +92,7 @@ class HomeViewModel(
     private fun showAccount() {
         _state.update { state ->
             state.copy(
-                showAccount = !state.showAccount
+                showAccount = !state.showAccount,
             )
         }
     }
@@ -104,7 +100,7 @@ class HomeViewModel(
     private fun showNotifications() {
         _state.update { state ->
             state.copy(
-                showNotifications = !state.showNotifications
+                showNotifications = !state.showNotifications,
             )
         }
     }
@@ -112,7 +108,7 @@ class HomeViewModel(
     private fun toggleMoreCategories() {
         _state.update { state ->
             state.copy(
-                showMoreCategories = !state.showMoreCategories
+                showMoreCategories = !state.showMoreCategories,
             )
         }
     }
@@ -120,7 +116,7 @@ class HomeViewModel(
     private fun toggleSearch() {
         _state.update { state ->
             state.copy(
-                showSearch = !state.showSearch
+                showSearch = !state.showSearch,
             )
         }
     }

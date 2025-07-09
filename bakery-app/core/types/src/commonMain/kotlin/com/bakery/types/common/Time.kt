@@ -32,13 +32,9 @@ object Time {
         second()
     }
 
-    fun LocalDateTime.formatTime(): String {
-        return defaultTimeFormat.format(time)
-    }
+    fun LocalDateTime.formatTime(): String = defaultTimeFormat.format(time)
 
-    fun LocalTime.formatTime(): String {
-        return defaultTimeFormat.format(this)
-    }
+    fun LocalTime.formatTime(): String = defaultTimeFormat.format(this)
 
     fun Long.parseDateToString(format: Formats = Formats.DATE): String {
         val datetime: LocalDateTime = Instant

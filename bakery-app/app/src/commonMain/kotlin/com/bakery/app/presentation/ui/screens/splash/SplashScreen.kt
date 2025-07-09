@@ -23,9 +23,7 @@ import com.bakery.ui.components.display.ImageComponent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SplashScreen(
-    painter: Painter
-) {
+fun SplashScreen(painter: Painter) {
     val infiniteTransition: InfiniteTransition = rememberInfiniteTransition()
     val scale: Float by infiniteTransition.animateFloat(
         initialValue = 0.95f,
@@ -33,21 +31,21 @@ fun SplashScreen(
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 700),
             repeatMode = RepeatMode.Restart,
-        )
+        ),
     )
     Box(
         modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Box(
-            modifier = Modifier.scale(scale)
+            modifier = Modifier.scale(scale),
         ) {
             ImageComponent(
                 modifier = Modifier
                     .fillMaxWidth(0.5f)
                     .padding(4.dp),
                 painter = painter,
-                contentDescription = stringResource(Res.string.logo)
+                contentDescription = stringResource(Res.string.logo),
             )
         }
     }

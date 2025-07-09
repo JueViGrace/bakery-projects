@@ -5,11 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 
 @Composable
-actual fun AppTheme(
-    darkTheme: Boolean,
-    dynamicColor: Boolean,
-    content: @Composable (() -> Unit)
-) {
+actual fun AppTheme(darkTheme: Boolean, dynamicColor: Boolean, content: @Composable (() -> Unit)) {
     val colorScheme = when (isSystemInDarkTheme()) {
         true -> darkScheme
         false -> lightScheme
@@ -18,6 +14,6 @@ actual fun AppTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
-        content = content
+        content = content,
     )
 }

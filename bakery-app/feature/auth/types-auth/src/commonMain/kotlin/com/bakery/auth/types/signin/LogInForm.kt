@@ -8,9 +8,8 @@ data class LogInForm(
     val shouldShowUsernameError: Boolean = false,
     val shouldShowPasswordError: Boolean = false,
 ) {
-    fun toDto(): LogInDto =
-        LogInDto(
-            username = username,
-            password = password,
-        )
+    fun toDto(): LogInDto = LogInDto(
+        username = username,
+        password = password,
+    )
 }

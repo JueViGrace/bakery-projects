@@ -31,7 +31,7 @@ fun SectionTitle(
     textStyle: TextStyle = Fonts.mediumTextStyle.copy(fontWeight = FontWeight.Bold),
     titlePadding: PaddingValues = PaddingValues(0.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier.padding(contentPadding),
@@ -40,7 +40,7 @@ fun SectionTitle(
     ) {
         Box(
             modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.CenterStart
+            contentAlignment = Alignment.CenterStart,
         ) {
             RowDisplay(
                 modifier = Modifier.clip(RoundedCornerShape(16)),
@@ -50,16 +50,16 @@ fun SectionTitle(
                     Text(
                         text = title,
                         style = textStyle,
-                        maxLines = 1
+                        maxLines = 1,
                     )
                 },
                 trailingContent = {
                     IconComponent(
                         painter = painterResource(Res.drawable.ic_arrow_right),
-                        contentDescription = "Go to quick sign in"
+                        contentDescription = "Go to quick sign in",
                     )
                 },
-                onClick = onTitleClick
+                onClick = onTitleClick,
             )
         }
         content()
@@ -73,7 +73,7 @@ fun SectionTitle(
     textStyle: TextStyle = Fonts.mediumTextStyle.copy(fontWeight = FontWeight.Bold),
     titlePadding: PaddingValues = PaddingValues(0.dp),
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
         modifier = modifier.padding(contentPadding),
@@ -88,7 +88,7 @@ fun SectionTitle(
                 Text(
                     text = title,
                     style = textStyle,
-                    maxLines = 1
+                    maxLines = 1,
                 )
             },
         )

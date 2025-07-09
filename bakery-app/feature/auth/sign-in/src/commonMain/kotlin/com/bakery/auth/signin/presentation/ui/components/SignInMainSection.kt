@@ -37,16 +37,16 @@ fun SignInMainSection(
     LazyColumn(
         modifier = modifier,
         verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         item {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     val sizeModifier = when (windowUtils.getScreenSize()) {
                         ScreenSize.Compact -> {
@@ -55,7 +55,7 @@ fun SignInMainSection(
                                     minWidth = 100.dp,
                                     minHeight = 100.dp,
                                     maxWidth = 200.dp,
-                                    maxHeight = 200.dp
+                                    maxHeight = 200.dp,
                                 )
                             } else {
                                 Modifier.size(200.dp)
@@ -87,7 +87,7 @@ fun SignInMainSection(
 
                 LogInFormSection(
                     state = state,
-                    onEvent = onEvent
+                    onEvent = onEvent,
                 )
             }
         }

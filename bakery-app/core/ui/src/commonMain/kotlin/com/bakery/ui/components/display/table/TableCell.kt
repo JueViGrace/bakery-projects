@@ -12,23 +12,23 @@ import androidx.compose.ui.text.style.TextAlign
 import com.bakery.ui.Fonts
 
 @Composable
-fun<T> TableCell(
+fun <T> TableCell(
     modifier: Modifier = Modifier,
     value: T,
     color: Color = LocalContentColor.current,
     style: TextStyle = Fonts.smallTextStyle,
-    textAlign: TextAlign = TextAlign.Start
+    textAlign: TextAlign = TextAlign.Start,
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "$value",
             maxLines = 1,
             style = style,
             textAlign = textAlign,
-            color = color
+            color = color,
         )
     }
 }

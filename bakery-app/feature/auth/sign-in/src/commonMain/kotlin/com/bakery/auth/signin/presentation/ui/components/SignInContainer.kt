@@ -21,11 +21,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SignInContainer(
-    modifier: Modifier = Modifier,
-    state: SignInState,
-    onEvent: (SignInEvents) -> Unit
-) {
+fun SignInContainer(modifier: Modifier = Modifier, state: SignInState, onEvent: (SignInEvents) -> Unit) {
     val windowUtils: WindowUtils = LocalWindowUtils.current
 
     when (windowUtils.isWideLayout()) {
@@ -33,7 +29,7 @@ fun SignInContainer(
             SignInLandscapeLayout(
                 modifier = modifier,
                 state = state,
-                onEvent = onEvent
+                onEvent = onEvent,
             )
         }
 
@@ -65,9 +61,9 @@ fun SignInContainer(
                             Text(
                                 text = stringResource(Res.string.go_to_sign_up),
                                 style = Fonts.smallTextStyle,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
                             )
-                        }
+                        },
                     )
                 },
             )

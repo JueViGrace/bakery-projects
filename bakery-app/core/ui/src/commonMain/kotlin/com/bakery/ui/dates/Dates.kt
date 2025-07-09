@@ -24,10 +24,7 @@ object Dates {
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
-    fun rangeSelectableDates(
-        isInitialDate: Boolean = false,
-        isTargetDate: Boolean = false,
-    ): SelectableDates = object : SelectableDates {
+    fun rangeSelectableDates(isInitialDate: Boolean = false, isTargetDate: Boolean = false): SelectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
             val currentTime: LocalDateTime = Clock.System.now().toLocalDateTime(TimeZone.UTC)
             val utcTime: LocalDateTime = Instant.fromEpochMilliseconds(utcTimeMillis).toLocalDateTime(TimeZone.UTC)
@@ -44,8 +41,6 @@ object Dates {
             }
         }
 
-        override fun isSelectableYear(year: Int): Boolean {
-            return true
-        }
+        override fun isSelectableYear(year: Int): Boolean = true
     }
 }

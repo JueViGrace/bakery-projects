@@ -13,9 +13,7 @@ import com.bakery.order.presentation.viewmodel.OrderDetailsViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun OrderDetailsScreen(
-    viewModel: OrderDetailsViewModel = koinViewModel()
-) {
+fun OrderDetailsScreen(viewModel: OrderDetailsViewModel = koinViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
     Column(

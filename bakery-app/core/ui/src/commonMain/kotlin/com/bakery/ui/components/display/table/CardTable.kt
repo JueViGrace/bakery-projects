@@ -13,7 +13,7 @@ import com.bakery.ui.model.TableRow
 
 // todo: change row display by column display?
 @Composable
-fun<H, T> CardTable(
+fun <H, T> CardTable(
     data: TableData<H, T>,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -31,13 +31,13 @@ fun<H, T> CardTable(
             contentPadding = contentPadding,
             cellContent = { type, cell ->
                 cellContent(row.isHeader, type, cell)
-            }
+            },
         )
     }
 }
 
 @Composable
-fun<H, T> CardTable(
+fun <H, T> CardTable(
     data: TableData<H, T>,
     onRowClick: (item: TableRow<H, T>) -> Unit,
     modifier: Modifier = Modifier,
@@ -59,13 +59,13 @@ fun<H, T> CardTable(
             },
             cellContent = { type, cell ->
                 cellContent(row.isHeader, type, cell)
-            }
+            },
         )
     }
 }
 
 @Composable
-fun<H, T> CardTableIndexed(
+fun <H, T> CardTableIndexed(
     data: TableData<H, T>,
     onRowClick: (index: Int, item: TableRow<H, T>) -> Unit,
     modifier: Modifier = Modifier,
@@ -88,7 +88,7 @@ fun<H, T> CardTableIndexed(
             },
             cellContent = { type, cell ->
                 cellContent(row.isHeader, type, cell)
-            }
+            },
         )
     }
 }

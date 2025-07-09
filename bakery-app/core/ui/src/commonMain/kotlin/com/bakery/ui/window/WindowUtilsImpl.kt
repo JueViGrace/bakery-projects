@@ -9,4 +9,3 @@ internal expect object WindowUtilsImpl : WindowUtils {
     @Composable
     override fun getScreenOrientation(): Orientation
 }
-

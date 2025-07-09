@@ -21,14 +21,14 @@ fun BottomBarComponent(
     tabs: List<Tab> = emptyList(),
     selected: (tab: Tab) -> Boolean = { false },
     floatingActionButton: (@Composable () -> Unit)? = null,
-    onTabSelected: (index: Int) -> Unit
+    onTabSelected: (index: Int) -> Unit,
 ) {
     BottomAppBar(
         actions = {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 tabs.forEachIndexed { index, destination ->
                     BottomTabItem(
@@ -38,22 +38,22 @@ fun BottomBarComponent(
                                 style = Fonts.labelTextStyle,
                                 textAlign = TextAlign.Center,
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
                         },
                         icon = {
                             IconComponent(
-                                painter = painterResource(destination.icon)
+                                painter = painterResource(destination.icon),
                             )
                         },
                         selected = selected(destination),
                         onClick = {
                             onTabSelected(index)
-                        }
+                        },
                     )
                 }
             }
         },
-        floatingActionButton = floatingActionButton
+        floatingActionButton = floatingActionButton,
     )
 }

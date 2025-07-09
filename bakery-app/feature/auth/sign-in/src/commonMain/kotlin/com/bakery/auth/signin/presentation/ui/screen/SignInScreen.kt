@@ -16,9 +16,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SignInScreen(
-    viewmodel: SignInViewModel = koinViewModel()
-) {
+fun SignInScreen(viewmodel: SignInViewModel = koinViewModel()) {
     val state: SignInState by viewmodel.state.collectAsStateWithLifecycle()
 
     LaunchedEffect(state.submitError) {
@@ -29,20 +27,17 @@ fun SignInScreen(
 
     SignInContent(
         state = state,
-        onEvent = viewmodel::onEvent
+        onEvent = viewmodel::onEvent,
     )
 }
 
 @Composable
-fun SignInContent(
-    state: SignInState,
-    onEvent: (SignInEvents) -> Unit = {}
-) {
+fun SignInContent(state: SignInState, onEvent: (SignInEvents) -> Unit = {}) {
     ScaffoldContainer {
         SignInContainer(
             modifier = Modifier.fillMaxSize(),
             state = state,
-            onEvent = onEvent
+            onEvent = onEvent,
         )
     }
 }
@@ -52,7 +47,7 @@ fun SignInContent(
 fun SignInPreview() {
     AppContainer {
         SignInContent(
-            state = SignInState()
+            state = SignInState(),
         )
     }
 }

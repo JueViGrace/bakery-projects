@@ -24,7 +24,7 @@ fun DialogTextField(
     dialogContent: @Composable () -> Unit,
 ) {
     Box(
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(
             visible = showDialog,

@@ -40,10 +40,10 @@ fun DateField(
     labelText: String = stringResource(Res.string.date),
     selectableDates: SelectableDates = DatePickerDefaults.AllDates,
     supportingText: String? = null,
-    isError: Boolean = supportingText != null
+    isError: Boolean = supportingText != null,
 ) {
     val datePickerState: DatePickerState = rememberDatePickerState(
-        selectableDates = selectableDates
+        selectableDates = selectableDates,
     )
     var showDatePicker: Boolean by remember { mutableStateOf(false) }
     val focusManager: FocusManager = LocalFocusManager.current
@@ -64,24 +64,24 @@ fun DateField(
         label = {
             Text(
                 text = labelText,
-                style = Fonts.labelTextStyle
+                style = Fonts.labelTextStyle,
             )
         },
         placeholder = {
             Text(
-                text = dateFormat
+                text = dateFormat,
             )
         },
         trailingIcon = {
             IconComponent(
-                painter = painterResource(Res.drawable.ic_calendar_week)
+                painter = painterResource(Res.drawable.ic_calendar_week),
             )
         },
         supportingText = supportingText?.let { message ->
             {
                 Text(
                     text = message,
-                    style = Fonts.labelTextStyle
+                    style = Fonts.labelTextStyle,
                 )
             }
         },
@@ -98,10 +98,10 @@ fun DateField(
                     onClick = {
                         focusManager.clearFocus()
                         showDatePicker = false
-                    }
+                    },
                 ) {
                     Text(
-                        text = stringResource(Res.string.ok)
+                        text = stringResource(Res.string.ok),
                     )
                 }
             },
@@ -110,16 +110,16 @@ fun DateField(
                     onClick = {
                         focusManager.clearFocus()
                         showDatePicker = false
-                    }
+                    },
                 ) {
                     Text(
-                        text = stringResource(Res.string.cancel)
+                        text = stringResource(Res.string.cancel),
                     )
                 }
-            }
+            },
         ) {
             DatePicker(
-                state = datePickerState
+                state = datePickerState,
             )
         }
     }

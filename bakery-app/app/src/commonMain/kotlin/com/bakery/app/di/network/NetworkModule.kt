@@ -8,7 +8,7 @@ import org.koin.dsl.module
 fun networkModule(): Module = module {
     single<NetworkClient> {
         KtorClientImpl(
-            baseUrl = "https://bakeryanddeserts.com/"
+            baseUrl = "https://bakeryanddeserts.com/",
         )
     }
 }

@@ -12,7 +12,7 @@ import com.bakery.ui.navigation.HomeRoute
  * */
 fun NavGraphBuilder.homeGraph() {
     navigation<HomeGraphRoute>(
-        startDestination = HomeRoute
+        startDestination = HomeRoute,
     ) {
         homeNav {
             HomeScreen()

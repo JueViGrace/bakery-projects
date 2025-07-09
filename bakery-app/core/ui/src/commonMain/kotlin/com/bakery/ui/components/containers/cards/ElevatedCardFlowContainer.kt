@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
 
 @Composable
-fun<T> ElevatedCardFlowContainer(
+fun <T> ElevatedCardFlowContainer(
     modifier: Modifier = Modifier,
     items: List<T> = emptyList(),
     separator: Boolean = true,
     verticalArrangement: Arrangement.Vertical = Arrangement.SpaceEvenly,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: @Composable (item: T) -> Unit
+    content: @Composable (item: T) -> Unit,
 ) {
     ElevatedCard(
         modifier = modifier,
@@ -41,15 +41,14 @@ fun<T> ElevatedCardFlowContainer(
     }
 }
 
-
 @Composable
-fun<T> ElevatedCardFlowContainerIndexed(
+fun <T> ElevatedCardFlowContainerIndexed(
     modifier: Modifier = Modifier,
     items: List<T> = emptyList(),
     separator: Boolean = true,
     verticalArrangement: Arrangement.Vertical = Arrangement.SpaceEvenly,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    content: @Composable (index: Int, item: T) -> Unit
+    content: @Composable (index: Int, item: T) -> Unit,
 ) {
     ElevatedCard(
         modifier = modifier,

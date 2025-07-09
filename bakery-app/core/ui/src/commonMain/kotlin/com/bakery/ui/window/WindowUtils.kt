@@ -66,14 +66,10 @@ interface WindowUtils {
     }
 
     @Composable
-    fun isPortrait(): Boolean {
-        return getScreenOrientation() == Orientation.Portrait
-    }
+    fun isPortrait(): Boolean = getScreenOrientation() == Orientation.Portrait
 
     @Composable
-    fun isLandscape(): Boolean {
-        return getScreenOrientation() == Orientation.Landscape
-    }
+    fun isLandscape(): Boolean = getScreenOrientation() == Orientation.Landscape
 
     @Composable
     fun isWideLayout(): Boolean {

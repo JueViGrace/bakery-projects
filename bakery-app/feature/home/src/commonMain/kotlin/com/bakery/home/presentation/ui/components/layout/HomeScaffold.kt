@@ -36,7 +36,7 @@ fun HomeScaffold(
     state: HomeState,
     onEvent: (HomeEvents) -> Unit = {},
     snackbarHost: @Composable () -> Unit = {},
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     DefaultScaffold(
         topBar = {
@@ -45,11 +45,11 @@ fun HomeScaffold(
                     IconButton(
                         onClick = {
                             onEvent(HomeEvents.OnAccount)
-                        }
+                        },
                     ) {
                         IconComponent(
                             painter = painterResource(Res.drawable.ic_account),
-                            contentDescription = stringResource(Res.string.account)
+                            contentDescription = stringResource(Res.string.account),
                         )
                     }
                 },
@@ -57,10 +57,10 @@ fun HomeScaffold(
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = state.user?.name ?: ""
+                            text = state.user?.name ?: "",
                         )
                     }
                 },
@@ -68,7 +68,7 @@ fun HomeScaffold(
                     IconButton(
                         onClick = {
                             onEvent(HomeEvents.OnNotifications)
-                        }
+                        },
                     ) {
                         IconComponent(
                             painter = painterResource(Res.drawable.ic_bell),
@@ -79,20 +79,20 @@ fun HomeScaffold(
                     IconButton(
                         onClick = {
                             onEvent(HomeEvents.ToggleSearch)
-                        }
+                        },
                     ) {
                         IconComponent(
                             painter = painterResource(Res.drawable.ic_search),
                             contentDescription = stringResource(Res.string.search),
                             onClick = {
                                 onEvent(HomeEvents.ToggleSearch)
-                            }
+                            },
                         )
                     }
                 },
                 onTabSelected = { index ->
                     onEvent(HomeEvents.OnTabSelected(index, NavBars.TopBar))
-                }
+                },
             )
         },
         bottomBar = {
@@ -105,17 +105,17 @@ fun HomeScaffold(
                         },
                     ) {
                         IconComponent(
-                            painter = painterResource(Res.drawable.ic_grid_dots)
+                            painter = painterResource(Res.drawable.ic_grid_dots),
                         )
                     }
                 },
                 onTabSelected = { index ->
                     onEvent(HomeEvents.OnTabSelected(index, NavBars.BottomBar))
-                }
+                },
             )
         },
         floatingActionButtonPosition = FabPosition.End,
         snackbarHost = snackbarHost,
-        content = content
+        content = content,
     )
 }

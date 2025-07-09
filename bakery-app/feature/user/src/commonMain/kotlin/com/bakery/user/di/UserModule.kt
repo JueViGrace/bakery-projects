@@ -10,11 +10,10 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun userModule(): Module =
-    module {
-        singleOf(::DefaultUserRepository) bind UserRepository::class
+fun userModule(): Module = module {
+    singleOf(::DefaultUserRepository) bind UserRepository::class
 
-        viewModelOf(::UsersListViewModel)
+    viewModelOf(::UsersListViewModel)
 
-        viewModelOf(::UserDetailsViewModel)
-    }
+    viewModelOf(::UserDetailsViewModel)
+}

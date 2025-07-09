@@ -21,9 +21,7 @@ import com.bakery.ui.navigation.tab.TabNavigator
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun HomeScreen(
-    viewModel: HomeViewModel = koinViewModel()
-) {
+fun HomeScreen(viewModel: HomeViewModel = koinViewModel()) {
     val state: HomeState by viewModel.state.collectAsStateWithLifecycle()
     val bottomNavController: NavHostController = rememberNavController()
     val tabNavigator: TabNavigator = LocalTabNavigator.current
@@ -36,7 +34,7 @@ fun HomeScreen(
     }*/
 
     ObserveAsEvents(
-        flow = tabNavigator.navigationActions
+        flow = tabNavigator.navigationActions,
     ) { action ->
         when (action) {
             is NavigationAction.Navigate -> {
@@ -57,16 +55,16 @@ fun HomeScreen(
                 state = state,
                 onEvent = viewModel::onEvent,
                 snackbarHost = snackbarHost,
-                content = content
+                content = content,
             )
-        }
+        },
     ) {
         NavHost(
             navController = bottomNavController,
-            startDestination = HomeTabGraphRoute
+            startDestination = HomeTabGraphRoute,
         ) {
             navigation<HomeTabGraphRoute>(
-                startDestination = DashboardRoute
+                startDestination = DashboardRoute,
             ) {
                 delayedComposable<DashboardRoute> { _ ->
                 }

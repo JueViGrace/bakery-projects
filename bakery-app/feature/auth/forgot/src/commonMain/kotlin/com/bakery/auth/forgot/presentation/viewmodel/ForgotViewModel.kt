@@ -6,8 +6,8 @@ import com.bakery.auth.forgot.data.ForgotRepository
 import com.bakery.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 
-class ForgotViewModel(
-    private val repository: ForgotRepository
-) : BaseViewModel, ViewModel() {
+class ForgotViewModel(private val repository: ForgotRepository) :
+    ViewModel(),
+    BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 }

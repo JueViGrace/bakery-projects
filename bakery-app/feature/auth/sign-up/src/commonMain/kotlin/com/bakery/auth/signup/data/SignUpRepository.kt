@@ -13,20 +13,15 @@ interface SignUpRepository : Repository {
     fun signUp(signUpForm: SignUpForm): Flow<RequestState<Boolean>>
 }
 
-class DefaultSignUpRepository(
-    private val client: AuthClient,
-    private val helper: AuthHelper,
-) : SignUpRepository {
-    override fun signUp(signUpForm: SignUpForm): Flow<RequestState<Boolean>> {
-        return startNetworkRequest(
-            call = {
-                client.signUp(signUpForm.toDto())
-            }
-        ) { value ->
-            scope.launch {
-                helper.createSession(value.toDbSession(active = true))
-            }
-            emit(RequestState.Success(true))
+class DefaultSignUpRepository(private val client: AuthClient, private val helper: AuthHelper) : SignUpRepository {
+    override fun signUp(signUpForm: SignUpForm): Flow<RequestState<Boolean>> = startNetworkRequest(
+        call = {
+            client.signUp(signUpForm.toDto())
+        },
+    ) { value ->
+        scope.launch {
+            helper.createSession(value.toDbSession(active = true))
         }
+        emit(RequestState.Success(true))
     }
 }

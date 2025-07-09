@@ -7,7 +7,5 @@ import androidx.compose.runtime.Composable
 * */
 internal actual object WindowUtilsImpl : WindowUtils {
     @Composable
-    actual override fun getScreenOrientation(): Orientation {
-        return Orientation.Portrait
-    }
+    actual override fun getScreenOrientation(): Orientation = Orientation.Portrait
 }

@@ -29,9 +29,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SignInViewModel(
-    private val repository: SignInRepository,
-) : BaseViewModel, ViewModel() {
+class SignInViewModel(private val repository: SignInRepository) :
+    ViewModel(),
+    BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 
     private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
@@ -46,7 +46,7 @@ class SignInViewModel(
         .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
-            initialValue = LoginValidation()
+            initialValue = LoginValidation(),
         )
 
     val state: StateFlow<SignInState> = combine(
@@ -66,7 +66,7 @@ class SignInViewModel(
     }.stateIn(
         scope = scope,
         started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _state.value
+        initialValue = _state.value,
     )
 
     fun onEvent(event: SignInEvents) {
@@ -85,7 +85,7 @@ class SignInViewModel(
             delay(5000)
             _state.update { state ->
                 state.copy(
-                    submitError = null
+                    submitError = null,
                 )
             }
         }
@@ -101,7 +101,7 @@ class SignInViewModel(
             delay(1000)
             formState.update { state ->
                 state.copy(
-                    shouldShowUsernameError = true
+                    shouldShowUsernameError = true,
                 )
             }
         }
@@ -115,7 +115,7 @@ class SignInViewModel(
                     inclusive = false
                 }
                 launchSingleTop = true
-            }
+            },
         )
     }
 
@@ -127,7 +127,7 @@ class SignInViewModel(
                     inclusive = false
                 }
                 launchSingleTop = true
-            }
+            },
         )
     }
 
@@ -141,7 +141,7 @@ class SignInViewModel(
             delay(1000)
             formState.update { state ->
                 state.copy(
-                    shouldShowPasswordError = true
+                    shouldShowPasswordError = true,
                 )
             }
         }
@@ -151,7 +151,7 @@ class SignInViewModel(
         _state.update { state ->
             state.copy(
                 submitLoading = true,
-                submitError = null
+                submitError = null,
             )
         }
 
@@ -162,7 +162,7 @@ class SignInViewModel(
                         _state.update { state ->
                             state.copy(
                                 submitLoading = false,
-                                submitError = result.error
+                                submitError = result.error,
                             )
                         }
                     }
@@ -182,7 +182,7 @@ class SignInViewModel(
                                     inclusive = true
                                 }
                                 launchSingleTop = true
-                            }
+                            },
                         )
                     }
 

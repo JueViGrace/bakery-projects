@@ -7,7 +7,7 @@ import androidx.savedstate.write
 import kotlinx.serialization.json.Json
 
 object CustomNavType {
-    inline fun<reified T> createNavType(): NavType<T> {
+    inline fun <reified T> createNavType(): NavType<T> {
         return object : NavType<T>(isNullableAllowed = false) {
             override fun put(bundle: SavedState, key: String, value: T) {
                 bundle.write {
@@ -19,13 +19,9 @@ object CustomNavType {
                 return Json.decodeFromString(bundle.read { getStringOrNull(key) } ?: return null)
             }
 
-            override fun parseValue(value: String): T {
-                return Json.decodeFromString(value)
-            }
+            override fun parseValue(value: String): T = Json.decodeFromString(value)
 
-            override fun serializeAsValue(value: T): String {
-                return Json.encodeToString(value)
-            }
+            override fun serializeAsValue(value: T): String = Json.encodeToString(value)
         }
     }
 }

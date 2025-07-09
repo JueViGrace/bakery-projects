@@ -10,19 +10,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.getString
 import com.bakery.ui.components.containers.ScaffoldType
 import com.bakery.ui.components.observable.ObserveAsEvents
 import com.bakery.ui.messages.LocalMessages
 import com.bakery.ui.messages.Messages
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 
 @Composable
-internal fun ScaffoldContent(
-    scaffold: ScaffoldType,
-    content: @Composable () -> Unit
-) {
+internal fun ScaffoldContent(scaffold: ScaffoldType, content: @Composable () -> Unit) {
     val messages: Messages = LocalMessages.current
     val scope: CoroutineScope = rememberCoroutineScope()
     val hostState: SnackbarHostState = remember { SnackbarHostState() }

@@ -22,7 +22,7 @@ fun TopBarComponent(
     navigationIcon: @Composable () -> Unit = {},
     expandedHeight: Dp = calculateTopBarHeight(),
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
-    scrollBehavior: TopAppBarScrollBehavior? = null
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     CenterAlignedTopAppBar(
         modifier = modifier,
@@ -31,7 +31,7 @@ fun TopBarComponent(
         expandedHeight = expandedHeight,
         navigationIcon = navigationIcon,
         colors = colors,
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
     )
 }
 

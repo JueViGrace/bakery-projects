@@ -31,24 +31,20 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SignInLandscapeLayout(
-    modifier: Modifier = Modifier,
-    state: SignInState,
-    onEvent: (SignInEvents) -> Unit
-) {
+fun SignInLandscapeLayout(modifier: Modifier = Modifier, state: SignInState, onEvent: (SignInEvents) -> Unit) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SignInMainSection(
             modifier = Modifier.weight(1f),
             state = state,
-            onEvent = onEvent
+            onEvent = onEvent,
         )
         Box(
             modifier = Modifier.weight(1f),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Surface(
                 modifier = Modifier
@@ -60,24 +56,24 @@ fun SignInLandscapeLayout(
                             ),
                             start = Offset(
                                 0f,
-                                Float.POSITIVE_INFINITY
+                                Float.POSITIVE_INFINITY,
                             ),
                             end = Offset(
                                 Float.POSITIVE_INFINITY,
-                                0f
-                            )
-                        )
+                                0f,
+                            ),
+                        ),
                     ),
-                color = Color.Transparent
+                color = Color.Transparent,
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(Res.string.new_here),
-                        style = Fonts.extraLargeTextStyle
+                        style = Fonts.extraLargeTextStyle,
                     )
 
                     CardButton(
@@ -101,9 +97,9 @@ fun SignInLandscapeLayout(
                             Text(
                                 text = stringResource(Res.string.go_to_sign_up),
                                 style = Fonts.smallTextStyle,
-                                textAlign = TextAlign.Center
+                                textAlign = TextAlign.Center,
                             )
-                        }
+                        },
                     )
                 }
             }

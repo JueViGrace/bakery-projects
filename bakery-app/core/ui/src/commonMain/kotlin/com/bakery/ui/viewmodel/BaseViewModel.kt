@@ -1,13 +1,13 @@
 package com.bakery.ui.viewmodel
 
 import androidx.navigation.NavOptions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import org.jetbrains.compose.resources.StringResource
 import com.bakery.ui.messages.Messages
 import com.bakery.ui.navigation.Destination
 import com.bakery.ui.navigation.navigator.Navigator
 import com.bakery.ui.navigation.tab.TabNavigator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.StringResource
 
 interface BaseViewModel {
     val scope: CoroutineScope
@@ -25,7 +25,7 @@ interface BaseViewModel {
         scope.launch {
             navigator.navigate(
                 destination = destination,
-                navOptions = navOptions
+                navOptions = navOptions,
             )
         }
     }
@@ -40,7 +40,7 @@ interface BaseViewModel {
         scope.launch {
             messages.sendMessage(
                 message = message,
-                description = description
+                description = description,
             )
         }
     }

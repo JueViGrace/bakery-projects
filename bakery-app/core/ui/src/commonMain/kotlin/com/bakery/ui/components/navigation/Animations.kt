@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import kotlin.jvm.JvmSuppressWildcards
 import kotlin.reflect.KType
 
-inline fun<reified T : Any> NavGraphBuilder.delayedComposable(
+inline fun <reified T : Any> NavGraphBuilder.delayedComposable(
     typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
     deepLinks: List<NavDeepLink> = emptyList(),
     noinline sizeTransform: (
@@ -40,11 +40,11 @@ inline fun<reified T : Any> NavGraphBuilder.delayedComposable(
             fadeOut(tween())
         },
         sizeTransform = sizeTransform,
-        content = content
+        content = content,
     )
 }
 
-inline fun<reified T : Any> NavGraphBuilder.enterRightOutLeftComposable(
+inline fun <reified T : Any> NavGraphBuilder.enterRightOutLeftComposable(
     typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
     deepLinks: List<NavDeepLink> = emptyList(),
     noinline sizeTransform: (
@@ -59,33 +59,33 @@ inline fun<reified T : Any> NavGraphBuilder.enterRightOutLeftComposable(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeIn(tween(500))
         },
         exitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeOut(tween(500))
         },
         popEnterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeIn(tween(500))
         },
         popExitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeOut(tween(500))
         },
         sizeTransform = sizeTransform,
-        content = content
+        content = content,
     )
 }
 
-inline fun<reified T : Any> NavGraphBuilder.enterLeftOutRightComposable(
+inline fun <reified T : Any> NavGraphBuilder.enterLeftOutRightComposable(
     typeMap: Map<KType, @JvmSuppressWildcards NavType<*>> = emptyMap(),
     deepLinks: List<NavDeepLink> = emptyList(),
     noinline sizeTransform: (
@@ -100,28 +100,28 @@ inline fun<reified T : Any> NavGraphBuilder.enterLeftOutRightComposable(
         enterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeIn(tween(500))
         },
         exitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeOut(tween(500))
         },
         popEnterTransition = {
             slideIntoContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Left,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeIn(tween(500))
         },
         popExitTransition = {
             slideOutOfContainer(
                 towards = AnimatedContentTransitionScope.SlideDirection.Right,
-                animationSpec = tween(500)
+                animationSpec = tween(500),
             ) + fadeOut(tween(500))
         },
         sizeTransform = sizeTransform,
-        content = content
+        content = content,
     )
 }

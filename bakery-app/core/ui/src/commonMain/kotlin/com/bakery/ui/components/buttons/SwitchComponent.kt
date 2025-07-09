@@ -13,7 +13,7 @@ fun SwitchComponent(
     modifier: Modifier = Modifier,
     thumbContent: (@Composable () -> Unit)? = null,
     enabled: Boolean = true,
-    colors: SwitchColors = SwitchDefaults.colors()
+    colors: SwitchColors = SwitchDefaults.colors(),
 ) {
     Switch(
         modifier = modifier,
@@ -21,6 +21,6 @@ fun SwitchComponent(
         onCheckedChange = onCheckedChanged,
         colors = colors,
         thumbContent = thumbContent,
-        enabled = enabled
+        enabled = enabled,
     )
 }

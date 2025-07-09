@@ -49,7 +49,7 @@ fun TimeField(
     enabled: Boolean = true,
     labelText: String = stringResource(Res.string.hours),
     supportingText: String? = null,
-    isError: Boolean = supportingText != null
+    isError: Boolean = supportingText != null,
 ) {
     val timePickerState: TimePickerState = rememberTimePickerState()
     var showTimePicker: Boolean by remember { mutableStateOf(false) }
@@ -61,7 +61,7 @@ fun TimeField(
                 timePickerState.hour.toString().padStart(2, '0')
             }:${
                 timePickerState.minute.toString().padStart(2, '0')
-            }"
+            }",
         )
     }
 
@@ -75,24 +75,24 @@ fun TimeField(
         label = {
             Text(
                 text = labelText,
-                style = Fonts.labelTextStyle
+                style = Fonts.labelTextStyle,
             )
         },
         placeholder = {
             Text(
-                text = "--:--"
+                text = "--:--",
             )
         },
         trailingIcon = {
             IconComponent(
-                painter = painterResource(Res.drawable.ic_clock)
+                painter = painterResource(Res.drawable.ic_clock),
             )
         },
         supportingText = supportingText?.let { message ->
             {
                 Text(
                     text = message,
-                    style = Fonts.labelTextStyle
+                    style = Fonts.labelTextStyle,
                 )
             }
         },
@@ -103,52 +103,52 @@ fun TimeField(
             onDismissRequest = {
                 focusManager.clearFocus()
                 showTimePicker = false
-            }
+            },
         ) {
             Box(
                 modifier = Modifier.sizeIn(minWidth = 280.dp, maxWidth = 560.dp),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .background(
                             color = MaterialTheme.colorScheme.surface,
-                            shape = RoundedCornerShape(8)
+                            shape = RoundedCornerShape(8),
                         )
                         .clip(RoundedCornerShape(8))
                         .padding(24.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Box(
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         TimePicker(state = timePickerState)
                     }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         OutlinedButton(
                             onClick = {
                                 focusManager.clearFocus()
                                 showTimePicker = false
-                            }
+                            },
                         ) {
                             Text(
-                                text = stringResource(Res.string.cancel)
+                                text = stringResource(Res.string.cancel),
                             )
                         }
                         ElevatedButton(
                             onClick = {
                                 focusManager.clearFocus()
                                 showTimePicker = false
-                            }
+                            },
                         ) {
                             Text(
-                                text = stringResource(Res.string.ok)
+                                text = stringResource(Res.string.ok),
                             )
                         }
                     }

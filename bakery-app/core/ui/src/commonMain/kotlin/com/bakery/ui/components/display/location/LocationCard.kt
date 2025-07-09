@@ -33,17 +33,14 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun LocationCard(
-    modifier: Modifier = Modifier,
-    location: Location,
-) {
+fun LocationCard(modifier: Modifier = Modifier, location: Location) {
     ElevatedCard(
         modifier = modifier,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
                 modifier = Modifier
@@ -51,7 +48,7 @@ fun LocationCard(
                     .fillMaxHeight()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -62,7 +59,7 @@ fun LocationCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "${stringResource(Res.string.address)}:",
@@ -78,7 +75,7 @@ fun LocationCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "${stringResource(Res.string.postal_code)}:",
@@ -94,7 +91,7 @@ fun LocationCard(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = "${stringResource(Res.string.precision)}:",
@@ -115,7 +112,7 @@ fun LocationCard(
                     .clip(RoundedCornerShape(8.dp)),
                 painter = painterResource(Res.drawable.map_location),
                 contentDescription = stringResource(Res.string.your_current_location),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
         }
     }

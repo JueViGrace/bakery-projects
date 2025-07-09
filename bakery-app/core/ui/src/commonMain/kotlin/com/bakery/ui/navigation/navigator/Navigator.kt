@@ -17,10 +17,7 @@ interface Navigator {
         get() = SavedStateHandle()
     val actions: StateFlow<ActionStack>
 
-    suspend fun navigate(
-        destination: Destination,
-        navOptions: NavOptions? = null,
-    )
+    suspend fun navigate(destination: Destination, navOptions: NavOptions? = null)
 
     suspend fun navigateUp()
 

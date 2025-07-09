@@ -11,16 +11,11 @@ import com.bakery.ui.components.containers.cards.ElevatedCardFlowContainerIndexe
 import com.bakery.ui.components.display.sections.SectionTitle
 
 @Composable
-fun<T> CardListSection(
-    modifier: Modifier = Modifier,
-    title: String = "",
-    items: List<T>,
-    content: @Composable (item: T) -> Unit
-) {
+fun <T> CardListSection(modifier: Modifier = Modifier, title: String = "", items: List<T>, content: @Composable (item: T) -> Unit) {
     SectionTitle(
         modifier = modifier,
         title = title,
-        titlePadding = PaddingValues(6.dp)
+        titlePadding = PaddingValues(6.dp),
     ) {
         ElevatedCardFlowContainer(
             items = items,
@@ -34,16 +29,16 @@ fun<T> CardListSection(
 }
 
 @Composable
-fun<T> CardListSectionIndexed(
+fun <T> CardListSectionIndexed(
     modifier: Modifier = Modifier,
     title: String = "",
     items: List<T>,
-    content: @Composable (index: Int, item: T) -> Unit
+    content: @Composable (index: Int, item: T) -> Unit,
 ) {
     SectionTitle(
         modifier = modifier,
         title = title,
-        titlePadding = PaddingValues(6.dp)
+        titlePadding = PaddingValues(6.dp),
     ) {
         ElevatedCardFlowContainerIndexed(
             items = items,
@@ -55,4 +50,3 @@ fun<T> CardListSectionIndexed(
         }
     }
 }
-

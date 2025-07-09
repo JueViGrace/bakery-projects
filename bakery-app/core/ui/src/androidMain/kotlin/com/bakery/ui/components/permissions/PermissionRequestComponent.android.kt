@@ -17,10 +17,7 @@ import com.bakery.ui.model.Permissions
 import com.bakery.util.Logs
 
 @Composable
-actual fun PermissionRequestComponent(
-    vararg permissions: Permissions,
-    granted: () -> Unit
-) {
+actual fun PermissionRequestComponent(vararg permissions: Permissions, granted: () -> Unit) {
     val permissionList: List<String> = permissions.map {
         when (it) {
             is Permissions.LocationPermissions.AccessCoarseLocation -> Manifest.permission.ACCESS_COARSE_LOCATION
@@ -31,7 +28,7 @@ actual fun PermissionRequestComponent(
 
     val launcher: ManagedActivityResultLauncher<Array<String>, Map<String, @JvmSuppressWildcards Boolean>> =
         rememberLauncherForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
+            ActivityResultContracts.RequestMultiplePermissions(),
         ) { results ->
             if (!results.values.all { it }) {
                 Logs.error("RequestPermissionComponent", "Permission denied")
@@ -44,7 +41,7 @@ actual fun PermissionRequestComponent(
         derivedStateOf {
             listOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
             ).all { perm ->
                 ContextCompat.checkSelfPermission(context, perm) ==
                     PackageManager.PERMISSION_GRANTED

@@ -11,45 +11,38 @@ import kotlinx.coroutines.flow.Flow
 interface ForgotRepository : Repository {
     fun confirmPasswordReset(code: String): Flow<RequestState<Boolean>>
     fun requestPasswordReset(username: String): Flow<RequestState<Boolean>>
-    fun resetPassword(reset: PasswordReset): Flow<RequestState<Boolean>> }
+    fun resetPassword(reset: PasswordReset): Flow<RequestState<Boolean>>
+}
 
-class DefaultForgotRepository(
-    private val client: AuthClient,
-) : ForgotRepository {
-    override fun confirmPasswordReset(code: String): Flow<RequestState<Boolean>> {
-        return startNetworkRequest(
-            call = {
-                client.confirmPasswordReset(
-                    ConfirmPasswordResetDto(
-                        code = code
-                    )
-                )
-            }
-        ) { value ->
-            emit(RequestState.Success(true))
-        }
+class DefaultForgotRepository(private val client: AuthClient) : ForgotRepository {
+    override fun confirmPasswordReset(code: String): Flow<RequestState<Boolean>> = startNetworkRequest(
+        call = {
+            client.confirmPasswordReset(
+                ConfirmPasswordResetDto(
+                    code = code,
+                ),
+            )
+        },
+    ) { value ->
+        emit(RequestState.Success(true))
     }
-    override fun requestPasswordReset(username: String): Flow<RequestState<Boolean>> {
-        return startNetworkRequest(
-            call = {
-                client.requestPasswordReset(
-                    RequestPasswordResetDto(
-                        username = username
-                    )
-                )
-            }
-        ) { value ->
-            emit(RequestState.Success(true))
-        }
+    override fun requestPasswordReset(username: String): Flow<RequestState<Boolean>> = startNetworkRequest(
+        call = {
+            client.requestPasswordReset(
+                RequestPasswordResetDto(
+                    username = username,
+                ),
+            )
+        },
+    ) { value ->
+        emit(RequestState.Success(true))
     }
 
-    override fun resetPassword(reset: PasswordReset): Flow<RequestState<Boolean>> {
-        return startNetworkRequest(
-            call = {
-                client.resetPassword(reset.toDto())
-            }
-        ) { value ->
-            emit(RequestState.Success(true))
-        }
+    override fun resetPassword(reset: PasswordReset): Flow<RequestState<Boolean>> = startNetworkRequest(
+        call = {
+            client.resetPassword(reset.toDto())
+        },
+    ) { value ->
+        emit(RequestState.Success(true))
     }
 }

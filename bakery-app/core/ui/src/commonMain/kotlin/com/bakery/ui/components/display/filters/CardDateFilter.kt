@@ -28,28 +28,28 @@ fun CardDateFilter(
     onTargetDateChange: (dateMillis: Long) -> Unit = {},
 ) {
     ElevatedCard(
-        modifier = modifier
+        modifier = modifier,
     ) {
         SectionTitle(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             title = title,
-            textStyle = Fonts.defaultTextStyle
+            textStyle = Fonts.defaultTextStyle,
         ) {
             DateField(
                 modifier = Modifier.fillMaxWidth(),
                 date = initialDate,
                 onDateChange = onInitialDateChange,
                 labelText = stringResource(Res.string.initial_date),
-                selectableDates = Dates.rangeSelectableDates(isInitialDate = true)
+                selectableDates = Dates.rangeSelectableDates(isInitialDate = true),
             )
             DateField(
                 modifier = Modifier.fillMaxWidth(),
                 date = targetDate,
                 onDateChange = onTargetDateChange,
                 labelText = stringResource(Res.string.end_date),
-                selectableDates = Dates.rangeSelectableDates(isTargetDate = true)
+                selectableDates = Dates.rangeSelectableDates(isTargetDate = true),
             )
         }
     }

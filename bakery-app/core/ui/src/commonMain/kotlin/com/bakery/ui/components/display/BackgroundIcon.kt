@@ -25,23 +25,23 @@ fun BackgroundIcon(
     shape: Shape = CircleShape,
     painter: Painter,
     contentDescription: String? = null,
-    tint: Color = contentColorFor(backgroundColor)
+    tint: Color = contentColorFor(backgroundColor),
 ) {
     Box(
         modifier = Modifier
             .then(modifier)
             .background(
                 color = backgroundColor,
-                shape = shape
+                shape = shape,
             )
             .clip(shape),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         IconComponent(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
             painter = painter,
             contentDescription = contentDescription,
-            tint = tint
+            tint = tint,
         )
     }
 }

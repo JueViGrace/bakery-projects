@@ -10,4 +10,3 @@ class OnboardingViewModel :
     BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 }
-

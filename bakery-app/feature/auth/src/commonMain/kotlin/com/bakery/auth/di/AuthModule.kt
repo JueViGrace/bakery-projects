@@ -20,6 +20,6 @@ fun authModule(): Module = module {
     includes(
         signInModule(),
         signUpModule(),
-        forgotModule()
+        forgotModule(),
     )
 }

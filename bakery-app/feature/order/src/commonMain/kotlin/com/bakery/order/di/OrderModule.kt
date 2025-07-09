@@ -10,11 +10,10 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
-fun orderModule(): Module =
-    module {
-        singleOf(::DefaultOrderRepository) bind OrderRepository::class
+fun orderModule(): Module = module {
+    singleOf(::DefaultOrderRepository) bind OrderRepository::class
 
-        viewModelOf(::OrdersListViewModel)
+    viewModelOf(::OrdersListViewModel)
 
-        viewModelOf(::OrderDetailsViewModel)
-    }
+    viewModelOf(::OrderDetailsViewModel)
+}

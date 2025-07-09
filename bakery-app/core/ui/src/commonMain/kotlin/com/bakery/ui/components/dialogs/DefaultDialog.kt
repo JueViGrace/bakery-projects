@@ -44,7 +44,7 @@ fun DefaultDialog(
     customContent: (@Composable ColumnScope.() -> Unit)? = null,
     verticalArrangement: Arrangement.Vertical = Arrangement.spacedBy(
         8.dp,
-        Alignment.CenterVertically
+        Alignment.CenterVertically,
     ),
     titleColor: Color = MaterialTheme.colorScheme.onSurface,
     dismissButtonColor: ButtonColors = ButtonDefaults.textButtonColors(
@@ -63,7 +63,7 @@ fun DefaultDialog(
             modifier = Modifier
                 .sizeIn(
                     minWidth = 280.dp,
-                    maxWidth = 580.dp
+                    maxWidth = 580.dp,
                 )
                 .padding(4.dp)
                 .background(
@@ -71,24 +71,24 @@ fun DefaultDialog(
                     shape = AlertDialogDefaults.shape,
                 )
                 .clip(AlertDialogDefaults.shape),
-            propagateMinConstraints = true
+            propagateMinConstraints = true,
         ) {
             Column(
                 modifier = Modifier.padding(8.dp).then(modifier),
                 verticalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 icon?.let { it() }
                 Column(
                     modifier = Modifier.padding(vertical = 12.dp),
                     verticalArrangement = verticalArrangement,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = stringResource(titleText),
                         style = Fonts.largeTextStyle,
                         color = titleColor,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                     description?.invoke()
                 }
@@ -100,24 +100,24 @@ fun DefaultDialog(
                             Alignment.CenterEnd
                         } else {
                             Alignment.Center
-                        }
+                        },
                     ) {
                         Row(
                             modifier = Modifier.fillMaxWidth(0.6f),
                             horizontalArrangement = Arrangement.spacedBy(
                                 space = 8.dp,
-                                alignment = Alignment.CenterHorizontally
+                                alignment = Alignment.CenterHorizontally,
                             ),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             if (hasDismissButton) {
                                 TextButton(
                                     modifier = Modifier.weight(1f),
                                     onClick = onDismiss,
-                                    colors = dismissButtonColor
+                                    colors = dismissButtonColor,
                                 ) {
                                     Text(
-                                        text = stringResource(cancelText)
+                                        text = stringResource(cancelText),
                                     )
                                 }
                             }
@@ -129,10 +129,10 @@ fun DefaultDialog(
                                         Modifier
                                     },
                                     onClick = confirm,
-                                    colors = confirmButtonColor
+                                    colors = confirmButtonColor,
                                 ) {
                                     Text(
-                                        text = stringResource(confirmText)
+                                        text = stringResource(confirmText),
                                     )
                                 }
                             }

@@ -20,10 +20,7 @@ internal object NavigatorImpl : Navigator {
     private val _actionStack: MutableStateFlow<ActionStack> = MutableStateFlow(ActionStack())
     override val actions: StateFlow<ActionStack> = _actionStack.asStateFlow()
 
-    override suspend fun navigate(
-        destination: Destination,
-        navOptions: NavOptions?,
-    ) {
+    override suspend fun navigate(destination: Destination, navOptions: NavOptions?) {
         val action = NavigationAction.Navigate(destination, navOptions)
         if (!_actionStack.value.actions.contains(action)) {
             _actionStack.update { actions ->

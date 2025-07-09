@@ -52,38 +52,36 @@ interface KtorClient : NetworkClient {
         headers: Map<String, String>,
         contentType: String,
         serializer: KSerializer<T>,
-    ): ApiOperation<T> {
-        return try {
-            val response: HttpResponse = client(baseUrl).request {
-                this.method = getKtorHttpMethod(method)
-                url {
-                    setUrl(prefix = prefix, urlString = urlString)
-                }
-                contentType(ContentType.parse(contentType))
-                headers.forEach { (key, value) ->
-                    headers {
-                        append(key, value)
-                    }
-                }
-                if (body != null) {
-                    setBody(body)
+    ): ApiOperation<T> = try {
+        val response: HttpResponse = client(baseUrl).request {
+            this.method = getKtorHttpMethod(method)
+            url {
+                setUrl(prefix = prefix, urlString = urlString)
+            }
+            contentType(ContentType.parse(contentType))
+            headers.forEach { (key, value) ->
+                headers {
+                    append(key, value)
                 }
             }
-
-            val body: String = response.bodyAsText()
-
-            val responseBody: T = Json.decodeFromString(serializer, body)
-
-            ApiOperation.Success(responseBody)
-        } catch (e: Exception) {
-            Logs.error(
-                tag = this::class.simpleName ?: "KtorClient",
-                msg = "Error while making request",
-                tr = e
-            )
-            coroutineContext.ensureActive()
-            ApiOperation.Failure(e)
+            if (body != null) {
+                setBody(body)
+            }
         }
+
+        val body: String = response.bodyAsText()
+
+        val responseBody: T = Json.decodeFromString(serializer, body)
+
+        ApiOperation.Success(responseBody)
+    } catch (e: Exception) {
+        Logs.error(
+            tag = this::class.simpleName ?: "KtorClient",
+            msg = "Error while making request",
+            tr = e,
+        )
+        coroutineContext.ensureActive()
+        ApiOperation.Failure(e)
     }
 
     companion object {

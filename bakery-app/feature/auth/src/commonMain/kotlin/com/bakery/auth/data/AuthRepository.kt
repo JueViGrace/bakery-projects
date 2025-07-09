@@ -17,18 +17,14 @@ interface AuthRepository : Repository {
     fun refresh(): Flow<RequestState<Boolean>>
 }
 
-internal class DefaultAuthRepository(
-    private val authClient: AuthClient,
-    private val authHelper: AuthHelper,
-) : AuthRepository {
-
+internal class DefaultAuthRepository(private val authClient: AuthClient, private val authHelper: AuthHelper) : AuthRepository {
     override fun logout(): Flow<RequestState<Boolean>> {
         return startNetworkRequest(
             call = {
                 val session = authHelper.getSession()?.toSession()
                     ?: return@startNetworkRequest ApiOperation.Failure(Exception("Session not found"))
                 authClient.logout(session.accessToken)
-            }
+            },
         ) { value ->
             emit(RequestState.Success(true))
         }
@@ -40,7 +36,7 @@ internal class DefaultAuthRepository(
                 val session = authHelper.getSession()?.toSession()
                     ?: return@startNetworkRequest ApiOperation.Failure(Exception("Session not found"))
                 authClient.refresh(session.refreshToken)
-            }
+            },
         ) { value ->
             scope.launch {
                 updateSession(value.toSession().copy(active = true))

@@ -23,7 +23,7 @@ fun CardRowDisplay(
     trailingIcon: @Composable (DrawableResource) -> Unit = {},
 ) {
     Card(
-        modifier = modifier
+        modifier = modifier,
     ) {
         RowDisplay(
             modifier = Modifier.fillMaxWidth(),
@@ -46,7 +46,7 @@ fun CardRowDisplay(
                     trailingIcon(icon)
                 }
             },
-            onClick = onClick
+            onClick = onClick,
         )
     }
 }

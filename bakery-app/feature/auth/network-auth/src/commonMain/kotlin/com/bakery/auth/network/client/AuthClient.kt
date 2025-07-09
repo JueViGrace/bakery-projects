@@ -18,4 +18,3 @@ interface AuthClient : RemoteDataSource {
     suspend fun resetPassword(dto: PasswordResetDto): ApiOperation<String>
     suspend fun signUp(dto: SignUpDto): ApiOperation<AuthResponse>
 }
-

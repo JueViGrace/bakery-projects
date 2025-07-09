@@ -18,11 +18,11 @@ fun CardButton(
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = contentAlignment
+        contentAlignment = contentAlignment,
     ) {
         ElevatedCard(
             onClick = onClick,
@@ -31,7 +31,7 @@ fun CardButton(
                 contentPadding = contentPadding,
                 leadingContent = leadingIcon,
                 trailingContent = trailingIcon,
-                content = content
+                content = content,
             )
         }
     }

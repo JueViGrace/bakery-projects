@@ -3,13 +3,13 @@ package com.bakery.network.client.base
 import com.bakery.network.client.base.NetworkClient.Companion.DEFAULT_CONTENT_TYPE
 import com.bakery.network.model.ApiOperation
 import com.bakery.network.model.NetworkRequestMethod
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.serializer
-import kotlin.coroutines.CoroutineContext
 
 /**
 * Default network client interface.
@@ -66,17 +66,15 @@ suspend inline fun <reified T : Any> NetworkClient.get(
     urlString: String,
     headers: Map<String, String> = emptyMap(),
     contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
-): ApiOperation<T> {
-    return call(
-        method = NetworkRequestMethod.GET,
-        baseUrl = baseUrl,
-        urlString = urlString,
-        body = null,
-        headers = headers,
-        contentType = contentType,
-        serializer = serializer<T>()
-    )
-}
+): ApiOperation<T> = call(
+    method = NetworkRequestMethod.GET,
+    baseUrl = baseUrl,
+    urlString = urlString,
+    body = null,
+    headers = headers,
+    contentType = contentType,
+    serializer = serializer<T>(),
+)
 
 /**
  * Performs a POST request.
@@ -91,17 +89,15 @@ suspend inline fun <reified T : Any> NetworkClient.post(
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
     contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
-): ApiOperation<T> {
-    return call(
-        method = NetworkRequestMethod.POST,
-        baseUrl = baseUrl,
-        urlString = urlString,
-        body = body,
-        headers = headers,
-        contentType = contentType,
-        serializer = serializer<T>()
-    )
-}
+): ApiOperation<T> = call(
+    method = NetworkRequestMethod.POST,
+    baseUrl = baseUrl,
+    urlString = urlString,
+    body = body,
+    headers = headers,
+    contentType = contentType,
+    serializer = serializer<T>(),
+)
 
 /**
  * Performs a PUT request.
@@ -116,17 +112,15 @@ suspend inline fun <reified T : Any> NetworkClient.put(
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
     contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
-): ApiOperation<T> {
-    return call(
-        method = NetworkRequestMethod.PUT,
-        baseUrl = baseUrl,
-        urlString = urlString,
-        body = body,
-        headers = headers,
-        contentType = contentType,
-        serializer = serializer<T>()
-    )
-}
+): ApiOperation<T> = call(
+    method = NetworkRequestMethod.PUT,
+    baseUrl = baseUrl,
+    urlString = urlString,
+    body = body,
+    headers = headers,
+    contentType = contentType,
+    serializer = serializer<T>(),
+)
 
 /**
  * Performs a DELETE request.
@@ -141,17 +135,15 @@ suspend inline fun <reified T : Any> NetworkClient.delete(
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
     contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
-): ApiOperation<T> {
-    return call(
-        method = NetworkRequestMethod.DELETE,
-        baseUrl = baseUrl,
-        urlString = urlString,
-        body = body,
-        headers = headers,
-        contentType = contentType,
-        serializer = serializer<T>()
-    )
-}
+): ApiOperation<T> = call(
+    method = NetworkRequestMethod.DELETE,
+    baseUrl = baseUrl,
+    urlString = urlString,
+    body = body,
+    headers = headers,
+    contentType = contentType,
+    serializer = serializer<T>(),
+)
 
 /**
  * Performs a PATCH request.
@@ -166,14 +158,12 @@ suspend inline fun <reified T : Any> NetworkClient.patch(
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
     contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
-): ApiOperation<T> {
-    return call(
-        method = NetworkRequestMethod.PATCH,
-        baseUrl = baseUrl,
-        urlString = urlString,
-        body = body,
-        headers = headers,
-        contentType = contentType,
-        serializer = serializer<T>()
-    )
-}
+): ApiOperation<T> = call(
+    method = NetworkRequestMethod.PATCH,
+    baseUrl = baseUrl,
+    urlString = urlString,
+    body = body,
+    headers = headers,
+    contentType = contentType,
+    serializer = serializer<T>(),
+)

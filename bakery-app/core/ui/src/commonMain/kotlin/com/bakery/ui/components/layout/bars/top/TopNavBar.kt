@@ -33,7 +33,7 @@ fun TopNavBar(
     onTabSelected: (Int) -> Unit = {},
 ) {
     Box(
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         AnimatedVisibility(
             visible = state.showBar,
@@ -43,7 +43,7 @@ fun TopNavBar(
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TopBarComponent(
                     navigationIcon = navigationIcon,
@@ -56,11 +56,11 @@ fun TopNavBar(
                         ) {
                             actions()
                         }
-                    }
+                    },
                 )
                 if (state.tabs.isNotEmpty()) {
                     SecondaryTabRow(
-                        selectedTabIndex = state.selectedTabIndex
+                        selectedTabIndex = state.selectedTabIndex,
                     ) {
                         state.tabs.forEachIndexed { index, tab ->
                             Tab(
@@ -74,7 +74,7 @@ fun TopNavBar(
                                         style = Fonts.smallTextStyle,
                                         maxLines = 1,
                                     )
-                                }
+                                },
                             )
                         }
                     }

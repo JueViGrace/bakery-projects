@@ -1,8 +1,6 @@
 package com.bakery.ui.navigation
 
-data class ActionStack(
-    val actions: List<NavigationAction> = emptyList()
-) {
+data class ActionStack(val actions: List<NavigationAction> = emptyList()) {
     fun addAction(action: NavigationAction): ActionStack {
         val actions: MutableList<NavigationAction> = actions.toMutableList()
 

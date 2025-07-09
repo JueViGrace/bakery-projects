@@ -40,6 +40,7 @@ kotlin {
 
             // Util
             implementation(project(":core:util"))
+
             /*
              * Dependencies
              */

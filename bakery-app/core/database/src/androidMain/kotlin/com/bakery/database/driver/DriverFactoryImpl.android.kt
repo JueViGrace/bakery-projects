@@ -11,34 +11,28 @@ import app.cash.sqldelight.driver.android.AndroidSqliteDriver
 /*
 * Driver factory Android implementation.
 * */
-actual class DriverFactoryImpl(
-    private val context: Context
-) : DriverFactory {
-    actual override fun createDriver(schema: SqlSchema<QueryResult.Value<Unit>>, name: String): SqlDriver {
-        return AndroidSqliteDriver(
-            schema = schema,
-            context = context,
-            name = name,
-            callback = object : AndroidSqliteDriver.Callback(schema) {
-                override fun onOpen(db: SupportSQLiteDatabase) {
-                    db.setForeignKeyConstraintsEnabled(true)
-                    super.onOpen(db)
-                }
+actual class DriverFactoryImpl(private val context: Context) : DriverFactory {
+    actual override fun createDriver(schema: SqlSchema<QueryResult.Value<Unit>>, name: String): SqlDriver = AndroidSqliteDriver(
+        schema = schema,
+        context = context,
+        name = name,
+        callback = object : AndroidSqliteDriver.Callback(schema) {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                db.setForeignKeyConstraintsEnabled(true)
+                super.onOpen(db)
             }
-        )
-    }
+        },
+    )
 
-    actual override fun createAsyncDriver(schema: SqlSchema<QueryResult.AsyncValue<Unit>>, name: String): SqlDriver {
-        return AndroidSqliteDriver(
-            schema = schema.synchronous(),
-            context = context,
-            name = name,
-            callback = object : AndroidSqliteDriver.Callback(schema.synchronous()) {
-                override fun onOpen(db: SupportSQLiteDatabase) {
-                    db.setForeignKeyConstraintsEnabled(true)
-                    super.onOpen(db)
-                }
+    actual override fun createAsyncDriver(schema: SqlSchema<QueryResult.AsyncValue<Unit>>, name: String): SqlDriver = AndroidSqliteDriver(
+        schema = schema.synchronous(),
+        context = context,
+        name = name,
+        callback = object : AndroidSqliteDriver.Callback(schema.synchronous()) {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                db.setForeignKeyConstraintsEnabled(true)
+                super.onOpen(db)
             }
-        )
-    }
+        },
+    )
 }

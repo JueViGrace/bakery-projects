@@ -16,13 +16,11 @@ interface AuthHelper : LocalDataSource {
 }
 
 class DefaultAuthHelper(override val dbHelper: DbHelper<BakeryDB>) : AuthHelper {
-    override suspend fun getSession(): Session? {
-        return dbHelper.withDatabase {
-            executeOneAsFlow(
-                db.sessionQueries.findSession()
-            )
-        }?.firstOrNull()
-    }
+    override suspend fun getSession(): Session? = dbHelper.withDatabase {
+        executeOneAsFlow(
+            db.sessionQueries.findSession(),
+        )
+    }?.firstOrNull()
 
     override suspend fun createSession(session: Session) {
         dbHelper.withDatabase {
@@ -37,7 +35,7 @@ class DefaultAuthHelper(override val dbHelper: DbHelper<BakeryDB>) : AuthHelper 
             db.transaction {
                 db.sessionQueries.updateActive(
                     active = active,
-                    id = id
+                    id = id,
                 )
             }
         }

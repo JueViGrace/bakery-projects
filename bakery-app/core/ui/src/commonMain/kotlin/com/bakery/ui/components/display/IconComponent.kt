@@ -20,13 +20,13 @@ fun IconComponent(
     modifier: Modifier = Modifier.size(24.dp),
     painter: Painter,
     contentDescription: String? = null,
-    tint: Color = LocalContentColor.current
+    tint: Color = LocalContentColor.current,
 ) {
     Icon(
         modifier = modifier,
         painter = painter,
         contentDescription = contentDescription,
-        tint = tint
+        tint = tint,
     )
 }
 
@@ -35,13 +35,13 @@ fun IconComponent(
     modifier: Modifier = Modifier.size(24.dp),
     imageVector: ImageVector,
     contentDescription: String? = null,
-    tint: Color = LocalContentColor.current
+    tint: Color = LocalContentColor.current,
 ) {
     Icon(
         modifier = modifier,
         imageVector = imageVector,
         contentDescription = contentDescription,
-        tint = tint
+        tint = tint,
     )
 }
 
@@ -54,19 +54,19 @@ fun IconComponent(
     onClick: () -> Unit,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
-    tint: Color = LocalContentColor.current
+    tint: Color = LocalContentColor.current,
 ) {
     IconButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
         Icon(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
             painter = painter,
             contentDescription = contentDescription,
-            tint = tint
+            tint = tint,
         )
     }
 }
@@ -80,19 +80,19 @@ fun IconComponent(
     onClick: () -> Unit,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
-    tint: Color = LocalContentColor.current
+    tint: Color = LocalContentColor.current,
 ) {
     IconButton(
         modifier = modifier,
         onClick = onClick,
         enabled = enabled,
-        interactionSource = interactionSource
+        interactionSource = interactionSource,
     ) {
         Icon(
             modifier = Modifier.fillMaxSize().padding(contentPadding),
             imageVector = imageVector,
             contentDescription = contentDescription,
-            tint = tint
+            tint = tint,
         )
     }
 }

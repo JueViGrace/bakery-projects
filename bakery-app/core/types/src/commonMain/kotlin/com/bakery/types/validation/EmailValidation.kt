@@ -3,12 +3,12 @@ package com.bakery.types.validation
 object EmailValidator {
     // RFC 5322 compliant (simplified)
     private val rfc5322Regex = Regex(
-        """^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$"""
+        """^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$""",
     )
 
     // Stricter pattern for most use cases
     private val strictEmailRegex = Regex(
-        """^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$"""
+        """^[a-zA-Z0-9][a-zA-Z0-9._%+-]{0,63}@(?:[a-zA-Z0-9-]{1,63}\.)+[a-zA-Z]{2,}$""",
     )
 
     fun validate(email: String, strict: Boolean = true): EmailValidationResult {
@@ -31,9 +31,7 @@ object EmailValidator {
         }
     }
 
-    fun isValid(email: String): Boolean {
-        return validate(email) is EmailValidationResult.Valid
-    }
+    fun isValid(email: String): Boolean = validate(email) is EmailValidationResult.Valid
 }
 
 sealed interface EmailValidationResult {
@@ -41,16 +39,12 @@ sealed interface EmailValidationResult {
     data class Invalid(val reason: EmailValidationError) : EmailValidationResult
 }
 
-enum class EmailValidationError{
+enum class EmailValidationError {
     EMPTY,
     TOO_LONG,
     INVALID_FORMAT,
 }
 
-fun String.isValidEmail(): Boolean {
-    return EmailValidator.isValid(this)
-}
+fun String.isValidEmail(): Boolean = EmailValidator.isValid(this)
 
-fun String.validateEmail(): EmailValidationResult {
-    return EmailValidator.validate(this)
-}
+fun String.validateEmail(): EmailValidationResult = EmailValidator.validate(this)

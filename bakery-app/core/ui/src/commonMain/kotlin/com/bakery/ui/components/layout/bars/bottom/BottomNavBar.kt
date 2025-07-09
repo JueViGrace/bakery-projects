@@ -16,13 +16,13 @@ fun BottomNavBar(
     AnimatedVisibility(
         visible = state.showBar,
         enter = fadeIn(),
-        exit = fadeOut()
+        exit = fadeOut(),
     ) {
         BottomBarComponent(
             tabs = state.tabs,
             selected = { tab -> tab == state.selectedTab },
             onTabSelected = onTabSelected,
-            floatingActionButton = floatingActionButton
+            floatingActionButton = floatingActionButton,
         )
     }
 }

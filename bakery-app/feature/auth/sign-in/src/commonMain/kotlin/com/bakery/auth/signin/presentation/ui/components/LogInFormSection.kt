@@ -32,11 +32,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun LogInFormSection(
-    modifier: Modifier = Modifier,
-    state: SignInState,
-    onEvent: (SignInEvents) -> Unit
-) {
+fun LogInFormSection(modifier: Modifier = Modifier, state: SignInState, onEvent: (SignInEvents) -> Unit) {
     val windowUtils: WindowUtils = LocalWindowUtils.current
     val maxSizeModifier: Modifier = if (windowUtils.getScreenSize() == ScreenSize.Compact) {
         Modifier.fillMaxWidth(0.8f)
@@ -47,7 +43,7 @@ fun LogInFormSection(
     Column(
         modifier = modifier.then(maxSizeModifier),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         val username = stringResource(Res.string.username)
 
@@ -74,12 +70,12 @@ fun LogInFormSection(
                 onEvent(SignInEvents.OnPasswordChanged(newValue))
             },
             isError = state.formValidation.passwordError != null,
-            errorText = state.formValidation.passwordError?.let { stringResource(it) }
+            errorText = state.formValidation.passwordError?.let { stringResource(it) },
         )
 
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
@@ -101,12 +97,12 @@ fun LogInFormSection(
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
                         text = error,
                         style = Fonts.smallTextStyle,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }

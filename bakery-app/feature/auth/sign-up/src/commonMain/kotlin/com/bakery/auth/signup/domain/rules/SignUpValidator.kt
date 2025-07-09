@@ -29,13 +29,13 @@ internal object SignUpValidator {
 
         if (form.firstName.isEmpty()) {
             validation = validation.copy(
-                firstNameError = Res.string.first_name_empty
+                firstNameError = Res.string.first_name_empty,
             )
         }
 
         if (form.lastName.isEmpty()) {
             validation = validation.copy(
-                lastNameError = Res.string.last_name_empty
+                lastNameError = Res.string.last_name_empty,
             )
         }
 
@@ -46,38 +46,38 @@ internal object SignUpValidator {
                     EmailValidationError.EMPTY -> Res.string.email_empty
                     EmailValidationError.TOO_LONG -> Res.string.email_too_long
                     EmailValidationError.INVALID_FORMAT -> Res.string.email_invalid_format
-                }
+                },
             )
         }
 
         if (form.username.isEmpty()) {
             validation = validation.copy(
-                usernameError = Res.string.username_empty
+                usernameError = Res.string.username_empty,
             )
         }
 
         if (form.password.isEmpty()) {
             validation = validation.copy(
-                passwordError = Res.string.password_empty
+                passwordError = Res.string.password_empty,
             )
         }
 
         // todo: validate phone number
         if (form.phoneNumber.isEmpty()) {
             validation = validation.copy(
-                phoneNumberError = Res.string.phone_number_empty
+                phoneNumberError = Res.string.phone_number_empty,
             )
         }
 
         if (!form.termsAndConditions) {
             validation = validation.copy(
-                termsAndConditionsError = Res.string.terms_and_conditions_not_accepted
+                termsAndConditionsError = Res.string.terms_and_conditions_not_accepted,
             )
         }
 
         if (!form.privacyPolicy) {
             validation = validation.copy(
-                privacyPolicyError = Res.string.privacy_policy_not_accepted
+                privacyPolicyError = Res.string.privacy_policy_not_accepted,
             )
         }
 
@@ -96,15 +96,13 @@ data class SignUpValidation(
     val termsAndConditionsError: StringResource? = null,
     val privacyPolicyError: StringResource? = null,
 ) : ValidationResult {
-    override fun valid(): Boolean {
-        return firstNameError == null &&
-            lastNameError == null &&
-            usernameError == null &&
-            aliasError == null &&
-            emailError == null &&
-            passwordError == null &&
-            phoneNumberError == null &&
-            termsAndConditionsError == null &&
-            privacyPolicyError == null
-    }
+    override fun valid(): Boolean = firstNameError == null &&
+        lastNameError == null &&
+        usernameError == null &&
+        aliasError == null &&
+        emailError == null &&
+        passwordError == null &&
+        phoneNumberError == null &&
+        termsAndConditionsError == null &&
+        privacyPolicyError == null
 }

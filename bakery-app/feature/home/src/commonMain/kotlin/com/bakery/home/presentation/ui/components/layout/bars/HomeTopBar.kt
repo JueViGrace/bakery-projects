@@ -20,6 +20,6 @@ fun HomeTopBar(
         navigationIcon = navigationIcon,
         title = title,
         actions = actions,
-        onTabSelected = onTabSelected
+        onTabSelected = onTabSelected,
     )
 }
