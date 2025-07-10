@@ -1,0 +1,27 @@
+findUsers:
+SELECT *
+FROM user;
+
+findUser:
+SELECT *
+FROM user
+WHERE id = :id;
+
+insert:
+INSERT OR REPLACE INTO user(
+    id,
+    firstname,
+    lastname,
+    username,
+    email,
+    phoneNumber,
+    birthDate,
+    address1,
+    address2,
+    gender,
+    createdAt
+) VALUES ?;
+
+delete:
+DELETE FROM user
+WHERE id = :id;

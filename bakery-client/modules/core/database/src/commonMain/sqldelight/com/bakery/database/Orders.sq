@@ -1,0 +1,47 @@
+findOrders:
+SELECT *
+FROM orders;
+
+findOrder:
+SELECT *
+FROM orders
+WHERE id = :id;
+
+findOrderWithLines:
+SELECT *
+FROM orders
+LEFT JOIN order_products
+ON orders.id = order_products.orderId
+LEFT JOIN product
+ON product.id = order_products.productId
+WHERE orders.id = :id;
+
+findOrdersByUser:
+SELECT *
+FROM orders
+WHERE userId = :id;
+
+findOrderByUserWithLines:
+SELECT *
+FROM orders
+LEFT JOIN order_products
+ON orders.id = order_products.orderId
+LEFT JOIN product
+ON product.id = order_products.productId
+WHERE orders.id = :id AND
+orders.userId = :userId;
+
+insert:
+INSERT OR REPLACE INTO orders(
+    id,
+    totalAmount,
+    paymentMethod,
+    userId
+)
+VALUES ?;
+
+updateStatus:
+UPDATE orders SET
+    status = :status,
+    updatedAt = CURRENT_TIMESTAMP
+WHERE id = :id;

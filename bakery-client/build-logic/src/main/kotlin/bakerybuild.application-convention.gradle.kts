@@ -1,4 +1,5 @@
 import bakerybuild.internal.libs
+import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 
 plugins {
     id("bakerybuild.compose-convention")
@@ -23,23 +24,17 @@ kotlin {
              * Projects
              */
 
-            // Database
-            implementation(project(":core:database"))
-
-            // Network
-            implementation(project(":core:network"))
+            // Core
+            implementation(project(":modules:core"))
 
             // Resources
-            implementation(project(":core:resources"))
+            implementation(project(":modules:resources"))
 
             // Types
-            implementation(project(":core:types"))
+            implementation(project(":modules:core:types"))
 
             // UI
-            implementation(project(":core:ui"))
-
-            // Util
-            implementation(project(":core:util"))
+            implementation(project(":modules:ui"))
 
             /*
              * Dependencies
@@ -101,6 +96,13 @@ android {
             isDebuggable = true
 
             buildConfigField("Boolean", "IS_DEBUG", "true")
+        }
+
+        all {
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                file("$rootDir/build-logic/src/main/resources/proguard-rules.pro"),
+            )
         }
     }
 

@@ -17,7 +17,9 @@ android {
                 .get()
                 .toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        consumerProguardFiles(
+            file("$rootDir/build-logic/src/main/resources/consumer-rules.pro"),
+        )
     }
 
     compileOptions {

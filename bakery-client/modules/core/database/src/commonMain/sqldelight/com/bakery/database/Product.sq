@@ -1,0 +1,72 @@
+findAll:
+SELECT *
+FROM product;
+
+findOne:
+SELECT *
+FROM product
+WHERE id = :id;
+
+findExisting:
+SELECT *
+FROM product
+WHERE deletedAt IS NULL;
+
+findExistingOne:
+SELECT *
+FROM product
+WHERE id = :id AND
+deletedAt IS NULL;
+
+insert:
+INSERT OR REPLACE INTO product(
+    id,
+    name,
+    description,
+    category,
+    price,
+    stock,
+    issued,
+    hasStock,
+    discount,
+    rating,
+    images
+)
+VALUES ?;
+
+update:
+UPDATE product SET
+    name = :name,
+    description = :description,
+    category = :category,
+    price = :price,
+    stock = :stock,
+    issued = :issued,
+    hasStock = :hasStock,
+    discount = :discount,
+    rating = :rating,
+    images = :images,
+    updatedAt = CURRENT_TIMESTAMP
+WHERE id = :id;
+
+updateStock:
+UPDATE product SET
+    stock = :stock,
+    issued = :issued,
+    hasStock = :hasStock
+WHERE id = :id;
+
+updateIssued:
+UPDATE product SET
+    issued = :issued
+WHERE id = :id;
+
+softDelete:
+UPDATE product SET
+    updatedAt = CURRENT_TIMESTAMP,
+    deletedAt = CURRENT_TIMESTAMP
+WHERE id = :id;
+
+delete:
+DELETE FROM product
+WHERE id = :id;

@@ -17,7 +17,6 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google {
             mavenContent {
@@ -46,47 +45,56 @@ include(
 
 // core library
 include(
-    ":core:network",
-    ":core:database",
-    ":core:resources",
-    ":core:types",
-    ":core:ui",
-    ":core:util",
+    ":modules:core",
+    ":modules:core:network",
+    ":modules:core:database",
+    ":modules:core:types",
+    ":modules:core:util",
 )
 
-// feature library
+// modules library
+include(
+    ":modules:ui",
+    ":modules:resources",
+)
+
+// library
 
 // auth library
 include(
-    ":feature:auth",
-    ":feature:auth:forgot",
-    ":feature:auth:database-auth",
-    ":feature:auth:network-auth",
-    ":feature:auth:onboarding",
-    ":feature:auth:sign-in",
-    ":feature:auth:sign-up",
-    ":feature:auth:types-auth",
+    ":modules:auth",
+    ":modules:auth:database-auth",
+    ":modules:auth:features:forgot",
+    ":modules:auth:features:onboarding",
+    ":modules:auth:features:sign-in",
+    ":modules:auth:features:sign-up",
+    ":modules:auth:network-auth",
+)
+
+// dashboard library
+include(
+    ":modules:dashboard",
 )
 
 // home library
 include(
-    ":feature:home",
+    ":modules:home",
 )
 
 // order library
 include(
-    ":feature:order",
-    ":feature:order:network-order",
+    ":modules:order",
+    ":modules:order:network-order",
 )
 
 // product library
 include(
-    ":feature:product",
-    ":feature:product:network-product",
+    ":modules:product",
+    ":modules:product:network-product",
 )
 
 // user library
 include(
-    ":feature:user",
-    ":feature:user:network-user",
+    ":modules:user",
+    ":modules:user:network-user",
 )

@@ -40,5 +40,11 @@ kotlin {
                 api(libs.logback.classic)
             }
         }
+
+        hasTarget("js") {
+            jsMain.dependencies {
+                api(libs.kotlinx.coroutines.core.js)
+            }
+        }
     }
 }

@@ -29,19 +29,19 @@ kotlin {
              */
 
             // Auth
-            implementation(projects.feature.auth)
+            implementation(projects.modules.auth)
 
             // Home
-            implementation(projects.feature.home)
+            implementation(projects.modules.home)
 
             // Order
-            implementation(projects.feature.order)
+            implementation(projects.modules.order)
 
             // Product
-            implementation(projects.feature.product)
+            implementation(projects.modules.product)
 
             // User
-            implementation(projects.feature.user)
+            implementation(projects.modules.user)
         }
 
         desktopMain.dependencies {
@@ -70,15 +70,6 @@ android {
         versionName =
             libs.versions.appVersion
                 .get()
-    }
-
-    buildTypes {
-        all {
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro",
-            )
-        }
     }
 }
 
