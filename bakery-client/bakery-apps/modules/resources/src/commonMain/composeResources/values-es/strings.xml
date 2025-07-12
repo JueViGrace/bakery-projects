@@ -65,8 +65,6 @@
     <string name="more">Más</string>
     <string name="username">Nombre de usuario</string>
     <string name="password">Contraseña</string>
-    <string name="go_to_sign_up">Ir al registro</string>
-    <string name="not_have_account">¿No tienes una cuenta? Regístrate</string>
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="notifications">Notificaciones</string>
     <string name="search">Buscar</string>
@@ -97,8 +95,11 @@
     <string name="or">O</string>
     <string name="request_date">Fecha de solicitud</string>
     <!--Custom Messages-->
-    <string name="sign_up_title">¡Bienvenido de vuelta!</string>
-    <string name="sign_in_title">Por favor inicia sesión</string>
+    <string name="welcome_back">¡Bienvenido de vuelta!</string>
+    <string name="dont_have_account">¿No tienes una cuenta?, ¡Registrate aquí!</string>
+    <string name="already_have_account">¿Ya tienes una cuenta?, ¡Inicia sesión aquí!</string>
+    <string name="sign_in_title">Por favor inicia sesión para continuar.</string>
+    <string name="sign_up_title">¡Crea tu cuenta con nosotros y empieza a disfrutar de nuestros servicios!</string>
     <string name="forgot_username">¿Olvidaste tu nombre de usuario?</string>
     <string name="or_sign_in_with">O inicia sesión con</string>
     <!--Error Messages-->

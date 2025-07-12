@@ -1,8 +1,9 @@
-package com.bakery.auth.signin.presentation.ui.components
+package com.bakery.auth.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CardDefaults
@@ -11,15 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bakery.auth.signin.presentation.events.SignInEvents
-import com.bakery.auth.signin.presentation.state.SignInState
 import com.bakery.ui.setMaxWidth
 
 @Composable
-fun SignInMainSection(
+fun AuthCardSection(
     modifier: Modifier = Modifier,
-    state: SignInState,
-    onEvent: (SignInEvents) -> Unit,
+    content: @Composable ColumnScope.() -> Unit
 ) {
     Box(
         modifier = modifier,
@@ -34,22 +32,12 @@ fun SignInMainSection(
                     .fillMaxWidth()
                     .padding(
                         horizontal = 18.dp,
-                        vertical = 48.dp
+                        vertical = 36.dp
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SignInTopContent(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterVertically),
-                    onEvent = onEvent,
-                )
-
-                SignInFormSection(
-                    modifier = Modifier.fillMaxWidth(),
-                    state = state,
-                    onEvent = onEvent,
-                )
+                content()
             }
         }
     }

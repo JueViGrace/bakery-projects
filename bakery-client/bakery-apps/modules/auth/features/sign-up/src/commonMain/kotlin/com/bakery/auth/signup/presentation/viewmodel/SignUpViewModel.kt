@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bakery.auth.signup.data.SignUpRepository
 import com.bakery.auth.signup.domain.rules.SignUpValidation
 import com.bakery.auth.signup.domain.rules.SignUpValidator
+import com.bakery.auth.signup.presentation.events.SignUpEvents
 import com.bakery.auth.signup.presentation.state.SignUpState
 import com.bakery.types.auth.signup.SignUpForm
 import com.bakery.ui.viewmodel.BaseViewModel
@@ -57,4 +58,10 @@ class SignUpViewModel(private val repository: SignUpRepository) :
         started = SharingStarted.WhileSubscribed(5000),
         initialValue = _state.value,
     )
+
+    fun onEvent(event: SignUpEvents) {
+        when (event) {
+            else -> {}
+        }
+    }
 }

@@ -84,9 +84,6 @@ fun HomeScaffold(
                         IconComponent(
                             painter = painterResource(Res.drawable.ic_search),
                             contentDescription = stringResource(Res.string.search),
-                            onClick = {
-                                onEvent(HomeEvents.ToggleSearch)
-                            },
                         )
                     }
                 },

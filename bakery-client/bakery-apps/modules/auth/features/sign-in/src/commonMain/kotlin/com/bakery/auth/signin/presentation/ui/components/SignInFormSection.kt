@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -29,23 +27,17 @@ import com.bakery.auth.ui.AuthFormSection
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.forgot_password
 import com.bakery.resources.generated.resources.forgot_username
-import com.bakery.resources.generated.resources.google
-import com.bakery.resources.generated.resources.google_logo
 import com.bakery.resources.generated.resources.ic_eye
 import com.bakery.resources.generated.resources.ic_eye_off
 import com.bakery.resources.generated.resources.ic_lock
 import com.bakery.resources.generated.resources.ic_user
 import com.bakery.resources.generated.resources.log_in
-import com.bakery.resources.generated.resources.or_sign_in_with
 import com.bakery.resources.generated.resources.password
 import com.bakery.resources.generated.resources.type_your
 import com.bakery.resources.generated.resources.username
 import com.bakery.ui.Fonts
-import com.bakery.ui.components.buttons.CardButton
 import com.bakery.ui.components.display.IconComponent
-import com.bakery.ui.components.display.ImageComponent
 import com.bakery.ui.components.input.DefaultInputField
-import com.bakery.ui.model.SocialProvider
 import com.bakery.ui.navigation.models.ForgotAction
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -182,37 +174,6 @@ fun SignInFormSection(
                             text = error,
                             style = Fonts.smallTextStyle,
                             color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-                }
-
-                Text(
-                    text = stringResource(Res.string.or_sign_in_with),
-                    style = Fonts.smallTextStyle,
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    CardButton(
-                        onClick = {
-                            onEvent(SignInEvents.OnSocialLogin(SocialProvider.Google))
-                        },
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        )
-                    ) {
-                        ImageComponent(
-                            modifier = Modifier
-                                .padding(
-                                    horizontal = 24.dp,
-                                    vertical = 8.dp,
-                                )
-                                .size(24.dp),
-                            painter = painterResource(Res.drawable.google_logo),
-                            contentDescription = stringResource(Res.string.google),
                         )
                     }
                 }

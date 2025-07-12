@@ -24,5 +24,5 @@ kotlin {
 }
 
 android {
-    namespace = "com.bakery.ui"
+    namespace = "com.bakery.auth.ui"
 }

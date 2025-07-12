@@ -22,6 +22,10 @@ kotlin {
 
             // Network
             implementation(projects.modules.auth.networkAuth)
+
+            // UI
+            implementation(projects.modules.auth.uiAuth)
+
         }
     }
 }

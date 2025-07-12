@@ -3,6 +3,7 @@ package com.bakery.auth.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowColumn
+import androidx.compose.foundation.layout.FlowColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,7 +12,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AuthFormSection(
-    fields: @Composable () -> Unit,
+    fields: @Composable FlowColumnScope.() -> Unit,
     submitContent: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
