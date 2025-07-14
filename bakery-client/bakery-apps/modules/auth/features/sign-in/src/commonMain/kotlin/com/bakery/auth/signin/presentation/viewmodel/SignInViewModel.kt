@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.navOptions
 import com.bakery.auth.signin.data.SignInRepository
-import com.bakery.auth.signin.domain.rules.LoginValidation
-import com.bakery.auth.signin.domain.rules.LoginValidator
+import com.bakery.auth.signin.domain.model.SignInForm
+import com.bakery.auth.signin.domain.rules.SignInValidation
+import com.bakery.auth.signin.domain.rules.SignInValidator
 import com.bakery.auth.signin.presentation.events.SignInEvents
 import com.bakery.auth.signin.presentation.state.SignInState
 import com.bakery.core.state.RequestState
-import com.bakery.types.auth.signin.LogInForm
 import com.bakery.ui.model.SocialProvider
 import com.bakery.ui.navigation.AuthGraphRoute
 import com.bakery.ui.navigation.ForgotRoute
@@ -25,7 +25,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -38,17 +41,20 @@ class SignInViewModel(private val repository: SignInRepository) :
 
     private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
 
-    private val formState: MutableStateFlow<LogInForm> = MutableStateFlow(LogInForm())
+    private val formState: MutableStateFlow<SignInForm> = MutableStateFlow(SignInForm())
 
     @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
-    private val formValidationState: StateFlow<LoginValidation> = formState
-        .flatMapLatest { value ->
-            LoginValidator.validate(value)
+    private val formValidationState: StateFlow<SignInValidation> = formState
+        .map { it }
+        .distinctUntilChanged()
+        .debounce(300)
+        .flatMapLatest { form ->
+            SignInValidator.validate(form)
         }
         .stateIn(
             scope = scope,
             started = SharingStarted.Lazily,
-            initialValue = LoginValidation(),
+            initialValue = SignInValidation(),
         )
 
     val state: StateFlow<SignInState> = combine(
@@ -57,13 +63,9 @@ class SignInViewModel(private val repository: SignInRepository) :
         formValidationState,
     ) { state, formState, formValidationState ->
         state.copy(
-            logInForm = formState,
-            formValidation = formValidationState.copy(
-                usernameError = if (formState.shouldShowUsernameError) formValidationState.usernameError else null,
-                passwordError = if (formState.shouldShowPasswordError) formValidationState.passwordError else null,
-            ),
-            submitEnabled = (!state.submitLoading && formValidationState.valid()) &&
-                (formState.username.isNotBlank() && formState.password.isNotBlank()),
+            signInForm = formState,
+            formValidation = formValidationState,
+            submitEnabled = !state.submitLoading && (if (formState.hasErrors) formValidationState.valid() else false)
         )
     }.stateIn(
         scope = scope,
@@ -73,7 +75,7 @@ class SignInViewModel(private val repository: SignInRepository) :
 
     fun onEvent(event: SignInEvents) {
         when (event) {
-            is SignInEvents.OnEmailChanged -> emailChanged(event.email)
+            is SignInEvents.OnUsernameChanged -> usernameChanged(event.email)
             is SignInEvents.OnForgot -> navigateToForgot(Json.encodeToString(event.action))
             is SignInEvents.OnPasswordChanged -> passwordChanged(event.password)
             is SignInEvents.OnSocialLogin -> handleSocialLogin(event.provider)
@@ -94,19 +96,12 @@ class SignInViewModel(private val repository: SignInRepository) :
         }
     }
 
-    private fun emailChanged(value: String) {
+    private fun usernameChanged(value: String) {
         formState.update { state ->
             state.copy(
                 username = value,
+                showUsernameError = true,
             )
-        }
-        scope.launch {
-            delay(1000)
-            formState.update { state ->
-                state.copy(
-                    shouldShowUsernameError = true,
-                )
-            }
         }
     }
 
@@ -141,26 +136,12 @@ class SignInViewModel(private val repository: SignInRepository) :
         formState.update { state ->
             state.copy(
                 password = value,
+                showPasswordError = true,
             )
-        }
-        scope.launch {
-            delay(1000)
-            formState.update { state ->
-                state.copy(
-                    shouldShowPasswordError = true,
-                )
-            }
         }
     }
 
     private fun submit() {
-        _state.update { state ->
-            state.copy(
-                submitLoading = true,
-                submitError = null,
-            )
-        }
-
         scope.launch {
             repository.login(formState.value).collect { result ->
                 when (result) {

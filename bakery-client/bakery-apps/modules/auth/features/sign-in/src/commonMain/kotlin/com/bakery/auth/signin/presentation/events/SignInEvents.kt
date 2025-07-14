@@ -5,7 +5,7 @@ import com.bakery.ui.navigation.models.ForgotAction
 
 sealed interface SignInEvents {
     /* Input */
-    data class OnEmailChanged(val email: String) : SignInEvents
+    data class OnUsernameChanged(val email: String) : SignInEvents
     data class OnPasswordChanged(val password: String) : SignInEvents
 
     /* Navigation */

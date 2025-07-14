@@ -8,12 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bakery.auth.signin.presentation.events.SignInEvents
 import com.bakery.auth.signin.presentation.state.SignInState
-import com.bakery.auth.signin.presentation.ui.components.layout.SignInLandscapeLayout
-import com.bakery.auth.signin.presentation.ui.components.layout.SignInPortraitLayout
+import com.bakery.auth.signin.presentation.ui.components.layout.SignInLayout
 import com.bakery.auth.signin.presentation.viewmodel.SignInViewModel
 import com.bakery.auth.ui.AuthScreenContainer
 import com.bakery.ui.components.containers.AppContainer
-import com.bakery.ui.components.containers.ScaffoldContainer
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -21,6 +19,7 @@ import org.koin.compose.viewmodel.koinViewModel
 fun SignInScreen(viewmodel: SignInViewModel = koinViewModel()) {
     val state: SignInState by viewmodel.state.collectAsStateWithLifecycle()
 
+    // todo: change error handling
     LaunchedEffect(state.submitError) {
         if (state.submitError != null) {
             viewmodel.onEvent(SignInEvents.ClearError)
@@ -38,22 +37,11 @@ fun SignInContent(
     state: SignInState,
     onEvent: (SignInEvents) -> Unit = {},
 ) {
-    ScaffoldContainer {
-        AuthScreenContainer(
-            landscapeLayout = {
-                SignInLandscapeLayout(
-                    modifier = Modifier.fillMaxSize(),
-                    state = state,
-                    onEvent = onEvent,
-                )
-            },
-            portraitLayout = {
-                SignInPortraitLayout(
-                    modifier = Modifier.fillMaxSize(),
-                    state = state,
-                    onEvent = onEvent,
-                )
-            }
+    AuthScreenContainer {
+        SignInLayout(
+            modifier = Modifier.fillMaxSize(),
+            state = state,
+            onEvent = onEvent,
         )
     }
 }

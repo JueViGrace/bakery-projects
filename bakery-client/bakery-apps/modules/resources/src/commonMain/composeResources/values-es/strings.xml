@@ -32,9 +32,6 @@
     <string name="select">Seleccionar</string>
     <string name="retry">Reintentar</string>
     <string name="time">Tiempo</string>
-    <string name="privacy_policy">Política de privacidad</string>
-    <string name="read_privacy_policy">Leer política de privacidad</string>
-    <string name="accept_privacy_policy">Aceptar política de privacidad</string>
     <string name="continue_question">¿Desea continuar?</string>
     <string name="permission_required">Permiso requerido</string>
     <string name="grant_permission">Dar permiso</string>
@@ -93,7 +90,17 @@
     <string name="start_hour">Hora inicio</string>
     <string name="option">Opción</string>
     <string name="or">O</string>
+    <string name="accept">Aceptar</string>
     <string name="request_date">Fecha de solicitud</string>
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="display_name">Nombre para mostrar</string>
+    <string name="phone_number">Teléfono</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="terms_and_conditions">Términos y condiciones</string>
+    <string name="accept_terms_and_conditions">¿Aceptas nuestros términos y condiciones?</string>
+    <string name="accept_privacy_policy">¿Aceptas la política de privacidad?</string>
+    <string name="privacy_policy">Política de privacidad</string>
     <!--Custom Messages-->
     <string name="welcome_back">¡Bienvenido de vuelta!</string>
     <string name="dont_have_account">¿No tienes una cuenta?, ¡Registrate aquí!</string>
@@ -103,6 +110,7 @@
     <string name="forgot_username">¿Olvidaste tu nombre de usuario?</string>
     <string name="or_sign_in_with">O inicia sesión con</string>
     <!--Error Messages-->
+    <string name="password_mismatch">Las contraseñas no coinciden</string>
     <string name="not_available">No disponible</string>
     <string name="authenticate_first">Necesitas autenticarte primero</string>
     <string name="unexpected_error">Unexpected error</string>
@@ -113,6 +121,7 @@
     <string name="failed_to_start_session">Error al iniciar sesión</string>
     <string name="first_name_empty">Nombre no puede estar vacío</string>
     <string name="last_name_empty">Apellido no puede estar vacío</string>
+    <string name="alias_empty">El nombre para mostrar no puede estar vacío</string>
     <string name="email_empty">Email no puede estar vacío</string>
     <string name="email_invalid_format">Formato de email no válido</string>
     <string name="email_too_long">Email demasiado largo</string>

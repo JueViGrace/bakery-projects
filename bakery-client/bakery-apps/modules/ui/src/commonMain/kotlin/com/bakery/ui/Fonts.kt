@@ -8,7 +8,7 @@ import com.bakery.ui.window.ScreenSize
 import com.bakery.ui.window.WindowUtils
 
 object Fonts {
-    private val windowUtils: WindowUtils = WindowUtils.Companion.instance
+    private val windowUtils: WindowUtils = WindowUtils.instance
 
     val displayTextStyle: TextStyle
         @Composable

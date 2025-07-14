@@ -1,22 +1,23 @@
 package com.bakery.auth.signup.domain.rules
 
+import com.bakery.auth.signup.domain.model.SignUpForm
 import com.bakery.resources.generated.resources.Res
+import com.bakery.resources.generated.resources.alias_empty
 import com.bakery.resources.generated.resources.email_empty
 import com.bakery.resources.generated.resources.email_invalid_format
 import com.bakery.resources.generated.resources.email_too_long
 import com.bakery.resources.generated.resources.first_name_empty
 import com.bakery.resources.generated.resources.last_name_empty
 import com.bakery.resources.generated.resources.password_empty
+import com.bakery.resources.generated.resources.password_mismatch
 import com.bakery.resources.generated.resources.phone_number_empty
 import com.bakery.resources.generated.resources.privacy_policy_not_accepted
 import com.bakery.resources.generated.resources.terms_and_conditions_not_accepted
 import com.bakery.resources.generated.resources.username_empty
-import com.bakery.types.auth.signup.SignUpForm
 import com.bakery.types.validation.EmailValidationError
 import com.bakery.types.validation.EmailValidationResult
 import com.bakery.types.validation.EmailValidator
 import com.bakery.types.validation.ValidationResult
-import com.bakery.types.validation.isValidEmail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -24,64 +25,118 @@ import kotlinx.coroutines.flow.flowOn
 import org.jetbrains.compose.resources.StringResource
 
 internal object SignUpValidator {
-    fun validate(form: SignUpForm): Flow<SignUpValidation> = flow {
-        var validation = SignUpValidation()
-
-        if (form.firstName.isEmpty()) {
-            validation = validation.copy(
-                firstNameError = Res.string.first_name_empty,
-            )
+    private fun validateFirstName(firstName: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            firstName.isEmpty() -> Res.string.first_name_empty
+            else -> null
         }
+    }
 
-        if (form.lastName.isEmpty()) {
-            validation = validation.copy(
-                lastNameError = Res.string.last_name_empty,
-            )
+    private fun validateLastName(lastName: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            lastName.isEmpty() -> Res.string.last_name_empty
+            else -> null
         }
+    }
 
-        if (!form.email.isValidEmail()) {
-            val valid = EmailValidator.validate(form.email) as EmailValidationResult.Invalid
-            validation = validation.copy(
-                emailError = when (valid.reason) {
+    private fun validateAlias(alias: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            alias.isEmpty() -> Res.string.alias_empty
+            else -> null
+        }
+    }
+
+    // todo: validate number
+    private fun validatePhoneNumber(phoneNumber: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            phoneNumber.isEmpty() -> Res.string.phone_number_empty
+            else -> null
+        }
+    }
+
+    private fun validateEmail(email: String, showError: Boolean): StringResource? {
+        val valid: EmailValidationResult = EmailValidator.validate(email)
+        return when {
+            !showError -> null
+            email.isEmpty() -> Res.string.email_empty
+             valid is EmailValidationResult.Invalid -> {
+                when (valid.reason) {
                     EmailValidationError.EMPTY -> Res.string.email_empty
                     EmailValidationError.TOO_LONG -> Res.string.email_too_long
                     EmailValidationError.INVALID_FORMAT -> Res.string.email_invalid_format
-                },
-            )
+                }
+            }
+            else -> null
         }
+    }
 
-        if (form.username.isEmpty()) {
-            validation = validation.copy(
-                usernameError = Res.string.username_empty,
-            )
+    private fun validateUsername(username: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            username.isEmpty() -> Res.string.username_empty
+            else -> null
         }
+    }
 
-        if (form.password.isEmpty()) {
-            validation = validation.copy(
-                passwordError = Res.string.password_empty,
-            )
+    private fun validatePassword(password: String, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            password.isEmpty() -> Res.string.password_empty
+            else -> null
         }
+    }
 
-        // todo: validate phone number
-        if (form.phoneNumber.isEmpty()) {
-            validation = validation.copy(
-                phoneNumberError = Res.string.phone_number_empty,
-            )
+    private fun validateConfirmPassword(
+        password: String,
+        confirmPassword: String,
+        showError: Boolean,
+    ): StringResource? {
+        return when {
+            !showError -> null
+            password != confirmPassword -> Res.string.password_mismatch
+            else -> null
         }
+    }
 
-        if (!form.termsAndConditions) {
-            validation = validation.copy(
-                termsAndConditionsError = Res.string.terms_and_conditions_not_accepted,
-            )
+    private fun validateTermsAndConditions(termsAccepted: Boolean, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            !termsAccepted -> Res.string.terms_and_conditions_not_accepted
+            else -> null
         }
+    }
 
-        if (!form.privacyPolicy) {
-            validation = validation.copy(
-                privacyPolicyError = Res.string.privacy_policy_not_accepted,
-            )
+    private fun validatePrivacyPolicy(privacyPolicyAccepted: Boolean, showError: Boolean): StringResource? {
+        return when {
+            !showError -> null
+            !privacyPolicyAccepted -> Res.string.privacy_policy_not_accepted
+            else -> null
         }
+    }
 
-        emit(validation)
+    fun validate(form: SignUpForm): Flow<SignUpValidation> = flow {
+        emit(
+            SignUpValidation(
+                firstNameError = validateFirstName(form.firstName, form.showFirstNameError),
+                lastNameError = validateLastName(form.lastName, form.showLastNameError),
+                usernameError = validateUsername(form.username, form.showUsernameError),
+                aliasError = validateAlias(form.alias, form.showAliasError),
+                emailError = validateEmail(form.email, form.showEmailError),
+                passwordError = validatePassword(form.password, form.showPasswordError),
+                confirmPasswordError = validateConfirmPassword(
+                    form.password,
+                    form.confirmPassword,
+                    form.showConfirmPasswordError,
+                ),
+                phoneNumberError = validatePhoneNumber(form.phoneNumber, form.showPhoneNumberError),
+                termsAndConditionsError = validateTermsAndConditions(form.termsAndConditions, form.showTermsAndConditionsError),
+                privacyPolicyError = validatePrivacyPolicy(form.privacyPolicy, form.showPrivacyPolicyError),
+            )
+        )
     }.flowOn(Dispatchers.Default)
 }
 
@@ -92,6 +147,7 @@ data class SignUpValidation(
     val aliasError: StringResource? = null,
     val emailError: StringResource? = null,
     val passwordError: StringResource? = null,
+    val confirmPasswordError: StringResource? = null,
     val phoneNumberError: StringResource? = null,
     val termsAndConditionsError: StringResource? = null,
     val privacyPolicyError: StringResource? = null,
@@ -102,6 +158,7 @@ data class SignUpValidation(
         aliasError == null &&
         emailError == null &&
         passwordError == null &&
+        confirmPasswordError == null &&
         phoneNumberError == null &&
         termsAndConditionsError == null &&
         privacyPolicyError == null

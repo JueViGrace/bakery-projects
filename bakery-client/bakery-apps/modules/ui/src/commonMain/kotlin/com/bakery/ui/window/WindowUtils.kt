@@ -71,14 +71,6 @@ interface WindowUtils {
     @Composable
     fun isLandscape(): Boolean = getScreenOrientation() == Orientation.Landscape
 
-    @Composable
-    fun isWideLayout(): Boolean {
-        val screenSize: ScreenSize = getScreenSize()
-        return isLandscape() &&
-            screenSize == ScreenSize.Medium ||
-            screenSize == ScreenSize.Large
-    }
-
     companion object {
         val instance: WindowUtils = WindowUtilsImpl
     }

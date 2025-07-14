@@ -1,5 +1,6 @@
 package com.bakery.ui.components.buttons
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
@@ -13,12 +14,11 @@ import androidx.compose.ui.unit.dp
 import com.bakery.ui.components.display.RowDisplay
 
 
-
 @Composable
 fun RowCardButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    contentAlignment: Alignment = Alignment.Center,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.SpaceAround,
     contentPadding: PaddingValues = PaddingValues(vertical = 8.dp, horizontal = 16.dp),
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
@@ -28,7 +28,7 @@ fun RowCardButton(
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = contentAlignment,
+        contentAlignment = Alignment.Center,
     ) {
         ElevatedCard(
             onClick = onClick,
@@ -36,6 +36,7 @@ fun RowCardButton(
             enabled = enabled,
         ) {
             RowDisplay(
+                horizontalArrangement = horizontalArrangement,
                 contentPadding = contentPadding,
                 leadingContent = leadingIcon,
                 trailingContent = trailingIcon,

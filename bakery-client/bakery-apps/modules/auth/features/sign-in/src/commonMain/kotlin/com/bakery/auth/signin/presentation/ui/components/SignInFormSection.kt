@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.bakery.auth.signin.presentation.events.SignInEvents
@@ -26,7 +29,6 @@ import com.bakery.auth.signin.presentation.state.SignInState
 import com.bakery.auth.ui.AuthFormSection
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.forgot_password
-import com.bakery.resources.generated.resources.forgot_username
 import com.bakery.resources.generated.resources.ic_eye
 import com.bakery.resources.generated.resources.ic_eye_off
 import com.bakery.resources.generated.resources.ic_lock
@@ -73,21 +75,27 @@ fun SignInFormSection(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
+                        BasicText(
                             modifier = Modifier.clickable(
                                 onClick = {
-                                    onEvent(SignInEvents.OnForgot(ForgotAction.OnForgotUsername))
+                                    onEvent(SignInEvents.OnForgot(ForgotAction.OnForgotPassword))
                                 },
                             ),
-                            text = stringResource(Res.string.forgot_username),
-                            style = Fonts.smallTextStyle,
-                            textDecoration = TextDecoration.Underline,
+                            text = stringResource(Res.string.forgot_password),
+                            style = TextStyle(
+                                textDecoration = TextDecoration.Underline,
+                                color = MaterialTheme.colorScheme.onSurface
+                            ),
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = MaterialTheme.typography.labelSmall.fontSize,
+                                maxFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            ),
                         )
                     }
                 },
-                value = state.logInForm.username,
+                value = state.signInForm.username,
                 onValueChange = { newValue ->
-                    onEvent(SignInEvents.OnEmailChanged(newValue))
+                    onEvent(SignInEvents.OnUsernameChanged(newValue))
                 },
                 isError = state.formValidation.usernameError != null,
             )
@@ -107,7 +115,7 @@ fun SignInFormSection(
                         onClick = {
                             showPassword = !showPassword
                         },
-                        enabled = state.logInForm.password.isNotBlank(),
+                        enabled = state.signInForm.password.isNotBlank(),
                     ) {
                         IconComponent(
                             painter = painterResource(
@@ -124,19 +132,25 @@ fun SignInFormSection(
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Text(
+                        BasicText(
                             modifier = Modifier.clickable(
                                 onClick = {
                                     onEvent(SignInEvents.OnForgot(ForgotAction.OnForgotPassword))
                                 },
                             ),
                             text = stringResource(Res.string.forgot_password),
-                            style = Fonts.smallTextStyle,
-                            textDecoration = TextDecoration.Underline,
+                            style = TextStyle(
+                                textDecoration = TextDecoration.Underline,
+                                color = MaterialTheme.colorScheme.onSurface
+                            ),
+                            autoSize = TextAutoSize.StepBased(
+                                minFontSize = MaterialTheme.typography.labelSmall.fontSize,
+                                maxFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            ),
                         )
                     }
                 },
-                value = state.logInForm.password,
+                value = state.signInForm.password,
                 onValueChange = { newValue ->
                     onEvent(SignInEvents.OnPasswordChanged(newValue))
                 },
@@ -153,7 +167,7 @@ fun SignInFormSection(
                     onClick = {
                         onEvent(SignInEvents.OnSubmit)
                     },
-                    enabled = state.submitEnabled && !state.submitLoading,
+                    enabled = state.submitEnabled,
                 ) {
                     if (state.submitLoading) {
                         CircularProgressIndicator()

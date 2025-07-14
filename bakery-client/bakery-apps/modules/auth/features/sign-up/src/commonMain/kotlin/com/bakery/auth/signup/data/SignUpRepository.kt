@@ -2,9 +2,9 @@ package com.bakery.auth.signup.data
 
 import com.bakery.auth.database.helper.AuthHelper
 import com.bakery.auth.network.client.AuthClient
+import com.bakery.auth.signup.domain.model.SignUpForm
 import com.bakery.core.data.Repository
 import com.bakery.core.state.RequestState
-import com.bakery.types.auth.signup.SignUpForm
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import migrations.Session as DBSession

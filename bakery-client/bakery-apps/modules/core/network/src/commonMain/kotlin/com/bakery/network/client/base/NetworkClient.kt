@@ -1,6 +1,7 @@
 package com.bakery.network.client.base
 
 import com.bakery.network.client.base.NetworkClient.Companion.BASE_URL
+import com.bakery.network.client.base.NetworkClient.Companion.DEFAULT_API_PREFIX
 import com.bakery.network.client.base.NetworkClient.Companion.DEFAULT_CONTENT_TYPE
 import com.bakery.network.model.ApiOperation
 import com.bakery.network.model.NetworkRequestMethod
@@ -46,6 +47,11 @@ interface NetworkClient {
          * @property BASE_URL Server base url for the client.
          * */
         const val BASE_URL: String = "https://bakeryanddeserts.com/"
+
+        /**
+         * @property DEFAULT_API_PREFIX Default api prefix for the client.
+         * */
+        const val DEFAULT_API_PREFIX: String = "/api"
 
         /**
          * @property DEFAULT_CONTENT_TYPE Default content type for the request.

@@ -5,29 +5,29 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.bakery.ui.window.LocalWindowUtils
-import com.bakery.ui.window.WindowUtils
+import com.bakery.ui.components.layout.scaffold.DefaultScaffold
 
 @Composable
 fun ScreenContainer(
     modifier: Modifier = Modifier,
+    scaffold: ScaffoldType = { snackbarHost, content ->
+        DefaultScaffold(
+            snackbarHost = snackbarHost,
+            content = content,
+        )
+    },
     color: Color = MaterialTheme.colorScheme.surface,
-    landscapeLayout: @Composable () -> Unit,
-    portraitLayout: @Composable () -> Unit,
+    content: @Composable () -> Unit,
 ) {
-    val windowUtils: WindowUtils = LocalWindowUtils.current
-    Surface(
-        modifier = modifier,
-        color = color,
-    ) {
-        when (windowUtils.isWideLayout()) {
-            true -> {
-                landscapeLayout()
+    ScaffoldContainer(
+        scaffold = scaffold,
+        content = {
+            Surface(
+                modifier = modifier,
+                color = color,
+            ) {
+                content()
             }
-
-            false -> {
-                portraitLayout()
-            }
-        }
-    }
+        },
+    )
 }

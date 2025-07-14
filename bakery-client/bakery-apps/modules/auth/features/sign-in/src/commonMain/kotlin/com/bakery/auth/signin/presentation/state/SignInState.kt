@@ -1,11 +1,11 @@
 package com.bakery.auth.signin.presentation.state
 
-import com.bakery.auth.signin.domain.rules.LoginValidation
-import com.bakery.types.auth.signin.LogInForm
+import com.bakery.auth.signin.domain.model.SignInForm
+import com.bakery.auth.signin.domain.rules.SignInValidation
 
 data class SignInState(
-    val logInForm: LogInForm = LogInForm(),
-    val formValidation: LoginValidation = LoginValidation(),
+    val signInForm: SignInForm = SignInForm(),
+    val formValidation: SignInValidation = SignInValidation(),
 
     val submitLoading: Boolean = false,
 

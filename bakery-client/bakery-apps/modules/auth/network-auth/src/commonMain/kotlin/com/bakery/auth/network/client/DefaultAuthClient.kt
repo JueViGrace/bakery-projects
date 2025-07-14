@@ -13,38 +13,38 @@ import com.bakery.network.model.ApiOperation
 
 class DefaultAuthClient(override val client: NetworkClient) : AuthClient {
     override suspend fun confirmPasswordReset(dto: ConfirmPasswordResetDto): ApiOperation<String> = client.post(
-        urlString = "/auth/forgot/confirm",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/forgot/confirm",
         body = dto,
     )
 
     override suspend fun login(dto: LogInDto): ApiOperation<AuthResponse> = client.post(
-        urlString = "/auth/login",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/login",
         body = dto,
     )
 
     override suspend fun logout(token: String): ApiOperation<String> = client.post(
-        urlString = "/auth/logout",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/logout",
         body = null,
         headers = mapOf("Authorization" to "Bearer $token"),
     )
 
     override suspend fun refresh(token: String): ApiOperation<AuthResponse> = client.get(
-        urlString = "/auth/refresh",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/refresh",
         headers = mapOf("Authorization" to "Bearer $token"),
     )
 
     override suspend fun requestPasswordReset(dto: RequestPasswordResetDto): ApiOperation<String> = client.post(
-        urlString = "/auth/forgot/request",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/forgot/request",
         body = dto,
     )
 
     override suspend fun resetPassword(dto: PasswordResetDto): ApiOperation<String> = client.post(
-        urlString = "/auth/forgot/reset",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/forgot/reset",
         body = dto,
     )
 
     override suspend fun signUp(dto: SignUpDto): ApiOperation<AuthResponse> = client.post(
-        urlString = "/auth/signin",
+        urlString = "${NetworkClient.DEFAULT_API_PREFIX}/auth/signup",
         body = dto,
     )
 }

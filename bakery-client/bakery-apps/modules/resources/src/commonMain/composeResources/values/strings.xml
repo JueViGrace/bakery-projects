@@ -34,9 +34,6 @@
     <string name="select">Select</string>
     <string name="retry">Retry</string>
     <string name="time">Time</string>
-    <string name="privacy_policy">Privacy policy</string>
-    <string name="read_privacy_policy">Read privacy policy</string>
-    <string name="accept_privacy_policy">Accept privacy policy</string>
     <string name="continue_question">Would you like to continue?</string>
     <string name="grant_permission">Grant permission</string>
     <string name="permission_required">Permission required</string>
@@ -96,6 +93,17 @@
     <string name="request_date">Request date</string>
     <string name="or">Or</string>
     <string name="google" translateable="false">Google</string>
+    <string name="accept">Accept</string>
+    <string name="first_name">Name</string>
+    <string name="last_name">Last name</string>
+    <string name="email" translatable="false">Email</string>
+    <string name="display_name">Display name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="phone_number">Phone number</string>
+    <string name="terms_and_conditions">Terms and conditions</string>
+    <string name="accept_terms_and_conditions">Do you accept our terms and conditions?</string>
+    <string name="accept_privacy_policy">Do you accept the privacy policy?</string>
+    <string name="privacy_policy">Privacy policy</string>
     <!--Custom messages-->
     <string name="welcome_back">Welcome back!</string>
     <string name="dont_have_account">Don't have an account?, Create one here!</string>
@@ -105,6 +113,7 @@
     <string name="forgot_username">Forgot username?</string>
     <string name="or_sign_in_with">Or sign in with</string>
     <!--Error Messages-->
+    <string name="password_mismatch">Passwords do not match</string>
     <string name="not_available">Not available</string>
     <string name="authenticate_first">You need to authenticate first</string>
     <string name="unexpected_error">Unexpected error</string>
@@ -115,6 +124,7 @@
     <string name="failed_to_start_session">Failed to start session</string>
     <string name="first_name_empty">First name cannot be empty</string>
     <string name="last_name_empty">Last name cannot be empty</string>
+    <string name="alias_empty">Display name cannot be empty</string>
     <string name="email_empty">Email cannot be empty</string>
     <string name="email_invalid_format">Invalid email format</string>
     <string name="email_too_long">Email too long</string>
