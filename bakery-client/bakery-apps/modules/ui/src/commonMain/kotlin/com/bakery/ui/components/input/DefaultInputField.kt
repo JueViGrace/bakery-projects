@@ -3,6 +3,7 @@ package com.bakery.ui.components.input
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.TextAutoSize
@@ -43,11 +44,12 @@ fun DefaultInputField(
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
     Column(
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         OutlinedTextField(
-            modifier = modifier,
+            modifier = Modifier.fillMaxWidth(),
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
@@ -65,7 +67,7 @@ fun DefaultInputField(
                         maxLines = 1,
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = MaterialTheme.typography.labelSmall.fontSize,
-                            maxFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize,
                         )
                     )
                 }
@@ -77,7 +79,7 @@ fun DefaultInputField(
                         maxLines = 1,
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = MaterialTheme.typography.labelSmall.fontSize,
-                            maxFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize,
                         )
                     )
                 }
@@ -89,7 +91,7 @@ fun DefaultInputField(
                         maxLines = 1,
                         autoSize = TextAutoSize.StepBased(
                             minFontSize = MaterialTheme.typography.labelSmall.fontSize,
-                            maxFontSize = MaterialTheme.typography.bodyMedium.fontSize,
+                            maxFontSize = MaterialTheme.typography.bodyLarge.fontSize,
                         )
                     )
                 }

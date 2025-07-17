@@ -1,7 +1,7 @@
 package com.bakery.auth.signin.domain.model
 
 import androidx.compose.runtime.Immutable
-import com.bakery.auth.network.model.dto.LogInDto
+import com.bakery.auth.network.model.dto.SignInDto
 
 @Immutable
 data class SignInForm(
@@ -11,9 +11,9 @@ data class SignInForm(
     val showUsernameError: Boolean = false,
     val showPasswordError: Boolean = false,
 ) {
-    val hasErrors: Boolean = showUsernameError || showPasswordError
+    val hasErrors: Boolean = showUsernameError && showPasswordError
 
-    fun toDto(): LogInDto = LogInDto(
+    fun toDto(): SignInDto = SignInDto(
         username = username,
         password = password,
     )

@@ -169,6 +169,7 @@ func createTokens(userId, sessionId uuid.UUID, username string) (*types.AuthResp
 	}
 
 	return &types.AuthResponse{
+		ID:           sessionId,
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil

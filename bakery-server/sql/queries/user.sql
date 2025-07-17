@@ -20,6 +20,7 @@ INSERT INTO bakery_user (
     id,
     first_name,
     last_name,
+    alias,
     username,
     email,
     password,
@@ -27,7 +28,6 @@ INSERT INTO bakery_user (
     birth_date,
     address1,
     address2,
-    gender,
     created_at,
     updated_at
 )
@@ -38,11 +38,11 @@ RETURNING *;
 UPDATE bakery_user SET
     first_name = ?,
     last_name = ?,
+    alias = ?,
     phone_number = ?,
     birth_date = ?,
     address1 = ?,
     address2 = ?,
-    gender = ?,
     updated_at = ?
 WHERE id = ?
 RETURNING *;

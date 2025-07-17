@@ -90,11 +90,15 @@
     <string name="start_hour">Hora inicio</string>
     <string name="option">Opción</string>
     <string name="or">O</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
     <string name="accept">Aceptar</string>
     <string name="request_date">Fecha de solicitud</string>
     <string name="first_name">Nombre</string>
     <string name="last_name">Apellido</string>
     <string name="display_name">Nombre para mostrar</string>
+    <string name="birth_date">Fecha de nacimiento</string>
+    <string name="gender">Género</string>
     <string name="phone_number">Teléfono</string>
     <string name="confirm_password">Confirmar contraseña</string>
     <string name="terms_and_conditions">Términos y condiciones</string>
@@ -122,6 +126,9 @@
     <string name="first_name_empty">Nombre no puede estar vacío</string>
     <string name="last_name_empty">Apellido no puede estar vacío</string>
     <string name="alias_empty">El nombre para mostrar no puede estar vacío</string>
+    <string name="birth_date_empty">Fecha de nacimiento no puede estar vacío</string>
+    <string name="address_empty">Dirección no puede estar vacía</string>
+    <string name="gender_empty">Sexo no puede estar vacío</string>
     <string name="email_empty">Email no puede estar vacío</string>
     <string name="email_invalid_format">Formato de email no válido</string>
     <string name="email_too_long">Email demasiado largo</string>

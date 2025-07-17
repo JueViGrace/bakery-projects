@@ -92,12 +92,16 @@
     <string name="option">Option</string>
     <string name="request_date">Request date</string>
     <string name="or">Or</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
     <string name="google" translateable="false">Google</string>
     <string name="accept">Accept</string>
     <string name="first_name">Name</string>
     <string name="last_name">Last name</string>
     <string name="email" translatable="false">Email</string>
     <string name="display_name">Display name</string>
+    <string name="birth_date">Birth date</string>
+    <string name="gender">Gender</string>
     <string name="confirm_password">Confirm password</string>
     <string name="phone_number">Phone number</string>
     <string name="terms_and_conditions">Terms and conditions</string>
@@ -125,6 +129,9 @@
     <string name="first_name_empty">First name cannot be empty</string>
     <string name="last_name_empty">Last name cannot be empty</string>
     <string name="alias_empty">Display name cannot be empty</string>
+    <string name="birth_date_empty">Birth date cannot be empty</string>
+    <string name="address_empty">Address cannot be empty</string>
+    <string name="gender_empty">Gender cannot be empty</string>
     <string name="email_empty">Email cannot be empty</string>
     <string name="email_invalid_format">Invalid email format</string>
     <string name="email_too_long">Email too long</string>

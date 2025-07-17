@@ -19,6 +19,7 @@ fun SignUpScreen(
     viewModel: SignUpViewModel = koinViewModel()
 ) {
     val state: SignUpState by viewModel.state.collectAsStateWithLifecycle()
+
     SignUpContent(
         state = state,
         onEvent = viewModel::onEvent,

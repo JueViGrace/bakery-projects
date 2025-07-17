@@ -66,9 +66,6 @@ watch:
 sqlc:
 	@sqlc generate
 
-templ:
-	@templ generate
-
 migrate-up:
 	@GOOSE_DRIVER=sqlite3 GOOSE_MIGRATION_DIR=./sql/schema GOOSE_DBSTRING="./bakery.db" goose up  
 

@@ -1,11 +1,13 @@
 package com.bakery.ui.components.input
 
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,8 +26,8 @@ import com.bakery.resources.generated.resources.cancel
 import com.bakery.resources.generated.resources.date
 import com.bakery.resources.generated.resources.ic_calendar_week
 import com.bakery.resources.generated.resources.ok
-import com.bakery.ui.Fonts
 import com.bakery.ui.components.display.IconComponent
+import com.bakery.ui.components.display.TextComponent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -64,7 +66,6 @@ fun DateField(
         label = {
             Text(
                 text = labelText,
-                style = Fonts.labelTextStyle,
             )
         },
         placeholder = {
@@ -72,16 +73,20 @@ fun DateField(
                 text = dateFormat,
             )
         },
-        trailingIcon = {
+        leadingIcon = {
             IconComponent(
                 painter = painterResource(Res.drawable.ic_calendar_week),
+                contentDescription = stringResource(Res.string.date),
             )
         },
         supportingText = supportingText?.let { message ->
             {
-                Text(
+                TextComponent(
                     text = message,
-                    style = Fonts.labelTextStyle,
+                    autoSize = TextAutoSize.StepBased(
+                        minFontSize = MaterialTheme.typography.labelSmall.fontSize,
+                        maxFontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    )
                 )
             }
         },

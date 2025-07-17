@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS bakery_user(
     id TEXT NOT NULL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
+    alias TEXT NOT NULL,
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
@@ -10,7 +11,6 @@ CREATE TABLE IF NOT EXISTS bakery_user(
     birth_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     address1 TEXT NOT NULL,
     address2 TEXT NOT NULL DEFAULT '',
-    gender TEXT NOT NULL,
     role TEXT NOT NULL DEFAULT 'user',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS bakery_order(
 
 CREATE TABLE IF NOT EXISTS bakery_order_products(
     order_id TEXT NOT NULL,
-    product_id TEXT NOT NULL REFERENCES bakery_product(id),
+    product_id TEXT NOT NULL,
     product_name TEXT NOT NULL,
     product_price REAL NOT NULL,
     product_discount REAL NOT NULL,

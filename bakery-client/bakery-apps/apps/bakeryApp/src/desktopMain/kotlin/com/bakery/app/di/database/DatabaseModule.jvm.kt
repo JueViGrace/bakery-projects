@@ -16,6 +16,7 @@ actual fun driverModule(): Module = module {
 
     single<BakeryDB> {
         val driver: DriverFactory = get()
-        BakeryDB(driver.createAsyncDriver(BakeryDB.Schema, "jdbc:sqlite:./bakery.db"))
+
+        BakeryDB(driver.createAsyncDriver(BakeryDB.Schema, "bakery.db"))
     }
 }

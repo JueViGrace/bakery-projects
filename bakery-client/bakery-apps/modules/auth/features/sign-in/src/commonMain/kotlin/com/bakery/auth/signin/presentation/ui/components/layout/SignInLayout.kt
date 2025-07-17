@@ -49,17 +49,18 @@ fun SignInLayout(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(vertical = 12.dp)
     ) {
         item {
             CardContainer(
                 modifier = Modifier
                     .widthIn(max = 600.dp)
-                    .padding(horizontal = 16.dp),
+                    .padding(horizontal = 12.dp),
                 contentPadding = PaddingValues(
                     horizontal = 12.dp,
                     vertical = 28.dp,
                 ),
-                verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             ) {
                 AuthCardTopContent(
                     title = stringResource(Res.string.welcome),

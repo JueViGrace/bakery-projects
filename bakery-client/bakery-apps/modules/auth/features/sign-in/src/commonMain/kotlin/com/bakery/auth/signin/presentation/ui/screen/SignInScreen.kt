@@ -2,7 +2,6 @@ package com.bakery.auth.signin.presentation.ui.screen
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -16,19 +15,14 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun SignInScreen(viewmodel: SignInViewModel = koinViewModel()) {
-    val state: SignInState by viewmodel.state.collectAsStateWithLifecycle()
-
-    // todo: change error handling
-    LaunchedEffect(state.submitError) {
-        if (state.submitError != null) {
-            viewmodel.onEvent(SignInEvents.ClearError)
-        }
-    }
+fun SignInScreen(
+    viewModel: SignInViewModel = koinViewModel()
+) {
+    val state: SignInState by viewModel.state.collectAsStateWithLifecycle()
 
     SignInContent(
         state = state,
-        onEvent = viewmodel::onEvent,
+        onEvent = viewModel::onEvent,
     )
 }
 

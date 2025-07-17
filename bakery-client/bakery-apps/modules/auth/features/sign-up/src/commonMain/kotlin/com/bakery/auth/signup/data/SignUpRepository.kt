@@ -19,12 +19,14 @@ class DefaultSignUpRepository(private val client: AuthClient, private val helper
             client.signUp(signUpForm.toDto())
         },
     ) { value ->
+        val data = value.data
+            ?: return@startNetworkRequest emit(RequestState.Error(value.message))
         scope.launch {
             helper.createSession(
                 DBSession(
-                    id = value.id,
-                    accessToken = value.accessToken,
-                    refreshToken = value.refreshToken,
+                    id = data.id,
+                    accessToken = data.accessToken,
+                    refreshToken = data.refreshToken,
                     active = true
                 )
             )

@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bakery.auth.signup.presentation.events.SignUpEvents
 import com.bakery.auth.signup.presentation.state.SignUpState
-import com.bakery.auth.signup.presentation.ui.components.SignUpFormSection
+import com.bakery.auth.signup.presentation.ui.components.form.SignUpFormSection
 import com.bakery.auth.ui.AuthCardTopContent
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.already_have_account
@@ -48,7 +48,7 @@ fun SignUpLayout(
 
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         contentPadding = PaddingValues(vertical = 12.dp)
     ) {

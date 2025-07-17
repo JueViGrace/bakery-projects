@@ -44,7 +44,12 @@ interface DbHelper<T> {
             }
         } catch (e: Exception) {
             coroutineContext.ensureActive()
-            Logs.error(tag = this::class.simpleName ?: "DbHelper", msg = "Error: ${e.message}")
+            Logs.error(
+                tag = DbHelper::class.simpleName ?: "DbHelper",
+                msg = "Error while executing a database operation",
+                e,
+            )
+            println("hola")
             null
         }
     }

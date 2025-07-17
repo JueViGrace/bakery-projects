@@ -35,12 +35,14 @@ internal class DefaultAuthRepository(private val authClient: AuthClient, private
                 authClient.refresh(session.refreshToken)
             },
         ) { value ->
+            val data = value.data
+                ?: return@startNetworkRequest emit(RequestState.Error(value.message))
             scope.launch {
                 authHelper.createSession(
                     DBSession(
-                        id = value.id,
-                        accessToken = value.accessToken,
-                        refreshToken = value.refreshToken,
+                        id = data.id,
+                        accessToken = data.accessToken,
+                        refreshToken = data.refreshToken,
                         active = true
                     )
                 )

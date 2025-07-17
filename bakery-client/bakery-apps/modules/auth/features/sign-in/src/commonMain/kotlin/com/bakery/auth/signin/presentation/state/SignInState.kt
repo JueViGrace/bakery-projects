@@ -8,7 +8,7 @@ data class SignInState(
     val formValidation: SignInValidation = SignInValidation(),
 
     val submitLoading: Boolean = false,
-
     val submitError: String? = null,
     val submitEnabled: Boolean = false,
+    val submitSuccess: Boolean = false,
 )

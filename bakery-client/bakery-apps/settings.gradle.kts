@@ -98,4 +98,5 @@ include(
 include(
     ":modules:user",
     ":modules:user:network-user",
+    ":modules:user:ui-user",
 )

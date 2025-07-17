@@ -13,13 +13,13 @@ interface BaseViewModel {
     val scope: CoroutineScope
 
     val navigator: Navigator
-        get() = Navigator.Companion.instance
+        get() = Navigator.instance
 
     val tabNavigator: TabNavigator
         get() = TabNavigator.instance
 
     val messages: Messages
-        get() = Messages.Companion.instance
+        get() = Messages.instance
 
     fun navigateTo(destination: Destination, navOptions: NavOptions? = null) {
         scope.launch {

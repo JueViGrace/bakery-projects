@@ -15,5 +15,4 @@ sealed interface SignInEvents {
     /* Actions */
     data class OnSocialLogin(val provider: SocialProvider) : SignInEvents
     data object OnSubmit : SignInEvents
-    data object ClearError : SignInEvents
 }

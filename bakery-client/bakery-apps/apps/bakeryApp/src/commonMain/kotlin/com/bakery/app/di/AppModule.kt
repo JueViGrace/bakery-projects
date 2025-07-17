@@ -6,6 +6,7 @@ import com.bakery.app.di.database.databaseModule
 import com.bakery.app.di.network.networkModule
 import com.bakery.app.presentation.viewmodel.AppViewModel
 import com.bakery.auth.di.authModule
+import com.bakery.home.di.homeModule
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -20,7 +21,7 @@ fun appModule(): Module = module {
     includes(databaseModule(), networkModule())
 
     // Feature modules
-    includes(authModule())
+    includes(authModule(), homeModule())
 
     singleOf(::DefaultAppRepository) bind AppRepository::class
 

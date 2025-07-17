@@ -9,14 +9,16 @@ data class SignUpDto(
     val firstName: String,
     @SerialName("last_name")
     val lastName: String,
-    @SerialName("username")
-    val username: String,
-    @SerialName("alias")
-    val alias: String,
-    @SerialName("email")
-    val email: String,
-    @SerialName("password")
-    val password: String,
     @SerialName("phone_number")
     val phoneNumber: String,
+    @SerialName("birth_date")
+    val birthDate: String,
+    @SerialName("address")
+    val address: String,
+    @SerialName("email")
+    val email: String,
+    @SerialName("username")
+    val username: String,
+    @SerialName("password")
+    val password: String,
 )

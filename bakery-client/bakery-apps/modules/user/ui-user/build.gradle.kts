@@ -19,11 +19,10 @@ kotlin {
             */
 
             implementation(projects.modules.ui)
-
         }
     }
 }
 
 android {
-    namespace = "com.bakery.auth.ui"
+    namespace = "com.bakery.user.ui"
 }

@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.log_in
 import com.bakery.ui.Fonts
-import com.bakery.ui.components.display.ImageComponent
+import com.bakery.ui.components.display.IconComponent
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -45,12 +45,12 @@ fun AuthCardTopContent(
                 contentColor = contentColorFor(MaterialTheme.colorScheme.inverseSurface)
             )
         ) {
-            ImageComponent(
+            IconComponent(
                 modifier = Modifier
                     .padding(8.dp)
                     .size(42.dp),
                 painter = painter,
-                contentDescription = stringResource(Res.string.log_in)
+                contentDescription = stringResource(Res.string.log_in),
             )
         }
         Column(

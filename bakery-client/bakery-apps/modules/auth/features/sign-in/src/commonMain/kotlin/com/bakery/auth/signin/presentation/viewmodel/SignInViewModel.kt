@@ -29,17 +29,16 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
-class SignInViewModel(private val repository: SignInRepository) :
-    ViewModel(),
-    BaseViewModel {
+class SignInViewModel(
+    private val repository: SignInRepository
+) : ViewModel(), BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
-
-    private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
 
     private val formState: MutableStateFlow<SignInForm> = MutableStateFlow(SignInForm())
 
@@ -57,6 +56,7 @@ class SignInViewModel(private val repository: SignInRepository) :
             initialValue = SignInValidation(),
         )
 
+    private val _state: MutableStateFlow<SignInState> = MutableStateFlow(SignInState())
     val state: StateFlow<SignInState> = combine(
         _state,
         formState,
@@ -65,13 +65,26 @@ class SignInViewModel(private val repository: SignInRepository) :
         state.copy(
             signInForm = formState,
             formValidation = formValidationState,
-            submitEnabled = !state.submitLoading && (if (formState.hasErrors) formValidationState.valid() else false)
         )
-    }.stateIn(
-        scope = scope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _state.value,
-    )
+    }
+        .distinctUntilChanged()
+        .onEach { state ->
+            _state.update {
+                state.copy(
+                    submitEnabled = !state.submitLoading &&
+                        if (state.signInForm.hasErrors) {
+                            state.formValidation.valid()
+                        } else {
+                            false
+                        }
+                )
+            }
+        }
+        .stateIn(
+            scope = scope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _state.value,
+        )
 
     fun onEvent(event: SignInEvents) {
         when (event) {
@@ -80,19 +93,7 @@ class SignInViewModel(private val repository: SignInRepository) :
             is SignInEvents.OnPasswordChanged -> passwordChanged(event.password)
             is SignInEvents.OnSocialLogin -> handleSocialLogin(event.provider)
             SignInEvents.OnSubmit -> submit()
-            SignInEvents.ClearError -> clearError()
             SignInEvents.OnSignUp -> navigateToSignUp()
-        }
-    }
-
-    private fun clearError() {
-        scope.launch {
-            delay(5000)
-            _state.update { state ->
-                state.copy(
-                    submitError = null,
-                )
-            }
         }
     }
 
@@ -150,6 +151,14 @@ class SignInViewModel(private val repository: SignInRepository) :
                             state.copy(
                                 submitLoading = false,
                                 submitError = result.error,
+                                submitSuccess = false,
+                            )
+                        }
+
+                        delay(5000)
+                        _state.update { state ->
+                            state.copy(
+                                submitError = null,
                             )
                         }
                     }
@@ -159,6 +168,7 @@ class SignInViewModel(private val repository: SignInRepository) :
                             state.copy(
                                 submitLoading = false,
                                 submitError = null,
+                                submitSuccess = true,
                             )
                         }
 
@@ -178,6 +188,7 @@ class SignInViewModel(private val repository: SignInRepository) :
                             state.copy(
                                 submitLoading = true,
                                 submitError = null,
+                                submitSuccess = false,
                             )
                         }
                     }

@@ -17,11 +17,11 @@ object Time {
     }
 
     val defaultDateFormat: DateTimeFormat<LocalDate> = LocalDate.Format {
-        dayOfMonth()
-        char('/')
-        monthNumber()
-        char('/')
         year()
+        char('-')
+        monthNumber()
+        char('-')
+        dayOfMonth()
     }
 
     val defaultTimeFormat: DateTimeFormat<LocalTime> = LocalTime.Format {

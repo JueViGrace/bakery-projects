@@ -46,7 +46,7 @@ interface NetworkClient {
         /**
          * @property BASE_URL Server base url for the client.
          * */
-        const val BASE_URL: String = "https://bakeryanddeserts.com/"
+        const val BASE_URL: String = "http://192.168.0.235:5000/"
 
         /**
          * @property DEFAULT_API_PREFIX Default api prefix for the client.
@@ -69,7 +69,7 @@ interface NetworkClient {
 suspend inline fun <reified T : Any> NetworkClient.get(
     urlString: String,
     headers: Map<String, String> = emptyMap(),
-    contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
+    contentType: String = DEFAULT_CONTENT_TYPE,
 ): ApiOperation<T> = call(
     method = NetworkRequestMethod.GET,
     urlString = urlString,
@@ -90,7 +90,7 @@ suspend inline fun <reified T : Any> NetworkClient.post(
     urlString: String,
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
-    contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
+    contentType: String = DEFAULT_CONTENT_TYPE,
 ): ApiOperation<T> = call(
     method = NetworkRequestMethod.POST,
     urlString = urlString,
@@ -111,7 +111,7 @@ suspend inline fun <reified T : Any> NetworkClient.put(
     urlString: String,
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
-    contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
+    contentType: String = DEFAULT_CONTENT_TYPE,
 ): ApiOperation<T> = call(
     method = NetworkRequestMethod.PUT,
     urlString = urlString,
@@ -132,7 +132,7 @@ suspend inline fun <reified T : Any> NetworkClient.delete(
     urlString: String,
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
-    contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
+    contentType: String = DEFAULT_CONTENT_TYPE,
 ): ApiOperation<T> = call(
     method = NetworkRequestMethod.DELETE,
     urlString = urlString,
@@ -153,7 +153,7 @@ suspend inline fun <reified T : Any> NetworkClient.patch(
     urlString: String,
     body: Any? = null,
     headers: Map<String, String> = emptyMap(),
-    contentType: String = NetworkClient.Companion.DEFAULT_CONTENT_TYPE,
+    contentType: String = DEFAULT_CONTENT_TYPE,
 ): ApiOperation<T> = call(
     method = NetworkRequestMethod.PATCH,
     urlString = urlString,

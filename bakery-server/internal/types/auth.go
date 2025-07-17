@@ -1,6 +1,7 @@
 package types
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/JueViGrace/bakery-server/internal/database"
@@ -19,34 +20,33 @@ type AuthData struct {
 }
 
 type AuthResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
+	ID           uuid.UUID `json:"id"`
+	AccessToken  string    `json:"access_token"`
+	RefreshToken string    `json:"refresh_token"`
 }
 
 type SignInRequest struct {
-	Email    string `json:"email" validate:"required"`
-	Password string `json:"password" validate:"required"`
+	Email    string `json:"email" validate:"required,min=1,max=255"`
+	Password string `json:"password" validate:"required,min=1,max=255"`
 }
 
 type SignUpRequest struct {
-	FirstName   string `json:"first_name" validate:"required"`
-	LastName    string `json:"last_name" validate:"required"`
-	Username    string `json:"username"`
-	Email       string `json:"email" validate:"required,email"`
-	Password    string `json:"password" validate:"required"`
-	PhoneNumber string `json:"phone_number" validate:"required"`
-	BirthDate   string `json:"birth_date" validate:"required"`
-	Address1    string `json:"address1" validate:"required"`
-	Address2    string `json:"address2" validate:"required"`
-	Gender      string `json:"gender" validate:"required"`
+	FirstName   string `json:"first_name" validate:"required,min=1,max=255"`
+	LastName    string `json:"last_name" validate:"required,min=1,max=255"`
+	PhoneNumber string `json:"phone_number" validate:"required,min=1,max=20"`
+	BirthDate   string `json:"birth_date" validate:"required,min=1,max=50"`
+	Address     string `json:"address" validate:"required,min=1,max=255"`
+	Email       string `json:"email" validate:"required,email,max=255"`
+	Username    string `json:"username" validate:"max=255"`
+	Password    string `json:"password" validate:"required,min=1,max=255"`
 }
 
 type RefreshRequest struct {
-	RefreshToken string `json:"refresh_token" validate:"required"`
+	RefreshToken string `json:"refresh_token" validate:"required,min=1,max=255"`
 }
 
 type RecoverPasswordRequest struct {
-	Password string `json:"password" validate:"required"`
+	Password string `json:"password" validate:"required,min=1,max255"`
 }
 
 func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error) {
@@ -65,7 +65,7 @@ func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error)
 		return nil, err
 	}
 
-	var username string = r.Username
+	username := r.Username
 	if username == "" {
 		username = r.Email
 	}
@@ -74,14 +74,13 @@ func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error)
 		ID:          id.String(),
 		FirstName:   r.FirstName,
 		LastName:    r.LastName,
+		Alias:       fmt.Sprintf("%s %s", r.FirstName, r.LastName),
 		Username:    username,
 		Email:       r.Email,
 		Password:    pass,
 		PhoneNumber: r.PhoneNumber,
 		BirthDate:   util.FormatDateForResponse(birthDate),
-		Address1:    r.Address1,
-		Address2:    r.Address2,
-		Gender:      r.Gender,
+		Address1:    r.Address,
 		CreatedAt:   time.Now().UTC().String(),
 		UpdatedAt:   time.Now().UTC().String(),
 	}, nil
