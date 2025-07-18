@@ -26,12 +26,10 @@ INSERT INTO bakery_user (
     password,
     phone_number,
     birth_date,
-    address1,
-    address2,
     created_at,
     updated_at
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: UpdateUser :one
@@ -41,8 +39,6 @@ UPDATE bakery_user SET
     alias = ?,
     phone_number = ?,
     birth_date = ?,
-    address1 = ?,
-    address2 = ?,
     updated_at = ?
 WHERE id = ?
 RETURNING *;

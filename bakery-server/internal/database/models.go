@@ -64,8 +64,6 @@ type BakeryUser struct {
 	Password    string
 	PhoneNumber string
 	BirthDate   string
-	Address1    string
-	Address2    string
 	Role        string
 	CreatedAt   string
 	UpdatedAt   string

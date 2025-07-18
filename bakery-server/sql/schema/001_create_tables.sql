@@ -9,8 +9,6 @@ CREATE TABLE IF NOT EXISTS bakery_user(
     password TEXT NOT NULL,
     phone_number TEXT NOT NULL,
     birth_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    address1 TEXT NOT NULL,
-    address2 TEXT NOT NULL DEFAULT '',
     role TEXT NOT NULL DEFAULT 'user',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,

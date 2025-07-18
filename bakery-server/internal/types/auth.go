@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/JueViGrace/bakery-server/internal/database"
@@ -35,7 +36,6 @@ type SignUpRequest struct {
 	LastName    string `json:"last_name" validate:"required,min=1,max=255"`
 	PhoneNumber string `json:"phone_number" validate:"required,min=1,max=20"`
 	BirthDate   string `json:"birth_date" validate:"required,min=1,max=50"`
-	Address     string `json:"address" validate:"required,min=1,max=255"`
 	Email       string `json:"email" validate:"required,email,max=255"`
 	Username    string `json:"username" validate:"max=255"`
 	Password    string `json:"password" validate:"required,min=1,max=255"`
@@ -60,27 +60,29 @@ func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error)
 		return nil, err
 	}
 
+	firstName := strings.TrimSpace(r.FirstName)
+	lastName := strings.TrimSpace(r.LastName)
+
 	birthDate, err := time.Parse(time.DateOnly, r.BirthDate)
 	if err != nil {
 		return nil, err
 	}
 
-	username := r.Username
+	username := strings.TrimSpace(r.Username)
 	if username == "" {
 		username = r.Email
 	}
 
 	return &database.CreateUserParams{
 		ID:          id.String(),
-		FirstName:   r.FirstName,
-		LastName:    r.LastName,
-		Alias:       fmt.Sprintf("%s %s", r.FirstName, r.LastName),
+		FirstName:   firstName,
+		LastName:    lastName,
+		Alias:       fmt.Sprintf("%s %s", firstName, lastName),
 		Username:    username,
 		Email:       r.Email,
 		Password:    pass,
 		PhoneNumber: r.PhoneNumber,
 		BirthDate:   util.FormatDateForResponse(birthDate),
-		Address1:    r.Address,
 		CreatedAt:   time.Now().UTC().String(),
 		UpdatedAt:   time.Now().UTC().String(),
 	}, nil

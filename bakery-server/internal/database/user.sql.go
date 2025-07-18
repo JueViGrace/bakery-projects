@@ -23,13 +23,11 @@ INSERT INTO bakery_user (
     password,
     phone_number,
     birth_date,
-    address1,
-    address2,
     created_at,
     updated_at
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 `
 
 type CreateUserParams struct {
@@ -42,8 +40,6 @@ type CreateUserParams struct {
 	Password    string
 	PhoneNumber string
 	BirthDate   string
-	Address1    string
-	Address2    string
 	CreatedAt   string
 	UpdatedAt   string
 }
@@ -59,8 +55,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (BakeryU
 		arg.Password,
 		arg.PhoneNumber,
 		arg.BirthDate,
-		arg.Address1,
-		arg.Address2,
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
@@ -75,8 +69,6 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (BakeryU
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -104,7 +96,7 @@ func (q *Queries) DeleteUser(ctx context.Context, arg DeleteUserParams) error {
 const getUser = `-- name: GetUser :one
 ;
 
-select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 from bakery_user
 where email = ? or username = ?
 `
@@ -127,8 +119,6 @@ func (q *Queries) GetUser(ctx context.Context, arg GetUserParams) (BakeryUser, e
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -140,7 +130,7 @@ func (q *Queries) GetUser(ctx context.Context, arg GetUserParams) (BakeryUser, e
 const getUserById = `-- name: GetUserById :one
 ;
 
-select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 from bakery_user
 where id = ?
 `
@@ -158,8 +148,6 @@ func (q *Queries) GetUserById(ctx context.Context, id string) (BakeryUser, error
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -169,7 +157,7 @@ func (q *Queries) GetUserById(ctx context.Context, id string) (BakeryUser, error
 }
 
 const getUsers = `-- name: GetUsers :many
-select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 from bakery_user
 `
 
@@ -192,8 +180,6 @@ func (q *Queries) GetUsers(ctx context.Context) ([]BakeryUser, error) {
 			&i.Password,
 			&i.PhoneNumber,
 			&i.BirthDate,
-			&i.Address1,
-			&i.Address2,
 			&i.Role,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -217,7 +203,7 @@ UPDATE bakery_user SET
     email = ?,
     updated_at = ?
 WHERE id = ?
-RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 `
 
 type UpdateEmailParams struct {
@@ -239,8 +225,6 @@ func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) (Baker
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -256,11 +240,9 @@ UPDATE bakery_user SET
     alias = ?,
     phone_number = ?,
     birth_date = ?,
-    address1 = ?,
-    address2 = ?,
     updated_at = ?
 WHERE id = ?
-RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 `
 
 type UpdateUserParams struct {
@@ -269,8 +251,6 @@ type UpdateUserParams struct {
 	Alias       string
 	PhoneNumber string
 	BirthDate   string
-	Address1    string
-	Address2    string
 	UpdatedAt   string
 	ID          string
 }
@@ -282,8 +262,6 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (BakeryU
 		arg.Alias,
 		arg.PhoneNumber,
 		arg.BirthDate,
-		arg.Address1,
-		arg.Address2,
 		arg.UpdatedAt,
 		arg.ID,
 	)
@@ -298,8 +276,6 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (BakeryU
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -313,7 +289,7 @@ UPDATE bakery_user SET
     username = ?,
     updated_at = ?
 WHERE id = ?
-RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, address1, address2, role, created_at, updated_at, deleted_at
+RETURNING id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
 `
 
 type UpdateUsernameParams struct {
@@ -335,8 +311,6 @@ func (q *Queries) UpdateUsername(ctx context.Context, arg UpdateUsernameParams) 
 		&i.Password,
 		&i.PhoneNumber,
 		&i.BirthDate,
-		&i.Address1,
-		&i.Address2,
 		&i.Role,
 		&i.CreatedAt,
 		&i.UpdatedAt,

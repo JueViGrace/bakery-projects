@@ -17,8 +17,6 @@ type UserResponse struct {
 	Password    string    `json:"-"`
 	PhoneNumber string    `json:"phone_number"`
 	BirthDate   string    `json:"birth_date"`
-	Address1    string    `json:"address1"`
-	Address2    string    `json:"address2"`
 	Role        string    `json:"-"`
 	CreatedAt   string    `json:"created_at"`
 	UpdatedAt   string    `json:"updated_at"`
@@ -32,8 +30,6 @@ type UpdateUserRequest struct {
 	LastName    string    `json:"last_name" validate:"required"`
 	PhoneNumber string    `json:"phone_number" validate:"required"`
 	BirthDate   string    `json:"birth_date" validate:"required"`
-	Address1    string    `json:"address1" validate:"required"`
-	Address2    string    `json:"address2" validate:"required"`
 }
 
 type ChangeEmailRequest struct {
@@ -55,8 +51,6 @@ func DbUserToUser(db *database.BakeryUser) (user *UserResponse, err error) {
 		Password:    db.Password,
 		PhoneNumber: db.PhoneNumber,
 		BirthDate:   db.BirthDate,
-		Address1:    db.Address1,
-		Address2:    db.Address2,
 		Role:        db.Role,
 		CreatedAt:   db.CreatedAt,
 		UpdatedAt:   db.UpdatedAt,
@@ -77,8 +71,6 @@ func NewUpdateUserParams(r *UpdateUserRequest) (*database.UpdateUserParams, erro
 		LastName:    r.LastName,
 		PhoneNumber: r.PhoneNumber,
 		BirthDate:   util.FormatDateForResponse(birthDate),
-		Address1:    r.Address1,
-		Address2:    r.Address2,
 		UpdatedAt:   time.Now().UTC().String(),
 		ID:          r.ID.String(),
 	}, nil
