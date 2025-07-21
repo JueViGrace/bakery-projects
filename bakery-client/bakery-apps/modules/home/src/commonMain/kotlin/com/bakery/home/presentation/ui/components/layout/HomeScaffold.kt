@@ -2,9 +2,9 @@ package com.bakery.home.presentation.ui.components.layout
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import com.bakery.home.presentation.events.HomeEvents
 import com.bakery.home.presentation.state.HomeState
@@ -19,7 +19,7 @@ import com.bakery.ui.window.WindowUtils
 fun HomeScaffold(
     state: HomeState,
     onEvent: (HomeEvents) -> Unit = {},
-    contentWindowInsets: WindowInsets = WindowInsets.statusBars,
+    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     snackbarHost: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {

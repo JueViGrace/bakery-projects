@@ -30,6 +30,8 @@ class HomeViewModel(
         NavBarState(tabs = BottomTabs.defaultList)
     )
 
+    private val innerTopBarState: MutableStateFlow<NavBarState> = MutableStateFlow(NavBarState())
+
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = combine(
         _state,
@@ -50,6 +52,7 @@ class HomeViewModel(
             HomeEvents.HideBottomBar -> hideBars()
             HomeEvents.OnCart -> navigateToCart()
             HomeEvents.OnNotifications -> navigateToNotifications()
+            HomeEvents.ToggleMainBar -> {}
         }
     }
 

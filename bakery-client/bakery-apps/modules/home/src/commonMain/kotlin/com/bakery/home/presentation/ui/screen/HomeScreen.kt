@@ -21,6 +21,8 @@ import com.bakery.ui.navigation.OrdersTabRoute
 import com.bakery.ui.navigation.ProfileTabRoute
 import com.bakery.ui.navigation.navigator.LocalTabNavigator
 import com.bakery.ui.navigation.tab.TabNavigator
+import com.bakery.ui.window.LocalWindowUtils
+import com.bakery.ui.window.WindowUtils
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -30,6 +32,8 @@ fun HomeScreen(
     val state: HomeState by viewModel.state.collectAsStateWithLifecycle()
     val bottomNavController: NavHostController = rememberNavController()
     val tabNavigator: TabNavigator = LocalTabNavigator.current
+    val windowUtils: WindowUtils = LocalWindowUtils.current
+    val isLandscape: Boolean = windowUtils.isLandscape()
 
     ObserveAsEvents(
         bottomNavController.currentBackStackEntryFlow,
@@ -61,10 +65,11 @@ fun HomeScreen(
     }
 
     ScaffoldContainer(
-        scaffold = { _, snackbarHost, content ->
+        scaffold = { contentWindowInsets, snackbarHost, content ->
             HomeScaffold(
                 state = state,
                 onEvent = viewModel::onEvent,
+                contentWindowInsets = contentWindowInsets,
                 snackbarHost = snackbarHost,
                 content = content,
             )

@@ -9,4 +9,5 @@ sealed interface HomeEvents {
     data object OnCart : HomeEvents
     data object OnNotifications : HomeEvents
     data class OnTabSelected(val index: Int, val bar: NavBars) : HomeEvents
+    data object ToggleMainBar : HomeEvents
 }
