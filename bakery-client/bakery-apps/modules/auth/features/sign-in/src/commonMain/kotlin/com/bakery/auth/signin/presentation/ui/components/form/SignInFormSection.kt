@@ -1,4 +1,4 @@
-package com.bakery.auth.signin.presentation.ui.components
+package com.bakery.auth.signin.presentation.ui.components.form
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

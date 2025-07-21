@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bakery.auth.signin.presentation.events.SignInEvents
 import com.bakery.auth.signin.presentation.state.SignInState
-import com.bakery.auth.signin.presentation.ui.components.SignInFormSection
+import com.bakery.auth.signin.presentation.ui.components.form.SignInFormSection
 import com.bakery.auth.ui.AuthCardTopContent
 import com.bakery.resources.generated.resources.Res
 import com.bakery.resources.generated.resources.dont_have_account

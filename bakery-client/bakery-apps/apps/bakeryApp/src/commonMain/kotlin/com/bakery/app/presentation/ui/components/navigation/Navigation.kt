@@ -11,7 +11,10 @@ import com.bakery.ui.navigation.navigator.LocalNavigator
 import com.bakery.ui.navigation.navigator.Navigator
 
 @Composable
-fun Navigation(performAction: (action: NavigationAction) -> Unit = { _ -> }, routes: NavGraphBuilder.(navigator: Navigator) -> Unit) {
+fun Navigation(
+    performAction: (action: NavigationAction) -> Unit = { _ -> },
+    routes: NavGraphBuilder.(navigator: Navigator) -> Unit
+) {
     val navigator: Navigator = LocalNavigator.current
     val navController: NavHostController = LocalNavController.current
 

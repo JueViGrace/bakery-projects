@@ -8,5 +8,5 @@ import androidx.compose.runtime.Composable
 internal actual object WindowUtilsImpl : WindowUtils {
     @Composable
     actual override fun getScreenOrientation(): Orientation =
-        if (getScreenWidth() > getScreenHeight()) Orientation.Landscape else Orientation.Portrait
+        if (getScreenWidth() >= getScreenHeight()) Orientation.Landscape else Orientation.Portrait
 }

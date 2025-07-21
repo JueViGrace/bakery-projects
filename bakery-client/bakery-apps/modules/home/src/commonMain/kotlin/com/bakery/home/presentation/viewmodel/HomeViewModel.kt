@@ -9,6 +9,7 @@ import com.bakery.home.presentation.state.HomeState
 import com.bakery.ui.layout.bars.NavBarState
 import com.bakery.ui.layout.bars.NavBars
 import com.bakery.ui.navigation.HomeTabGraphRoute
+import com.bakery.ui.navigation.tab.BottomTabs
 import com.bakery.ui.navigation.tab.Tab
 import com.bakery.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,12 +21,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: HomeRepository) :
-    ViewModel(),
-    BaseViewModel {
+class HomeViewModel(
+    private val repository: HomeRepository
+) : ViewModel(), BaseViewModel {
     override val scope: CoroutineScope = viewModelScope
 
-    private val bottomBarState: MutableStateFlow<NavBarState> = MutableStateFlow(NavBarState())
+    private val bottomBarState: MutableStateFlow<NavBarState> = MutableStateFlow(
+        NavBarState(tabs = BottomTabs.defaultList)
+    )
 
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState())
     val state: StateFlow<HomeState> = combine(
@@ -33,7 +36,7 @@ class HomeViewModel(private val repository: HomeRepository) :
         bottomBarState,
     ) { state, bottomState ->
         state.copy(
-            bottomBarState = bottomState,
+            bottomBarState = bottomState
         )
     }.stateIn(
         scope,
@@ -44,11 +47,26 @@ class HomeViewModel(private val repository: HomeRepository) :
     fun onEvent(event: HomeEvents) {
         when (event) {
             is HomeEvents.OnTabSelected -> tabSelected(event.index, event.bar)
-            HomeEvents.ToggleMore -> toggleMoreCategories()
-            HomeEvents.OnAccount -> showAccount()
-            HomeEvents.OnNotifications -> showNotifications()
-            HomeEvents.ToggleSearch -> toggleSearch()
+            HomeEvents.HideBottomBar -> hideBars()
+            HomeEvents.OnCart -> navigateToCart()
+            HomeEvents.OnNotifications -> navigateToNotifications()
         }
+    }
+
+    private fun hideBars() {
+        _state.update { state ->
+            state.copy(
+                bottomBarState = state.bottomBarState.copy(
+                    showBar = false
+                )
+            )
+        }
+    }
+
+    private fun navigateToCart() {
+    }
+
+    private fun navigateToNotifications() {
     }
 
     private fun tabSelected(index: Int, bar: NavBars) {
@@ -77,7 +95,12 @@ class HomeViewModel(private val repository: HomeRepository) :
         }
     }
 
-    private fun updateBarState(barState: MutableStateFlow<NavBarState>, index: Int, onUpdated: (destination: Tab) -> Unit = {}) {
+    private fun updateBarState(
+        barState: MutableStateFlow<NavBarState>,
+        index: Int,
+        onUpdated: (destination: Tab) -> Unit = {
+        }
+    ) {
         val tab: Tab = barState.value.tabs[index]
         if (barState.value.selectedTab == tab) return
         barState.update { state ->
@@ -87,37 +110,5 @@ class HomeViewModel(private val repository: HomeRepository) :
             )
         }
         onUpdated(tab)
-    }
-
-    private fun showAccount() {
-        _state.update { state ->
-            state.copy(
-                showAccount = !state.showAccount,
-            )
-        }
-    }
-
-    private fun showNotifications() {
-        _state.update { state ->
-            state.copy(
-                showNotifications = !state.showNotifications,
-            )
-        }
-    }
-
-    private fun toggleMoreCategories() {
-        _state.update { state ->
-            state.copy(
-                showMoreCategories = !state.showMoreCategories,
-            )
-        }
-    }
-
-    private fun toggleSearch() {
-        _state.update { state ->
-            state.copy(
-                showSearch = !state.showSearch,
-            )
-        }
     }
 }

@@ -1,8 +1,12 @@
 package com.bakery.ui.components.layout.scaffold
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -19,7 +23,10 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 
 @Composable
-internal fun ScaffoldContent(scaffold: ScaffoldType, content: @Composable () -> Unit) {
+internal fun ScaffoldContent(
+    scaffold: ScaffoldType,
+    content: @Composable () -> Unit,
+) {
     val messages: Messages = LocalMessages.current
     val scope: CoroutineScope = rememberCoroutineScope()
     val hostState: SnackbarHostState = remember { SnackbarHostState() }
@@ -38,12 +45,14 @@ internal fun ScaffoldContent(scaffold: ScaffoldType, content: @Composable () -> 
     }
 
     scaffold(
+        ScaffoldDefaults.contentWindowInsets,
         { SnackbarHost(hostState = hostState) },
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .consumeWindowInsets(WindowInsets.navigationBars),
             contentAlignment = Alignment.Center,
         ) {
             content()

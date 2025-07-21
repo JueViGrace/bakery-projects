@@ -51,15 +51,11 @@ fun SignUpFormSection(
                         onBirthDateChange = { newValue ->
                             onEvent(SignUpEvents.OnBirthDateChanged(newValue))
                         },
-                        username = state.signUpForm.username,
-                        onUsernameChange = { newValue ->
-                            onEvent(SignUpEvents.OnUsernameChanged(newValue))
-                        },
+
                         modifier = Modifier.fillMaxWidth(),
                         firstNameError = state.formValidation.firstNameError?.let { stringResource(it) },
                         lastNameError = state.formValidation.lastNameError?.let { stringResource(it) },
                         birthDateError = state.formValidation.birthDateError?.let { stringResource(it) },
-                        usernameError = state.formValidation.usernameError?.let { stringResource(it) },
                     )
                 }
                 1 -> {
@@ -72,14 +68,14 @@ fun SignUpFormSection(
                         onEmailChange = { newValue ->
                             onEvent(SignUpEvents.OnEmailChanged(newValue))
                         },
-                        address = state.signUpForm.address,
-                        onAddressChange = { newValue ->
-                            onEvent(SignUpEvents.OnAddressChanged(newValue))
+                        username = state.signUpForm.username,
+                        onUsernameChange = { newValue ->
+                            onEvent(SignUpEvents.OnUsernameChanged(newValue))
                         },
                         modifier = Modifier.fillMaxWidth(),
                         phoneNumberError = state.formValidation.phoneNumberError?.let { stringResource(it) },
                         emailError = state.formValidation.emailError?.let { stringResource(it) },
-                        addressError = state.formValidation.addressError?.let { stringResource(it) },
+                        usernameError = state.formValidation.usernameError?.let { stringResource(it) },
                     )
                 }
                 2 -> {
@@ -115,10 +111,10 @@ fun SignUpFormSection(
                                 onEvent(SignUpEvents.TogglePrivacyPolicy)
                             },
                             onTerms = {
-                                onEvent(SignUpEvents.OnTerms)
+                                // TODO:
                             },
                             onPrivacyPolicy = {
-                                onEvent(SignUpEvents.TogglePrivacyPolicy)
+                                // todo:
                             },
                             termsAndConditionsError = state.formValidation.termsAndConditionsError?.let {
                                 stringResource(it)

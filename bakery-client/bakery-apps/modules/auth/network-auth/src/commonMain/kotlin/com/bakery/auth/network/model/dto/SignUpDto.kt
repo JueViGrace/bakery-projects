@@ -13,8 +13,6 @@ data class SignUpDto(
     val phoneNumber: String,
     @SerialName("birth_date")
     val birthDate: String,
-    @SerialName("address")
-    val address: String,
     @SerialName("email")
     val email: String,
     @SerialName("username")

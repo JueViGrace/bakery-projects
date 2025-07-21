@@ -113,6 +113,9 @@
     <string name="sign_up_title">¡Crea tu cuenta con nosotros y empieza a disfrutar de nuestros servicios!</string>
     <string name="forgot_username">¿Olvidaste tu nombre de usuario?</string>
     <string name="or_sign_in_with">O inicia sesión con</string>
+    <string name="orders">Pedidos</string>
+    <string name="cart">Carrito</string>
+    <string name="products">Productos</string>
     <!--Error Messages-->
     <string name="password_mismatch">Las contraseñas no coinciden</string>
     <string name="not_available">No disponible</string>
@@ -135,6 +138,7 @@
     <string name="email_used">Este email ya está siendo utilizado</string>
     <string name="username_empty">El nombre de usuario no puede estar vacío</string>
     <string name="username_used">Este nombre de usuario ya está siendo utilizado</string>
+    <string name="username_with_whitespaces">El nombre de usuario no puede contener espacios</string>
     <string name="password_empty">La contraseña no puede estar vacía</string>
     <string name="phone_number_empty">Teléfono no puede estar vacío</string>
     <string name="phone_number_invalid">Teléfono no válido</string>

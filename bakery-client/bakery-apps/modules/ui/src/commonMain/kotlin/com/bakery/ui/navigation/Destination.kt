@@ -2,7 +2,7 @@ package com.bakery.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-/*
+/**
 * Destinations used throughout the project.
 * */
 @Serializable
@@ -44,9 +44,27 @@ sealed interface Destination {
             @Serializable
             sealed interface BottomGraph : TabGraph {
                 @Serializable
-                data object Dashboard : BottomGraph
+                data object Home : BottomGraph
+
+                @Serializable
+                data object Orders : BottomGraph
+
+                @Serializable
+                data object Profile : BottomGraph
             }
         }
+
+        @Serializable
+        data object Cart : HomeGraph
+
+        @Serializable
+        data object Notifications : HomeGraph
+
+        @Serializable
+        data object Search : HomeGraph
+
+        @Serializable
+        data object PaymentMethods : HomeGraph
     }
 }
 
@@ -62,4 +80,11 @@ typealias HomeGraphRoute = Destination.HomeGraph.Graph
 typealias HomeRoute = Destination.HomeGraph.Home
 typealias HomeTabGraphRoute = Destination.HomeGraph.TabGraph.Graph
 
-typealias DashboardRoute = Destination.HomeGraph.TabGraph.BottomGraph.Dashboard
+typealias HomeTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Home
+typealias OrdersTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Orders
+typealias ProfileTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Profile
+
+typealias CartRoute = Destination.HomeGraph.Cart
+typealias NotificationsRoute = Destination.HomeGraph.Notifications
+typealias SearchRoute = Destination.HomeGraph.Search
+typealias PaymentMethodsRoute = Destination.HomeGraph.PaymentMethods

@@ -5,9 +5,8 @@ import com.bakery.ui.layout.bars.NavBars
 sealed interface HomeEvents {
     /* Bar events */
 
-    data class OnTabSelected(val index: Int, val bar: NavBars) : HomeEvents
-    data object OnAccount : HomeEvents
+    data object HideBottomBar : HomeEvents
+    data object OnCart : HomeEvents
     data object OnNotifications : HomeEvents
-    data object ToggleSearch : HomeEvents
-    data object ToggleMore : HomeEvents
+    data class OnTabSelected(val index: Int, val bar: NavBars) : HomeEvents
 }

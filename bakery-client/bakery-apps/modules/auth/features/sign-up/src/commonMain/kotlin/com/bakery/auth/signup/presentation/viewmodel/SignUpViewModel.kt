@@ -83,8 +83,7 @@ class SignUpViewModel(
                                 SignUpValidator.validateBirthDate(state.signUpForm.birthDate, true) == null
                         }
                         1 -> {
-                            SignUpValidator.validateAddress(state.signUpForm.address, true) == null &&
-                                SignUpValidator.validateEmail(state.signUpForm.email, true) == null &&
+                            SignUpValidator.validateEmail(state.signUpForm.email, true) == null &&
                                 SignUpValidator.validatePhoneNumber(state.signUpForm.phoneNumber, true) == null
                         }
                         else -> {
@@ -107,7 +106,6 @@ class SignUpViewModel(
             is SignUpEvents.OnLastNameChanged -> lastNameChanged(event.value)
             is SignUpEvents.OnPhoneChanged -> phoneChanged(event.value)
             is SignUpEvents.OnBirthDateChanged -> birthDateChanged(event.value)
-            is SignUpEvents.OnAddressChanged -> addressChanged(event.value)
             is SignUpEvents.OnEmailChanged -> emailChanged(event.value)
             is SignUpEvents.OnUsernameChanged -> usernameChanged(event.value)
             is SignUpEvents.OnPasswordChanged -> passwordChanged(event.value)
@@ -115,8 +113,6 @@ class SignUpViewModel(
             SignUpEvents.ToggleTerms -> toggleTerms()
             SignUpEvents.TogglePrivacyPolicy -> togglePrivacyPolicy()
             SignUpEvents.OnSubmit -> submit()
-            SignUpEvents.OnPrivacyPolicy -> onTerms()
-            SignUpEvents.OnTerms -> onPrivacyPolicy()
         }
     }
 
@@ -164,16 +160,7 @@ class SignUpViewModel(
         }
     }
 
-    private fun addressChanged(value: String) {
-        formState.update { state ->
-            state.copy(
-                address = value,
-                showAddressError = true,
-            )
-        }
-    }
-
-    fun emailChanged(value: String) {
+    private fun emailChanged(value: String) {
         formState.update { state ->
             state.copy(
                 email = value,
@@ -186,6 +173,7 @@ class SignUpViewModel(
         formState.update { state ->
             state.copy(
                 username = value,
+                showUsernameError = true,
             )
         }
     }
@@ -224,14 +212,6 @@ class SignUpViewModel(
                 showPrivacyPolicyError = true,
             )
         }
-    }
-
-    private fun onTerms() {
-        // todo:
-    }
-
-    private fun onPrivacyPolicy() {
-        // todo:
     }
 
     private fun submit() {

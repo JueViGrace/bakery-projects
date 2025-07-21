@@ -10,6 +10,11 @@ kotlin {
     iosSimulatorArm64()
 
     jvm()
+
+    sourceSets {
+        commonMain.dependencies {
+        }
+    }
 }
 
 android {

@@ -10,8 +10,9 @@ import com.bakery.ui.components.layout.scaffold.DefaultScaffold
 @Composable
 fun ScreenContainer(
     modifier: Modifier = Modifier,
-    scaffold: ScaffoldType = { snackbarHost, content ->
+    scaffold: ScaffoldType = { contentWindowInsets, snackbarHost, content ->
         DefaultScaffold(
+            contentWindowInsets = contentWindowInsets,
             snackbarHost = snackbarHost,
             content = content,
         )

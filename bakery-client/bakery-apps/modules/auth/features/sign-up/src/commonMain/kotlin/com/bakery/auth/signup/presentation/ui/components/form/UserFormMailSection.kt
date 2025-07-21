@@ -8,14 +8,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import com.bakery.auth.ui.AuthFormItemSection
 import com.bakery.resources.generated.resources.Res
-import com.bakery.resources.generated.resources.address
 import com.bakery.resources.generated.resources.email
-import com.bakery.resources.generated.resources.ic_address_book
+import com.bakery.resources.generated.resources.ic_account
 import com.bakery.resources.generated.resources.ic_mail
 import com.bakery.resources.generated.resources.ic_phone
 import com.bakery.resources.generated.resources.phone_number
 import com.bakery.resources.generated.resources.required_field
 import com.bakery.resources.generated.resources.type_your
+import com.bakery.resources.generated.resources.username
 import com.bakery.ui.components.display.IconComponent
 import com.bakery.ui.components.input.DefaultInputField
 import org.jetbrains.compose.resources.painterResource
@@ -25,18 +25,18 @@ import org.jetbrains.compose.resources.stringResource
 fun UserFormMailSection(
     phoneNumber: String,
     email: String,
-    address: String,
+    username: String,
     onPhoneNumberChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onAddressChange: (String) -> Unit,
+    onUsernameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     phoneNumberError: String? = null,
     emailError: String? = null,
-    addressError: String? = null,
+    usernameError: String? = null,
 ) {
     val phoneNumberLabel = stringResource(Res.string.phone_number)
     val emailLabel = stringResource(Res.string.email)
-    val addressLabel = stringResource(Res.string.address)
+    val usernameLabel = stringResource(Res.string.username)
     val requiredField = "* ${stringResource(Res.string.required_field).lowercase()}"
 
     AuthFormItemSection(
@@ -90,26 +90,21 @@ fun UserFormMailSection(
         )
         DefaultInputField(
             modifier = Modifier.fillMaxWidth(),
-            placeholder = "${stringResource(Res.string.type_your)} ${addressLabel.lowercase()}...",
-            label = addressLabel,
+            placeholder = "${stringResource(Res.string.type_your)} ${usernameLabel.lowercase()}...",
+            label = usernameLabel,
             leadingIcon = {
                 IconComponent(
-                    painter = painterResource(Res.drawable.ic_address_book),
-                    contentDescription = addressLabel,
+                    painter = painterResource(Res.drawable.ic_account),
+                    contentDescription = usernameLabel,
                 )
             },
-            supportingText = addressError ?: if (address.isEmpty()) {
-                requiredField
-            } else {
-                null
-            },
-            value = address,
-            onValueChange = onAddressChange,
-            isError = addressError != null,
+            supportingText = usernameError,
+            value = username,
+            onValueChange = onUsernameChange,
+            isError = usernameError != null,
             keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Text,
                 imeAction = ImeAction.Done
-            ),
+            )
         )
     }
 }

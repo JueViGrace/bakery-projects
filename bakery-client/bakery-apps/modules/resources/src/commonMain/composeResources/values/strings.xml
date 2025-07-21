@@ -116,6 +116,9 @@
     <string name="sign_up_title">Create your account with us and start enjoying our services!.</string>
     <string name="forgot_username">Forgot username?</string>
     <string name="or_sign_in_with">Or sign in with</string>
+    <string name="orders">Orders</string>
+    <string name="cart">Cart</string>
+    <string name="products">Products</string>
     <!--Error Messages-->
     <string name="password_mismatch">Passwords do not match</string>
     <string name="not_available">Not available</string>
@@ -138,6 +141,7 @@
     <string name="email_used">This email is already being used</string>
     <string name="username_empty">Username cannot be empty</string>
     <string name="username_used">This username is already being used</string>
+    <string name="username_with_whitespaces">Username cannot contain whitespaces</string>
     <string name="password_empty">Password cannot be empty</string>
     <string name="phone_number_empty">Phone number cannot be empty</string>
     <string name="phone_number_invalid">Invalid phone number</string>

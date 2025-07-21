@@ -7,7 +7,6 @@ data class SignUpForm(
     val lastName: String = "",
     val phoneNumber: String = "",
     val birthDate: String = "",
-    val address: String = "",
     val email: String = "",
     val username: String = "",
     val password: String = "",
@@ -19,8 +18,8 @@ data class SignUpForm(
     val showLastNameError: Boolean = false,
     val showPhoneNumberError: Boolean = false,
     val showBirthDateError: Boolean = false,
-    val showAddressError: Boolean = false,
     val showEmailError: Boolean = false,
+    val showUsernameError: Boolean = false,
     val showPasswordError: Boolean = false,
     val showConfirmPasswordError: Boolean = false,
     val showTermsAndConditionsError: Boolean = false,
@@ -30,7 +29,6 @@ data class SignUpForm(
         showLastNameError &&
         showPhoneNumberError &&
         showBirthDateError &&
-        showAddressError &&
         showEmailError &&
         showPasswordError &&
         showConfirmPasswordError &&
@@ -38,12 +36,11 @@ data class SignUpForm(
         showPrivacyPolicyError
 
     fun toDto(): SignUpDto = SignUpDto(
-        firstName = firstName,
-        lastName = lastName,
-        phoneNumber = phoneNumber,
-        birthDate = birthDate,
-        address = address,
-        email = email,
+        firstName = firstName.trim(),
+        lastName = lastName.trim(),
+        phoneNumber = phoneNumber.trim(),
+        birthDate = birthDate.trim(),
+        email = email.trim(),
         username = username,
         password = password,
     )

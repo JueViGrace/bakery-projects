@@ -18,6 +18,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.materialIconsExtended)
             implementation(compose.material3)
+            implementation(compose.material3AdaptiveNavigationSuite)
             implementation(compose.runtimeSaveable)
             implementation(compose.ui)
 
