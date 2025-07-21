@@ -7,8 +7,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import migrations.Session
 
 interface AuthHelper : LocalDataSource {
-    override val dbHelper: DbHelper<BakeryDB>
-
     suspend fun getSession(): Session?
     suspend fun createSession(session: Session)
     suspend fun updateActive(active: Boolean, id: String)

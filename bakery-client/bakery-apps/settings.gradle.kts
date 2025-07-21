@@ -53,12 +53,11 @@ include(
 )
 
 // modules library
+
 include(
     ":modules:ui",
     ":modules:resources",
 )
-
-// library
 
 // auth library
 include(
@@ -72,14 +71,13 @@ include(
     ":modules:auth:ui-auth",
 )
 
-// dashboard library
+// features libraries
 include(
+    ":modules:cart",
     ":modules:dashboard",
-)
-
-// home library
-include(
     ":modules:home",
+    ":modules:notification",
+    ":modules:profile",
 )
 
 // order library

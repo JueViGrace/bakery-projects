@@ -3,7 +3,6 @@ package com.bakery.core.data
 import com.bakery.core.state.RequestState
 import com.bakery.network.model.ApiOperation
 import com.bakery.util.Logs
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -11,6 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlin.coroutines.CoroutineContext
 
 /**
 * Standard repository.

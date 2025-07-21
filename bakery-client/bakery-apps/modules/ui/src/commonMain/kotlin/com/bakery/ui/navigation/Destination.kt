@@ -34,7 +34,22 @@ sealed interface Destination {
         data object Graph : HomeGraph
 
         @Serializable
+        data object Cart : HomeGraph
+
+        @Serializable
         data object Home : HomeGraph
+
+        @Serializable
+        data object Notification : HomeGraph
+
+        @Serializable
+        data class OrderDetail(val orderId: String) : HomeGraph
+
+        @Serializable
+        data object PaymentMethods : HomeGraph
+
+        @Serializable
+        data object Search : HomeGraph
 
         @Serializable
         sealed interface TabGraph : HomeGraph {
@@ -53,18 +68,6 @@ sealed interface Destination {
                 data object Profile : BottomGraph
             }
         }
-
-        @Serializable
-        data object Cart : HomeGraph
-
-        @Serializable
-        data object Notifications : HomeGraph
-
-        @Serializable
-        data object Search : HomeGraph
-
-        @Serializable
-        data object PaymentMethods : HomeGraph
     }
 }
 
@@ -84,7 +87,9 @@ typealias HomeTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Home
 typealias OrdersTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Orders
 typealias ProfileTabRoute = Destination.HomeGraph.TabGraph.BottomGraph.Profile
 
+typealias OrderDetailRoute = Destination.HomeGraph.OrderDetail
+
 typealias CartRoute = Destination.HomeGraph.Cart
-typealias NotificationsRoute = Destination.HomeGraph.Notifications
+typealias NotificationRoute = Destination.HomeGraph.Notification
 typealias SearchRoute = Destination.HomeGraph.Search
 typealias PaymentMethodsRoute = Destination.HomeGraph.PaymentMethods

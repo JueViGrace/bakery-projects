@@ -13,7 +13,15 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            /*
+             * Projects
+             */
+
+            // Network
             implementation(projects.modules.order.networkOrder)
+
+            // Product
+            implementation(projects.modules.product)
         }
     }
 }

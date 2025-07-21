@@ -11,6 +11,8 @@ import com.bakery.home.presentation.events.HomeEvents
 import com.bakery.home.presentation.state.HomeState
 import com.bakery.home.presentation.ui.components.layout.HomeScaffold
 import com.bakery.home.presentation.viewmodel.HomeViewModel
+import com.bakery.order.presentation.list.ui.screens.OrderListScreen
+import com.bakery.profile.presentation.ui.screen.ProfileScreen
 import com.bakery.ui.components.containers.ScaffoldContainer
 import com.bakery.ui.components.navigation.delayedComposable
 import com.bakery.ui.components.observable.ObserveAsEvents
@@ -89,8 +91,10 @@ fun HomeScreen(
                     )
                 }
                 delayedComposable<OrdersTabRoute> { _ ->
+                    OrderListScreen()
                 }
                 delayedComposable<ProfileTabRoute> { _ ->
+                    ProfileScreen()
                 }
             }
         }

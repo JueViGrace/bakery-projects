@@ -8,7 +8,10 @@ import com.bakery.home.presentation.events.HomeEvents
 import com.bakery.home.presentation.state.HomeState
 import com.bakery.ui.layout.bars.NavBarState
 import com.bakery.ui.layout.bars.NavBars
+import com.bakery.ui.navigation.CartRoute
+import com.bakery.ui.navigation.HomeRoute
 import com.bakery.ui.navigation.HomeTabGraphRoute
+import com.bakery.ui.navigation.NotificationRoute
 import com.bakery.ui.navigation.tab.BottomTabs
 import com.bakery.ui.navigation.tab.Tab
 import com.bakery.ui.viewmodel.BaseViewModel
@@ -67,9 +70,27 @@ class HomeViewModel(
     }
 
     private fun navigateToCart() {
+        navigateTo(
+            destination = CartRoute,
+            navOptions = navOptions {
+                popUpTo(HomeRoute) {
+                    inclusive = false
+                }
+                launchSingleTop = true
+            }
+        )
     }
 
     private fun navigateToNotifications() {
+        navigateTo(
+            destination = NotificationRoute,
+            navOptions = navOptions {
+                popUpTo(HomeRoute) {
+                    inclusive = false
+                }
+                launchSingleTop = true
+            }
+        )
     }
 
     private fun tabSelected(index: Int, bar: NavBars) {

@@ -33,15 +33,6 @@ kotlin {
 
             // Home
             implementation(projects.modules.home)
-
-            // Order
-            implementation(projects.modules.order)
-
-            // Product
-            implementation(projects.modules.product)
-
-            // User
-            implementation(projects.modules.user)
         }
 
         desktopMain.dependencies {
