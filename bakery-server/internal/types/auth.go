@@ -7,11 +7,8 @@ import (
 
 	"github.com/JueViGrace/bakery-server/internal/database"
 	"github.com/JueViGrace/bakery-server/internal/util"
-	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
-
-type AuthDataHandler = func(*fiber.Ctx, *AuthData) error
 
 type AuthData struct {
 	UserId    uuid.UUID
@@ -45,8 +42,17 @@ type RefreshRequest struct {
 	RefreshToken string `json:"refresh_token" validate:"required,min=1,max=255"`
 }
 
+type RequestPasswordReset struct {
+	Email string `json:"email" validate:"required,min=1,max=255"`
+}
+
+type ConfirmPasswordReset struct {
+	Code string `json:"code" validate:"required,min=1,max=255"`
+}
+
 type RecoverPasswordRequest struct {
-	Password string `json:"password" validate:"required,min=1,max255"`
+	Password    string `json:"password" validate:"required,min=1,max255"`
+	NewPassword string `json:"new_password" validate:"required,min=1,max255"`
 }
 
 func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error) {

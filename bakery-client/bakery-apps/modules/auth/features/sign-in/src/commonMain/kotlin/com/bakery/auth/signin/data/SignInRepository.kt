@@ -16,7 +16,7 @@ interface SignInRepository : Repository {
 class DefaultSignInRepository(private val client: AuthClient, private val helper: AuthHelper) : SignInRepository {
     override fun login(signInForm: SignInForm): Flow<RequestState<Boolean>> = startNetworkRequest(
         call = {
-            client.login(signInForm.toDto())
+            client.logIn(signInForm.toDto())
         },
     ) { value ->
         val data = value.data

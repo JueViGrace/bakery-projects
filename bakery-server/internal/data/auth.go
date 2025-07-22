@@ -3,6 +3,7 @@ package data
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/JueViGrace/bakery-server/internal/database"
 	"github.com/JueViGrace/bakery-server/internal/types"
@@ -11,6 +12,7 @@ import (
 )
 
 type AuthStore interface {
+	LogOut(sessionId uuid.UUID) (msg string, err error)
 	SignIn(r *types.SignInRequest) (*types.AuthResponse, error)
 	SignUp(r *types.SignUpRequest) (*types.AuthResponse, error)
 	Refresh(r *types.RefreshRequest, a *types.AuthData) (*types.AuthResponse, error)
@@ -31,6 +33,15 @@ func NewAuthStore(ctx context.Context, db *database.Queries) AuthStore {
 		ctx: ctx,
 		db:  db,
 	}
+}
+
+func (s *authStore) LogOut(sessionId uuid.UUID) (string, error) {
+	err := s.db.DeleteSessionById(s.ctx, sessionId.String())
+	if err != nil {
+		return "", fmt.Errorf("session with id %s not found", sessionId.String())
+	}
+
+	return "Logged out!", nil
 }
 
 // TODO: limit sessions to 5?

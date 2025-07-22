@@ -12,10 +12,10 @@ import com.bakery.network.model.ApiResponse
 
 interface AuthClient : RemoteDataSource {
     suspend fun confirmPasswordReset(dto: ConfirmPasswordResetDto): ApiOperation<ApiResponse<String>>
-    suspend fun login(dto: SignInDto): ApiOperation<ApiResponse<AuthResponse>>
-    suspend fun logout(token: String): ApiOperation<ApiResponse<String>>
-    suspend fun refresh(token: String): ApiOperation<ApiResponse<AuthResponse>>
     suspend fun requestPasswordReset(dto: RequestPasswordResetDto): ApiOperation<ApiResponse<String>>
     suspend fun resetPassword(dto: PasswordResetDto): ApiOperation<ApiResponse<String>>
+    suspend fun refresh(token: String): ApiOperation<ApiResponse<AuthResponse>>
+    suspend fun logout(token: String): ApiOperation<ApiResponse<String>>
+    suspend fun logIn(dto: SignInDto): ApiOperation<ApiResponse<AuthResponse>>
     suspend fun signUp(dto: SignUpDto): ApiOperation<ApiResponse<AuthResponse>>
 }

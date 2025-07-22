@@ -10,20 +10,18 @@ import (
 type ProductRoutes interface {
 	GetProducts(c *fiber.Ctx) error
 	GetProductById(c *fiber.Ctx) error
-	CreateProduct(c *fiber.Ctx) error
-	UpdateProduct(c *fiber.Ctx) error
+	CreateProduct(c *fiber.Ctx, body *types.CreateProductRequest) error
+	UpdateProduct(c *fiber.Ctx, body *types.UpdateProductRequest) error
 	DeleteProduct(c *fiber.Ctx) error
 }
 
 type ProductHandler struct {
-	db        data.ProductStore
-	validator *util.XValidator
+	db data.ProductStore
 }
 
-func NewProductHandler(db data.ProductStore, validator *util.XValidator) ProductRoutes {
+func NewProductHandler(db data.ProductStore) ProductRoutes {
 	return &ProductHandler{
-		db:        db,
-		validator: validator,
+		db: db,
 	}
 }
 
@@ -55,14 +53,8 @@ func (h *ProductHandler) GetProductById(c *fiber.Ctx) error {
 	return c.Status(res.Status).JSON(res)
 }
 
-func (h *ProductHandler) CreateProduct(c *fiber.Ctx) error {
-	r := new(types.CreateProductRequest)
-	if err := c.BodyParser(r); err != nil {
-		res := types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	product, err := h.db.CreateProduct(r)
+func (h *ProductHandler) CreateProduct(c *fiber.Ctx, body *types.CreateProductRequest) error {
+	product, err := h.db.CreateProduct(body)
 	if err != nil {
 		res := types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)
@@ -72,14 +64,8 @@ func (h *ProductHandler) CreateProduct(c *fiber.Ctx) error {
 	return c.Status(res.Status).JSON(res)
 }
 
-func (h *ProductHandler) UpdateProduct(c *fiber.Ctx) error {
-	r := new(types.UpdateProductRequest)
-	if err := c.BodyParser(r); err != nil {
-		res := types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	product, err := h.db.UpdateProduct(r)
+func (h *ProductHandler) UpdateProduct(c *fiber.Ctx, body *types.UpdateProductRequest) error {
+	product, err := h.db.UpdateProduct(body)
 	if err != nil {
 		res := types.RespondNoContent(nil, err.Error())
 		return c.Status(res.Status).JSON(res)

@@ -1,60 +1,83 @@
 package handlers
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/JueViGrace/bakery-server/internal/data"
 	"github.com/JueViGrace/bakery-server/internal/types"
-	"github.com/JueViGrace/bakery-server/internal/util"
 	"github.com/gofiber/fiber/v2"
 )
 
 type AuthHandler interface {
-	SignIn(c *fiber.Ctx) error
-	SignUp(c *fiber.Ctx) error
-	Refresh(c *fiber.Ctx, a *types.AuthData) error
-	RecoverPassword(c *fiber.Ctx) error
+	RequestPasswordReset(c *fiber.Ctx, body *types.RequestPasswordReset) error
+	ConfirmPasswordReset(c *fiber.Ctx, body *types.ConfirmPasswordReset) error
+	RecoverPassword(c *fiber.Ctx, body *types.RecoverPasswordRequest) error
+	Refresh(c *fiber.Ctx, body *types.RefreshRequest, data *types.AuthData) error
+	LogOut(c *fiber.Ctx, data *types.AuthData) error
+	SignIn(c *fiber.Ctx, body *types.SignInRequest) error
+	SignUp(c *fiber.Ctx, body *types.SignUpRequest) error
 }
 
 type authHandler struct {
-	db        data.AuthStore
-	validator *util.XValidator
+	db data.AuthStore
 }
 
-func NewAuthHandler(db data.AuthStore, validator *util.XValidator) AuthHandler {
+func NewAuthHandler(db data.AuthStore) AuthHandler {
 	return &authHandler{
-		db:        db,
-		validator: validator,
+		db: db,
 	}
 }
 
-func (h *authHandler) SignIn(c *fiber.Ctx) error {
-	r := new(types.SignInRequest)
+func (h *authHandler) RequestPasswordReset(c *fiber.Ctx, body *types.RequestPasswordReset) error {
+	return nil
+}
+
+func (h *authHandler) ConfirmPasswordReset(c *fiber.Ctx, body *types.ConfirmPasswordReset) error {
+	return nil
+}
+
+func (h *authHandler) RecoverPassword(c *fiber.Ctx, body *types.RecoverPasswordRequest) error {
 	res := new(types.APIResponse)
 
-	if err := c.BodyParser(r); err != nil {
-		res = types.RespondBadRequest(nil, err.Error())
+	msg, err := h.db.RecoverPassword(body)
+	if err != nil {
+		res = types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)
 	}
 
-	if errs := h.validator.Validate(r); len(errs) > 0 {
-		errMsgs := make([]string, 0)
+	res = types.RespondAccepted(msg, "Success")
+	return c.Status(res.Status).JSON(res)
+}
 
-		for _, err := range errs {
-			errMsgs = append(errMsgs, fmt.Sprintf(
-				"[%s]: '%v' | Needs to implement '%s'",
-				err.FailedField,
-				err.Value,
-				err.Tag,
-			))
-		}
+func (h *authHandler) Refresh(c *fiber.Ctx, body *types.RefreshRequest, data *types.AuthData) error {
+	res := new(types.APIResponse)
 
-		res = types.RespondBadRequest(nil, strings.Join(errMsgs, " and "))
+	msg, err := h.db.Refresh(body, data)
+	if err != nil {
+		res = types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)
 	}
 
-	token, err := h.db.SignIn(r)
+	res = types.RespondAccepted(msg, "Success")
+	return c.Status(res.Status).JSON(res)
+}
+
+func (h *authHandler) LogOut(c *fiber.Ctx, data *types.AuthData) error {
+	res := new(types.APIResponse)
+
+	msg, err := h.db.LogOut(data.SessionId)
+
+	if err != nil {
+		res = types.RespondNotFound(nil, err.Error())
+		return c.Status(res.Status).JSON(res)
+	}
+
+	res = types.RespondAccepted(msg, "Success")
+	return c.Status(res.Status).JSON(res)
+}
+
+func (h *authHandler) SignIn(c *fiber.Ctx, body *types.SignInRequest) error {
+	res := new(types.APIResponse)
+
+	token, err := h.db.SignIn(body)
 	if err != nil {
 		res = types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)
@@ -64,107 +87,15 @@ func (h *authHandler) SignIn(c *fiber.Ctx) error {
 	return c.Status(res.Status).JSON(res)
 }
 
-func (h *authHandler) SignUp(c *fiber.Ctx) error {
-	r := new(types.SignUpRequest)
+func (h *authHandler) SignUp(c *fiber.Ctx, body *types.SignUpRequest) error {
 	res := new(types.APIResponse)
 
-	if err := c.BodyParser(r); err != nil {
-		res = types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	if errs := h.validator.Validate(r); len(errs) > 0 {
-		errMsgs := make([]string, 0)
-
-		for _, err := range errs {
-			errMsgs = append(errMsgs, fmt.Sprintf(
-				"[%s]: '%v' | Needs to implement '%s'",
-				err.FailedField,
-				err.Value,
-				err.Tag,
-			))
-		}
-
-		res = types.RespondBadRequest(nil, strings.Join(errMsgs, " and "))
-		return c.Status(res.Status).JSON(res)
-	}
-
-	token, err := h.db.SignUp(r)
+	token, err := h.db.SignUp(body)
 	if err != nil {
 		res = types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)
 	}
 
 	res = types.RespondCreated(token, "Success")
-	return c.Status(res.Status).JSON(res)
-}
-
-func (h *authHandler) Refresh(c *fiber.Ctx, a *types.AuthData) error {
-	r := new(types.RefreshRequest)
-	res := new(types.APIResponse)
-
-	if err := c.BodyParser(r); err != nil {
-		res = types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	if errs := h.validator.Validate(r); len(errs) > 0 {
-		errMsgs := make([]string, 0)
-
-		for _, err := range errs {
-			errMsgs = append(errMsgs, fmt.Sprintf(
-				"[%s]: '%v' | Needs to implement '%s'",
-				err.FailedField,
-				err.Value,
-				err.Tag,
-			))
-		}
-
-		res = types.RespondBadRequest(nil, strings.Join(errMsgs, " and "))
-		return c.Status(res.Status).JSON(res)
-	}
-
-	msg, err := h.db.Refresh(r, a)
-	if err != nil {
-		res = types.RespondNotFound(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	res = types.RespondAccepted(msg, "Success")
-	return c.Status(res.Status).JSON(res)
-}
-
-func (h *authHandler) RecoverPassword(c *fiber.Ctx) error {
-	r := new(types.RecoverPasswordRequest)
-	res := new(types.APIResponse)
-
-	if err := c.BodyParser(r); err != nil {
-		res = types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	if errs := h.validator.Validate(r); len(errs) > 0 {
-		errMsgs := make([]string, 0)
-
-		for _, err := range errs {
-			errMsgs = append(errMsgs, fmt.Sprintf(
-				"[%s]: '%v' | Needs to implement '%s'",
-				err.FailedField,
-				err.Value,
-				err.Tag,
-			))
-		}
-
-		res = types.RespondBadRequest(nil, strings.Join(errMsgs, " and "))
-		return c.Status(res.Status).JSON(res)
-	}
-
-	msg, err := h.db.RecoverPassword(r)
-	if err != nil {
-		res = types.RespondNotFound(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	res = types.RespondAccepted(msg, "Success")
 	return c.Status(res.Status).JSON(res)
 }

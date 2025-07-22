@@ -9,20 +9,18 @@ import (
 
 type UserHandler interface {
 	GetUsers(c *fiber.Ctx) error
-	GetUserById(c *fiber.Ctx, a *types.AuthData) error
-	UpdateUser(c *fiber.Ctx, a *types.AuthData) error
-	DeleteUser(c *fiber.Ctx, a *types.AuthData) error
+	GetUserById(c *fiber.Ctx, data *types.AuthData) error
+	UpdateUser(c *fiber.Ctx, body *types.UpdateUserRequest, data *types.AuthData) error
+	DeleteUser(c *fiber.Ctx, data *types.AuthData) error
 }
 
 type userHandler struct {
-	db        data.UserStore
-	validator *util.XValidator
+	db data.UserStore
 }
 
-func NewUserHandler(db data.UserStore, validator *util.XValidator) UserHandler {
+func NewUserHandler(db data.UserStore) UserHandler {
 	return &userHandler{
-		db:        db,
-		validator: validator,
+		db: db,
 	}
 }
 
@@ -49,14 +47,8 @@ func (h *userHandler) GetUserById(c *fiber.Ctx, a *types.AuthData) error {
 }
 
 // todo: refactor this
-func (h *userHandler) UpdateUser(c *fiber.Ctx, a *types.AuthData) error {
-	r := new(types.UpdateUserRequest)
-	if err := c.BodyParser(r); err != nil {
-		res := types.RespondBadRequest(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	user, err := h.db.UpdateUser(r)
+func (h *userHandler) UpdateUser(c *fiber.Ctx, body *types.UpdateUserRequest, a *types.AuthData) error {
+	user, err := h.db.UpdateUser(body)
 	if err != nil {
 		res := types.RespondNotFound(nil, err.Error())
 		return c.Status(res.Status).JSON(res)

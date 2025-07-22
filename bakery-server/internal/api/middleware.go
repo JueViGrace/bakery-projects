@@ -1,10 +1,19 @@
 package api
 
 import (
+	"errors"
+	"fmt"
+	"strings"
+
 	"github.com/JueViGrace/bakery-server/internal/data"
 	"github.com/JueViGrace/bakery-server/internal/types"
 	"github.com/JueViGrace/bakery-server/internal/util"
+	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+)
+
+var (
+	v *validator.Validate = validator.New()
 )
 
 func (a *api) adminAuthMiddleware(c *fiber.Ctx) error {
@@ -32,14 +41,61 @@ func (a *api) sessionMiddleware(c *fiber.Ctx) error {
 	return c.Next()
 }
 
-func (a *api) authenticatedHandler(handler types.AuthDataHandler) fiber.Handler {
+func validatedMiddleware[T any](t T, handler func(c *fiber.Ctx, t *T) error) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		res := new(types.APIResponse)
+		body, err := validateBody(t, c)
+		if err != nil {
+			res = types.RespondBadRequest(nil, err.Error())
+			return c.Status(res.Status).JSON(res)
+		}
+
+		return handler(c, body)
+	}
+}
+
+func validatedHandler[T any](t T, c *fiber.Ctx, handler func(t *T) error) error {
+	res := new(types.APIResponse)
+	body, err := validateBody(t, c)
+	if err != nil {
+		res = types.RespondBadRequest(nil, err.Error())
+		return c.Status(res.Status).JSON(res)
+	}
+	return handler(body)
+}
+
+func validateBody[T any](t T, c *fiber.Ctx) (*T, error) {
+	var request *T = new(T)
+
+	if err := c.BodyParser(&request); err != nil {
+		return nil, err
+	}
+
+	errs := v.Struct(request)
+	if errs != nil {
+		errMsgs := make([]string, 0)
+		for _, err := range errs.(validator.ValidationErrors) {
+			errMsgs = append(errMsgs, fmt.Sprintf(
+				"[%s]: '%v' | Needs to implement '%s'",
+				err.Field(),
+				err.Value(),
+				err.Tag(),
+			))
+		}
+
+		return nil, errors.New(strings.Join(errMsgs, " and "))
+	}
+
+	return request, nil
+}
+
+func (a *api) authenticatedMiddleware(handler func(c *fiber.Ctx, data *types.AuthData) error) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		data, err := getUserDataForReq(c, a.db)
 		if err != nil {
 			res := types.RespondUnauthorized(nil, err.Error())
 			return c.Status(res.Status).JSON(res)
 		}
-
 		return handler(c, data)
 	}
 }

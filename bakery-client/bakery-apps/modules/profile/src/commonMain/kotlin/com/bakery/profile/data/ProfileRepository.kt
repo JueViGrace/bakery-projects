@@ -6,6 +6,7 @@ import com.bakery.core.data.Repository
 import com.bakery.core.state.RequestState
 import com.bakery.network.model.ApiOperation
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 interface ProfileRepository : Repository {
     fun logOut(): Flow<RequestState<Boolean>>
@@ -23,7 +24,14 @@ class DefaultProfileRepository(
                 authClient.logout(session.accessToken)
             }
         ) { response ->
-            // todo: handle response
+            scope.launch {
+                authHelper.deleteSession()
+            }
+            emit(
+                RequestState.Success(
+                    data = true
+                )
+            )
         }
     }
 }

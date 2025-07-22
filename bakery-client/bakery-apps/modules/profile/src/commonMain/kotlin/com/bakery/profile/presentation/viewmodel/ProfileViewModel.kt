@@ -2,9 +2,13 @@ package com.bakery.profile.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.navOptions
+import com.bakery.core.state.RequestState
 import com.bakery.profile.data.ProfileRepository
 import com.bakery.profile.presentation.events.ProfileEvents
 import com.bakery.profile.presentation.state.ProfileState
+import com.bakery.ui.navigation.AuthGraphRoute
+import com.bakery.ui.navigation.HomeGraphRoute
 import com.bakery.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,9 +32,36 @@ class ProfileViewModel(
 
     private fun logOut() {
         scope.launch {
-            // todo: log out in the server
-
-
+            repository.logOut().collect { result ->
+                when (result) {
+                    is RequestState.Error -> {
+                        // todo: error
+                        navigateTo(
+                            destination = AuthGraphRoute,
+                            navOptions = navOptions {
+                                popUpTo(HomeGraphRoute) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        )
+                    }
+                    is RequestState.Success -> {
+                        navigateTo(
+                            destination = AuthGraphRoute,
+                            navOptions = navOptions {
+                                popUpTo(HomeGraphRoute) {
+                                    inclusive = true
+                                }
+                                launchSingleTop = true
+                            }
+                        )
+                    }
+                    else -> {
+                        // todo: loading
+                    }
+                }
+            }
         }
     }
 }
