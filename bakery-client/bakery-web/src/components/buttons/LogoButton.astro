@@ -1,0 +1,16 @@
+---
+import LogoIcon from '../icons/LogoIcon.astro';
+
+interface Props {
+  href?: string;
+  className?: string;
+}
+
+const { href, className } = Astro.props;
+---
+
+<a href={href ?? '/'} class={className}>
+  <button id="top-bar-logo" class="p-1 hover:scale-105 md:p-2">
+    <LogoIcon />
+  </button>
+</a>

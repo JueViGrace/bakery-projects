@@ -1,0 +1,15 @@
+---
+import NavButton from './NavButton';
+
+export const prerender = true;
+---
+
+<section
+  class="w-full items-center border-b-1 border-solid border-b-gray-700 p-2"
+>
+  <header class="flex items-center justify-between">
+    <NavButton client:load />
+    <div></div>
+    <div></div>
+  </header>
+</section>

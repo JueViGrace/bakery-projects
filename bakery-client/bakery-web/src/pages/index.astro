@@ -1,8 +1,13 @@
 ---
-import '../styles/global.css';
-import Layout from '../layouts/Layout.astro';
+import StoreLayout from '../layouts/StoreLayout.astro';
+
+export const prerender = true;
 ---
 
-<Layout title="Bakery and Deserts" , description="Bakery and Deserts web page">
-  <h1>Hello world!</h1>
-</Layout>
+<StoreLayout title="Bakery and Deserts">
+  <section class="flex-1">
+    <main class="container flex flex-col">
+      <h1>Hello World!</h1>
+    </main>
+  </section>
+</StoreLayout>

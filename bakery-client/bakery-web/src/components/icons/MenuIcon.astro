@@ -1,0 +1,11 @@
+---
+import MenuSVG from '../../assets/menu.svg';
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<MenuSVG class={className ?? 'size-6 lg:size-10'} />
