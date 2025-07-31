@@ -8,9 +8,34 @@ import (
 	"database/sql"
 )
 
-type BakeryOrder struct {
+type Cart struct {
+	ID         string
+	TotalPrice float64
+	UserID     string
+	CreatedAt  string
+	UpdatedAt  string
+}
+
+type CartProduct struct {
+	CartID          string
+	ProductID       string
+	ProductName     string
+	ProductPrice    float64
+	ProductDiscount float64
+	Quantity        int64
+	FinalPrice      float64
+}
+
+type Category struct {
+	ID          string
+	Name        string
+	Description string
+}
+
+type Order struct {
 	ID            string
-	TotalAmount   float64
+	NetPrice      float64
+	TotalPrice    float64
 	PaymentMethod string
 	Status        string
 	UserID        string
@@ -18,43 +43,50 @@ type BakeryOrder struct {
 	UpdatedAt     string
 }
 
-type BakeryOrderProduct struct {
+type OrderProduct struct {
 	OrderID         string
 	ProductID       string
 	ProductName     string
 	ProductPrice    float64
 	ProductDiscount float64
-	ProductRating   float64
-	TotalPrice      float64
 	Quantity        int64
+	FinalPrice      float64
 }
 
-type BakeryProduct struct {
+type Product struct {
 	ID          string
 	Name        string
 	Description string
-	Category    string
+	Brand       string
+	ByRequest   int64
+	Discount    float64
 	Price       float64
 	Stock       int64
 	Issued      int64
-	HasStock    int64
-	Discount    float64
-	Rating      float64
 	Images      string
+	CategoryID  string
 	CreatedAt   string
 	UpdatedAt   string
 	DeletedAt   sql.NullString
 }
 
-type BakerySession struct {
+type ProductRating struct {
+	Rating    int64
+	ProductID string
+	UserID    string
+}
+
+type Session struct {
 	ID           string
 	RefreshToken string
 	AccessToken  string
 	Username     string
 	UserID       string
+	Device       string
+	CreatedAt    string
 }
 
-type BakeryUser struct {
+type User struct {
 	ID          string
 	FirstName   string
 	LastName    string

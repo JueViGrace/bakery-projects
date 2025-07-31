@@ -1,22 +1,22 @@
 -- name: GetUsers :many
 select *
-from bakery_user
+from users
 ;
 
 -- name: GetUserById :one
 select *
-from bakery_user
+from users
 where id = ?
 ;
 
 -- name: GetUser :one
 select *
-from bakery_user
+from users
 where email = ? or username = ?
 ;
 
 -- name: CreateUser :one
-INSERT INTO bakery_user (
+INSERT INTO users (
     id,
     first_name,
     last_name,
@@ -33,7 +33,7 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: UpdateUser :one
-UPDATE bakery_user SET
+UPDATE users SET
     first_name = ?,
     last_name = ?,
     alias = ?,
@@ -44,21 +44,21 @@ WHERE id = ?
 RETURNING *;
 
 -- name: UpdateEmail :one
-UPDATE bakery_user SET
+UPDATE users SET
     email = ?,
     updated_at = ?
 WHERE id = ?
 RETURNING *;
 
 -- name: UpdateUsername :one
-UPDATE bakery_user SET
+UPDATE users SET
     username = ?,
     updated_at = ?
 WHERE id = ?
 RETURNING *;
 
 -- name: DeleteUser :exec
-UPDATE bakery_user SET 
+UPDATE users SET 
     deleted_at = ?
 WHERE id = ?;
 

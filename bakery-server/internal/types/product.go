@@ -8,17 +8,18 @@ import (
 	"github.com/google/uuid"
 )
 
+// TODO: fix response object
 type ProductResponse struct {
 	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
-	Category    string    `json:"category"`
+	Brand       string    `json:"brand"`
+	CategoryID  string    `json:"category_id"`
+	ByRequest   bool      `json:"by_request"`
+	Discount    float64   `json:"discount"`
 	Price       float64   `json:"price"`
 	Stock       int       `json:"stock"`
 	Issued      int       `json:"issued"`
-	HasStock    int       `json:"has_stock"`
-	Discount    float64   `json:"discount"`
-	Rating      float64   `json:"rating"`
 	Images      []string  `json:"images"`
 	CreatedAt   string    `json:"created_at"`
 	UpdatedAt   string    `json:"updated_at"`
@@ -28,25 +29,25 @@ type ProductResponse struct {
 type CreateProductRequest struct {
 	Name        string   `json:"name" validate:"required"`
 	Description string   `json:"description" validate:"required"`
-	Category    string   `json:"category" validate:"required"`
+	Brand       string   `json:"brand" validate:"required"`
+	CategoryID  string   `json:"category_id" validate:"required"`
+	ByRequest   bool     `json:"by_request" validate:"required"`
+	Discount    float64  `json:"discount" validate:"required"`
 	Price       float64  `json:"price" validate:"required"`
 	Stock       int      `json:"stock" validate:"required"`
 	Issued      int      `json:"issued" validate:"required"`
-	HasStock    int      `json:"has_stock" validate:"required"`
-	Discount    float64  `json:"discount" validate:"required"`
-	Rating      float64  `json:"rating" validate:"required"`
 	Images      []string `json:"images" validate:"required"`
 }
 
 type UpdateProductRequest struct {
 	Description string    `json:"description" validate:"required"`
-	Category    string    `json:"category" validate:"required"`
+	Brand       string    `json:"brand" validate:"required"`
+	CategoryID  string    `json:"category_id" validate:"required"`
+	ByRequest   bool      `json:"by_request" validate:"required"`
+	Discount    float64   `json:"discount" validate:"required"`
 	Price       float64   `json:"price" validate:"required"`
 	Stock       int       `json:"stock" validate:"required"`
 	Issued      int       `json:"issued" validate:"required"`
-	HasStock    int       `json:"has_stock" validate:"required"`
-	Discount    float64   `json:"discount" validate:"required"`
-	Rating      float64   `json:"rating" validate:"required"`
 	Images      []string  `json:"images" validate:"required"`
 	ID          uuid.UUID `json:"id" validate:"required"`
 }
@@ -56,27 +57,35 @@ type UpdateProductNameRequest struct {
 	ID   uuid.UUID `json:"id" validate:"required"`
 }
 
-func DbProductToProduct(db *database.BakeryProduct) (*ProductResponse, error) {
+// TODO: fix response mapping
+func DbProductToProduct(db *database.Product) (*ProductResponse, error) {
 	id, err := uuid.Parse(db.ID)
 	if err != nil {
 		return nil, err
+	}
+
+	var byRequest bool
+	if db.ByRequest == 1 {
+		byRequest = true
+	} else {
+		byRequest = false
 	}
 
 	return &ProductResponse{
 		ID:          id,
 		Name:        db.Name,
 		Description: db.Description,
-		Category:    db.Category,
 		Price:       db.Price,
 		Stock:       int(db.Stock),
 		Issued:      int(db.Issued),
-		HasStock:    int(db.HasStock),
 		Discount:    db.Discount,
-		Rating:      db.Rating,
 		Images:      strings.Split(db.Images, ","),
 		CreatedAt:   db.CreatedAt,
 		UpdatedAt:   db.UpdatedAt,
 		DeletedAt:   db.DeletedAt.String,
+		Brand:       db.Brand,
+		CategoryID:  db.CategoryID,
+		ByRequest:   byRequest,
 	}, nil
 }
 
@@ -86,17 +95,24 @@ func NewCreateProductParams(r *CreateProductRequest) (*database.CreateProductPar
 		return nil, err
 	}
 
+	var byRequest int64
+	if r.ByRequest {
+		byRequest = 1
+	} else {
+		byRequest = 0
+	}
+
 	return &database.CreateProductParams{
 		ID:          id.String(),
 		Name:        r.Name,
 		Description: r.Description,
-		Category:    r.Category,
+		Brand:       r.Brand,
+		ByRequest:   byRequest,
+		CategoryID:  r.CategoryID,
+		Discount:    r.Discount,
 		Price:       r.Price,
 		Stock:       int64(r.Stock),
 		Issued:      int64(r.Issued),
-		HasStock:    int64(r.HasStock),
-		Discount:    r.Discount,
-		Rating:      r.Discount,
 		Images:      strings.Join(r.Images, ","),
 		CreatedAt:   time.Now().UTC().String(),
 		UpdatedAt:   time.Now().UTC().String(),
@@ -104,15 +120,22 @@ func NewCreateProductParams(r *CreateProductRequest) (*database.CreateProductPar
 }
 
 func NewUpdateProductParams(r *UpdateProductRequest) *database.UpdateProductParams {
+	var byRequest int64
+	if r.ByRequest {
+		byRequest = 1
+	} else {
+		byRequest = 0
+	}
+
 	return &database.UpdateProductParams{
 		Description: r.Description,
-		Category:    r.Category,
+		Brand:       r.Brand,
+		ByRequest:   byRequest,
+		CategoryID:  r.CategoryID,
+		Discount:    r.Discount,
 		Price:       r.Price,
 		Stock:       int64(r.Stock),
 		Issued:      int64(r.Issued),
-		HasStock:    int64(r.HasStock),
-		Discount:    r.Discount,
-		Rating:      r.Rating,
 		Images:      strings.Join(r.Images, ","),
 		UpdatedAt:   time.Now().UTC().String(),
 		ID:          r.ID.String(),

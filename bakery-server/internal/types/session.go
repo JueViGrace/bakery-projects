@@ -13,7 +13,7 @@ type Session struct {
 	AccessToken  string
 }
 
-func DbSessionToSession(s *database.BakerySession) (*Session, error) {
+func DbSessionToSession(s *database.Session) (*Session, error) {
 	id, err := uuid.Parse(s.ID)
 	if err != nil {
 		return nil, err

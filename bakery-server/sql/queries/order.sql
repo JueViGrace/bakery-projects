@@ -1,60 +1,60 @@
 -- name: GetOrders :many
 select *
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.deleted_at is null
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.deleted_at is null
 ;
 
 -- name: GetOrdersByUser :many
 select *
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.user_id = ? and bakery_order.deleted_at is null
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.user_id = ? and orders.deleted_at is null
 ;
 
 -- name: GetOrderById :one
 select *
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.id = ? and bakery_order.deleted_at is null
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.id = ? and orders.deleted_at is null
 ;
 
 -- name: CreateOrder :exec
-INSERT INTO bakery_order (
+INSERT INTO orders (
     id,
-    total_amount,
+    net_price,
+    total_price,
     payment_method,
     status,
     user_id,
     created_at,
     updated_at
 )
-VALUES (?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 -- name: CreateOrderProducts :exec
-INSERT INTO bakery_order_products(
+INSERT INTO order_products(
     order_id,
     product_id,
     product_name,
     product_price,
     product_discount,
-    product_rating,
-    total_price,
+    final_price,
     quantity
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+VALUES (?, ?, ?, ?, ?, ?, ?);
 
 -- name: UpdateOrderStatus :exec
-UPDATE bakery_order SET 
+UPDATE orders SET 
     status = ?,
     updated_at = ?
 WHERE id = ?;
 
 -- name: CancelOrder :exec
-UPDATE bakery_order SET 
+UPDATE orders SET 
     status = "CANCELLED",
     updated_at = ?
 WHERE id = ?;

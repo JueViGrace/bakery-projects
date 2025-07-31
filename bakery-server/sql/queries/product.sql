@@ -1,51 +1,58 @@
 -- name: GetProducts :many
 select *
-from bakery_product
-where bakery_product.deleted_at is null
+from products
+where products.deleted_at is null
 ;
 
 -- name: GetProductById :one
 select *
-from bakery_product
-where bakery_product.id = ? and bakery_product.deleted_at is null
+from products
+where products.id = ? and products.deleted_at is null
 ;
 
 -- name: CreateProduct :one
-INSERT INTO bakery_product (
+INSERT INTO products (
     id,
     name,
     description,
-    category,
+    brand,
+    by_request,
+    discount,
     price,
     stock,
     issued,
-    has_stock,
-    discount,
-    rating,
     images,
+    category_id,
     created_at,
     updated_at
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 RETURNING *;
 
+-- name: UpdateProductName :one
+UPDATE products SET
+    name = ?,
+    updated_at = ?
+WHERE id = ?
+RETURNING *;
+
 -- name: UpdateProduct :one
-UPDATE bakery_product SET
+UPDATE products SET
     description = ?,
-    category = ?,
+    brand = ?,
+    by_request = ?,
+    discount = ?,
     price = ?,
     stock = ?,
     issued = ?,
-    has_stock = ?,
-    discount = ?,
-    rating = ?,
     images = ?,
+    category_id = ?,
     updated_at = ?
 WHERE id = ?
 RETURNING *;
 
 -- name: DeleteProduct :exec
-UPDATE bakery_product SET 
+UPDATE products SET 
     deleted_at = ?
 WHERE id = ?;
 

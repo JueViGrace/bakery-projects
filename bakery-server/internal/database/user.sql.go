@@ -13,7 +13,7 @@ import (
 const createUser = `-- name: CreateUser :one
 ;
 
-INSERT INTO bakery_user (
+INSERT INTO users (
     id,
     first_name,
     last_name,
@@ -44,7 +44,7 @@ type CreateUserParams struct {
 	UpdatedAt   string
 }
 
-func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (BakeryUser, error) {
+func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, createUser,
 		arg.ID,
 		arg.FirstName,
@@ -58,7 +58,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (BakeryU
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
@@ -78,7 +78,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (BakeryU
 }
 
 const deleteUser = `-- name: DeleteUser :exec
-UPDATE bakery_user SET 
+UPDATE users SET 
     deleted_at = ?
 WHERE id = ?
 `
@@ -97,7 +97,7 @@ const getUser = `-- name: GetUser :one
 ;
 
 select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
-from bakery_user
+from users
 where email = ? or username = ?
 `
 
@@ -106,9 +106,9 @@ type GetUserParams struct {
 	Username string
 }
 
-func (q *Queries) GetUser(ctx context.Context, arg GetUserParams) (BakeryUser, error) {
+func (q *Queries) GetUser(ctx context.Context, arg GetUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUser, arg.Email, arg.Username)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
@@ -131,13 +131,13 @@ const getUserById = `-- name: GetUserById :one
 ;
 
 select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
-from bakery_user
+from users
 where id = ?
 `
 
-func (q *Queries) GetUserById(ctx context.Context, id string) (BakeryUser, error) {
+func (q *Queries) GetUserById(ctx context.Context, id string) (User, error) {
 	row := q.db.QueryRowContext(ctx, getUserById, id)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
@@ -158,18 +158,18 @@ func (q *Queries) GetUserById(ctx context.Context, id string) (BakeryUser, error
 
 const getUsers = `-- name: GetUsers :many
 select id, first_name, last_name, alias, username, email, password, phone_number, birth_date, role, created_at, updated_at, deleted_at
-from bakery_user
+from users
 `
 
-func (q *Queries) GetUsers(ctx context.Context) ([]BakeryUser, error) {
+func (q *Queries) GetUsers(ctx context.Context) ([]User, error) {
 	rows, err := q.db.QueryContext(ctx, getUsers)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []BakeryUser
+	var items []User
 	for rows.Next() {
-		var i BakeryUser
+		var i User
 		if err := rows.Scan(
 			&i.ID,
 			&i.FirstName,
@@ -199,7 +199,7 @@ func (q *Queries) GetUsers(ctx context.Context) ([]BakeryUser, error) {
 }
 
 const updateEmail = `-- name: UpdateEmail :one
-UPDATE bakery_user SET
+UPDATE users SET
     email = ?,
     updated_at = ?
 WHERE id = ?
@@ -212,9 +212,9 @@ type UpdateEmailParams struct {
 	ID        string
 }
 
-func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) (BakeryUser, error) {
+func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, updateEmail, arg.Email, arg.UpdatedAt, arg.ID)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
@@ -234,7 +234,7 @@ func (q *Queries) UpdateEmail(ctx context.Context, arg UpdateEmailParams) (Baker
 }
 
 const updateUser = `-- name: UpdateUser :one
-UPDATE bakery_user SET
+UPDATE users SET
     first_name = ?,
     last_name = ?,
     alias = ?,
@@ -255,7 +255,7 @@ type UpdateUserParams struct {
 	ID          string
 }
 
-func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (BakeryUser, error) {
+func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, updateUser,
 		arg.FirstName,
 		arg.LastName,
@@ -265,7 +265,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (BakeryU
 		arg.UpdatedAt,
 		arg.ID,
 	)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
@@ -285,7 +285,7 @@ func (q *Queries) UpdateUser(ctx context.Context, arg UpdateUserParams) (BakeryU
 }
 
 const updateUsername = `-- name: UpdateUsername :one
-UPDATE bakery_user SET
+UPDATE users SET
     username = ?,
     updated_at = ?
 WHERE id = ?
@@ -298,9 +298,9 @@ type UpdateUsernameParams struct {
 	ID        string
 }
 
-func (q *Queries) UpdateUsername(ctx context.Context, arg UpdateUsernameParams) (BakeryUser, error) {
+func (q *Queries) UpdateUsername(ctx context.Context, arg UpdateUsernameParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, updateUsername, arg.Username, arg.UpdatedAt, arg.ID)
-	var i BakeryUser
+	var i User
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,

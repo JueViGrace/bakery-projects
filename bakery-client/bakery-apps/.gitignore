@@ -20,3 +20,4 @@ captures
 *.log
 .metals
 .bloop
+.env

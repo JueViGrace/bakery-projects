@@ -1,5 +1,4 @@
 import bakerybuild.internal.libs
-import com.android.build.gradle.ProguardFiles.getDefaultProguardFile
 
 plugins {
     id("bakerybuild.compose-convention")
@@ -86,16 +85,12 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isDebuggable = false
-
-            buildConfigField("Boolean", "IS_DEBUG", "false")
         }
 
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
             isDebuggable = true
-
-            buildConfigField("Boolean", "IS_DEBUG", "true")
         }
 
         all {
@@ -103,6 +98,21 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 file("$rootDir/build-logic/src/main/resources/proguard-rules.pro"),
             )
+        }
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+        create("prod")
+
+        create("dev")
+
+        create("mock")
+
+        all {
+            dimension = "environment"
+            applicationIdSuffix = ".$name"
+            versionNameSuffix = "-$name"
         }
     }
 

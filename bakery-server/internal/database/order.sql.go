@@ -11,7 +11,7 @@ import (
 )
 
 const cancelOrder = `-- name: CancelOrder :exec
-UPDATE bakery_order SET 
+UPDATE orders SET 
     status = "CANCELLED",
     updated_at = ?
 WHERE id = ?
@@ -30,21 +30,23 @@ func (q *Queries) CancelOrder(ctx context.Context, arg CancelOrderParams) error 
 const createOrder = `-- name: CreateOrder :exec
 ;
 
-INSERT INTO bakery_order (
+INSERT INTO orders (
     id,
-    total_amount,
+    net_price,
+    total_price,
     payment_method,
     status,
     user_id,
     created_at,
     updated_at
 )
-VALUES (?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreateOrderParams struct {
 	ID            string
-	TotalAmount   float64
+	NetPrice      float64
+	TotalPrice    float64
 	PaymentMethod string
 	Status        string
 	UserID        string
@@ -55,7 +57,8 @@ type CreateOrderParams struct {
 func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) error {
 	_, err := q.db.ExecContext(ctx, createOrder,
 		arg.ID,
-		arg.TotalAmount,
+		arg.NetPrice,
+		arg.TotalPrice,
 		arg.PaymentMethod,
 		arg.Status,
 		arg.UserID,
@@ -66,17 +69,16 @@ func (q *Queries) CreateOrder(ctx context.Context, arg CreateOrderParams) error 
 }
 
 const createOrderProducts = `-- name: CreateOrderProducts :exec
-INSERT INTO bakery_order_products(
+INSERT INTO order_products(
     order_id,
     product_id,
     product_name,
     product_price,
     product_discount,
-    product_rating,
-    total_price,
+    final_price,
     quantity
 )
-VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?)
 `
 
 type CreateOrderProductsParams struct {
@@ -85,8 +87,7 @@ type CreateOrderProductsParams struct {
 	ProductName     string
 	ProductPrice    float64
 	ProductDiscount float64
-	ProductRating   float64
-	TotalPrice      float64
+	FinalPrice      float64
 	Quantity        int64
 }
 
@@ -97,8 +98,7 @@ func (q *Queries) CreateOrderProducts(ctx context.Context, arg CreateOrderProduc
 		arg.ProductName,
 		arg.ProductPrice,
 		arg.ProductDiscount,
-		arg.ProductRating,
-		arg.TotalPrice,
+		arg.FinalPrice,
 		arg.Quantity,
 	)
 	return err
@@ -107,16 +107,17 @@ func (q *Queries) CreateOrderProducts(ctx context.Context, arg CreateOrderProduc
 const getOrderById = `-- name: GetOrderById :one
 ;
 
-select bakery_order.id, total_amount, payment_method, status, user_id, bakery_order.created_at, bakery_order.updated_at, order_id, product_id, product_name, product_price, product_discount, product_rating, total_price, quantity, bakery_product.id, name, description, category, price, stock, issued, has_stock, discount, rating, images, bakery_product.created_at, bakery_product.updated_at, deleted_at
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.id = ? and bakery_order.deleted_at is null
+select orders.id, net_price, total_price, payment_method, status, user_id, orders.created_at, orders.updated_at, order_id, product_id, product_name, product_price, product_discount, quantity, final_price, products.id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, products.created_at, products.updated_at, deleted_at
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.id = ? and orders.deleted_at is null
 `
 
 type GetOrderByIdRow struct {
 	ID              string
-	TotalAmount     float64
+	NetPrice        float64
+	TotalPrice      float64
 	PaymentMethod   string
 	Status          string
 	UserID          string
@@ -127,20 +128,19 @@ type GetOrderByIdRow struct {
 	ProductName     sql.NullString
 	ProductPrice    sql.NullFloat64
 	ProductDiscount sql.NullFloat64
-	ProductRating   sql.NullFloat64
-	TotalPrice      sql.NullFloat64
 	Quantity        sql.NullInt64
+	FinalPrice      sql.NullFloat64
 	ID_2            sql.NullString
 	Name            sql.NullString
 	Description     sql.NullString
-	Category        sql.NullString
+	Brand           sql.NullString
+	ByRequest       sql.NullInt64
+	Discount        sql.NullFloat64
 	Price           sql.NullFloat64
 	Stock           sql.NullInt64
 	Issued          sql.NullInt64
-	HasStock        sql.NullInt64
-	Discount        sql.NullFloat64
-	Rating          sql.NullFloat64
 	Images          sql.NullString
+	CategoryID      sql.NullString
 	CreatedAt_2     sql.NullString
 	UpdatedAt_2     sql.NullString
 	DeletedAt       sql.NullString
@@ -151,7 +151,8 @@ func (q *Queries) GetOrderById(ctx context.Context, id string) (GetOrderByIdRow,
 	var i GetOrderByIdRow
 	err := row.Scan(
 		&i.ID,
-		&i.TotalAmount,
+		&i.NetPrice,
+		&i.TotalPrice,
 		&i.PaymentMethod,
 		&i.Status,
 		&i.UserID,
@@ -162,20 +163,19 @@ func (q *Queries) GetOrderById(ctx context.Context, id string) (GetOrderByIdRow,
 		&i.ProductName,
 		&i.ProductPrice,
 		&i.ProductDiscount,
-		&i.ProductRating,
-		&i.TotalPrice,
 		&i.Quantity,
+		&i.FinalPrice,
 		&i.ID_2,
 		&i.Name,
 		&i.Description,
-		&i.Category,
+		&i.Brand,
+		&i.ByRequest,
+		&i.Discount,
 		&i.Price,
 		&i.Stock,
 		&i.Issued,
-		&i.HasStock,
-		&i.Discount,
-		&i.Rating,
 		&i.Images,
+		&i.CategoryID,
 		&i.CreatedAt_2,
 		&i.UpdatedAt_2,
 		&i.DeletedAt,
@@ -184,16 +184,17 @@ func (q *Queries) GetOrderById(ctx context.Context, id string) (GetOrderByIdRow,
 }
 
 const getOrders = `-- name: GetOrders :many
-select bakery_order.id, total_amount, payment_method, status, user_id, bakery_order.created_at, bakery_order.updated_at, order_id, product_id, product_name, product_price, product_discount, product_rating, total_price, quantity, bakery_product.id, name, description, category, price, stock, issued, has_stock, discount, rating, images, bakery_product.created_at, bakery_product.updated_at, deleted_at
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.deleted_at is null
+select orders.id, net_price, total_price, payment_method, status, user_id, orders.created_at, orders.updated_at, order_id, product_id, product_name, product_price, product_discount, quantity, final_price, products.id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, products.created_at, products.updated_at, deleted_at
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.deleted_at is null
 `
 
 type GetOrdersRow struct {
 	ID              string
-	TotalAmount     float64
+	NetPrice        float64
+	TotalPrice      float64
 	PaymentMethod   string
 	Status          string
 	UserID          string
@@ -204,20 +205,19 @@ type GetOrdersRow struct {
 	ProductName     sql.NullString
 	ProductPrice    sql.NullFloat64
 	ProductDiscount sql.NullFloat64
-	ProductRating   sql.NullFloat64
-	TotalPrice      sql.NullFloat64
 	Quantity        sql.NullInt64
+	FinalPrice      sql.NullFloat64
 	ID_2            sql.NullString
 	Name            sql.NullString
 	Description     sql.NullString
-	Category        sql.NullString
+	Brand           sql.NullString
+	ByRequest       sql.NullInt64
+	Discount        sql.NullFloat64
 	Price           sql.NullFloat64
 	Stock           sql.NullInt64
 	Issued          sql.NullInt64
-	HasStock        sql.NullInt64
-	Discount        sql.NullFloat64
-	Rating          sql.NullFloat64
 	Images          sql.NullString
+	CategoryID      sql.NullString
 	CreatedAt_2     sql.NullString
 	UpdatedAt_2     sql.NullString
 	DeletedAt       sql.NullString
@@ -234,7 +234,8 @@ func (q *Queries) GetOrders(ctx context.Context) ([]GetOrdersRow, error) {
 		var i GetOrdersRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.TotalAmount,
+			&i.NetPrice,
+			&i.TotalPrice,
 			&i.PaymentMethod,
 			&i.Status,
 			&i.UserID,
@@ -245,20 +246,19 @@ func (q *Queries) GetOrders(ctx context.Context) ([]GetOrdersRow, error) {
 			&i.ProductName,
 			&i.ProductPrice,
 			&i.ProductDiscount,
-			&i.ProductRating,
-			&i.TotalPrice,
 			&i.Quantity,
+			&i.FinalPrice,
 			&i.ID_2,
 			&i.Name,
 			&i.Description,
-			&i.Category,
+			&i.Brand,
+			&i.ByRequest,
+			&i.Discount,
 			&i.Price,
 			&i.Stock,
 			&i.Issued,
-			&i.HasStock,
-			&i.Discount,
-			&i.Rating,
 			&i.Images,
+			&i.CategoryID,
 			&i.CreatedAt_2,
 			&i.UpdatedAt_2,
 			&i.DeletedAt,
@@ -279,16 +279,17 @@ func (q *Queries) GetOrders(ctx context.Context) ([]GetOrdersRow, error) {
 const getOrdersByUser = `-- name: GetOrdersByUser :many
 ;
 
-select bakery_order.id, total_amount, payment_method, status, user_id, bakery_order.created_at, bakery_order.updated_at, order_id, product_id, product_name, product_price, product_discount, product_rating, total_price, quantity, bakery_product.id, name, description, category, price, stock, issued, has_stock, discount, rating, images, bakery_product.created_at, bakery_product.updated_at, deleted_at
-from bakery_order
-left join bakery_order_products on bakery_order.id = bakery_order_products.id
-left join bakery_product on bakery_order_products.product_id = bakery_product.id
-where bakery_order.user_id = ? and bakery_order.deleted_at is null
+select orders.id, net_price, total_price, payment_method, status, user_id, orders.created_at, orders.updated_at, order_id, product_id, product_name, product_price, product_discount, quantity, final_price, products.id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, products.created_at, products.updated_at, deleted_at
+from orders
+left join order_products on orders.id = order_products.id
+left join products on order_products.product_id = products.id
+where orders.user_id = ? and orders.deleted_at is null
 `
 
 type GetOrdersByUserRow struct {
 	ID              string
-	TotalAmount     float64
+	NetPrice        float64
+	TotalPrice      float64
 	PaymentMethod   string
 	Status          string
 	UserID          string
@@ -299,20 +300,19 @@ type GetOrdersByUserRow struct {
 	ProductName     sql.NullString
 	ProductPrice    sql.NullFloat64
 	ProductDiscount sql.NullFloat64
-	ProductRating   sql.NullFloat64
-	TotalPrice      sql.NullFloat64
 	Quantity        sql.NullInt64
+	FinalPrice      sql.NullFloat64
 	ID_2            sql.NullString
 	Name            sql.NullString
 	Description     sql.NullString
-	Category        sql.NullString
+	Brand           sql.NullString
+	ByRequest       sql.NullInt64
+	Discount        sql.NullFloat64
 	Price           sql.NullFloat64
 	Stock           sql.NullInt64
 	Issued          sql.NullInt64
-	HasStock        sql.NullInt64
-	Discount        sql.NullFloat64
-	Rating          sql.NullFloat64
 	Images          sql.NullString
+	CategoryID      sql.NullString
 	CreatedAt_2     sql.NullString
 	UpdatedAt_2     sql.NullString
 	DeletedAt       sql.NullString
@@ -329,7 +329,8 @@ func (q *Queries) GetOrdersByUser(ctx context.Context, userID string) ([]GetOrde
 		var i GetOrdersByUserRow
 		if err := rows.Scan(
 			&i.ID,
-			&i.TotalAmount,
+			&i.NetPrice,
+			&i.TotalPrice,
 			&i.PaymentMethod,
 			&i.Status,
 			&i.UserID,
@@ -340,20 +341,19 @@ func (q *Queries) GetOrdersByUser(ctx context.Context, userID string) ([]GetOrde
 			&i.ProductName,
 			&i.ProductPrice,
 			&i.ProductDiscount,
-			&i.ProductRating,
-			&i.TotalPrice,
 			&i.Quantity,
+			&i.FinalPrice,
 			&i.ID_2,
 			&i.Name,
 			&i.Description,
-			&i.Category,
+			&i.Brand,
+			&i.ByRequest,
+			&i.Discount,
 			&i.Price,
 			&i.Stock,
 			&i.Issued,
-			&i.HasStock,
-			&i.Discount,
-			&i.Rating,
 			&i.Images,
+			&i.CategoryID,
 			&i.CreatedAt_2,
 			&i.UpdatedAt_2,
 			&i.DeletedAt,
@@ -372,7 +372,7 @@ func (q *Queries) GetOrdersByUser(ctx context.Context, userID string) ([]GetOrde
 }
 
 const updateOrderStatus = `-- name: UpdateOrderStatus :exec
-UPDATE bakery_order SET 
+UPDATE orders SET 
     status = ?,
     updated_at = ?
 WHERE id = ?

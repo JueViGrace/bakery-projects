@@ -1,23 +1,23 @@
 -- name: GetSessionById :one
 select *
-from bakery_session
+from sessions
 where id = ?
 ;
 
 -- name: GetSessionByUser :many
 select *
-from bakery_session
+from sessions
 where user_id = ?
 ;
 
 -- name: GetSessionByUsername :many
 select *
-from bakery_session
+from sessions
 where username = ?
 ;
 
 -- name: CreateSession :exec
-insert into bakery_session(
+insert into sessions(
     id,
     refresh_token,
     access_token,
@@ -27,24 +27,24 @@ insert into bakery_session(
 values (?, ?, ?, ?, ?);
 
 -- name: UpdateSession :exec
-update bakery_session set
+update sessions set
     refresh_token = ?,
     access_token = ?,
     username = ?
 where id = ?;
 
 -- name: DeleteSessionById :exec
-delete from bakery_session
+delete from sessions
 where id = ?
 ;
 
 -- name: DeleteSessionByUser :exec
-delete from bakery_session
+delete from sessions
 where user_id = ?
 ;
 
 -- name: DeleteSessionByToken :exec
-delete from bakery_session
+delete from sessions
 where refresh_token = ? or access_token = ?
 ;
 

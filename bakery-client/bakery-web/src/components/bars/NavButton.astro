@@ -1,0 +1,13 @@
+---
+import LogoButton from '../buttons/LogoButton.astro';
+import MenuButton from '../buttons/MenuButton.astro';
+---
+
+<div>
+  <LogoButton className="hidden md:block" />
+  <MenuButton
+    id="drawer-button"
+    className="block p-1 hover:cursor-pointer md:hidden"
+  />
+</div>
+<script src="../../scripts/drawer.ts"></script>

@@ -13,70 +13,70 @@ import (
 const createProduct = `-- name: CreateProduct :one
 ;
 
-INSERT INTO bakery_product (
+INSERT INTO products (
     id,
     name,
     description,
-    category,
+    brand,
+    by_request,
+    discount,
     price,
     stock,
     issued,
-    has_stock,
-    discount,
-    rating,
     images,
+    category_id,
     created_at,
     updated_at
 )
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-RETURNING id, name, description, category, price, stock, issued, has_stock, discount, rating, images, created_at, updated_at, deleted_at
+RETURNING id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, created_at, updated_at, deleted_at
 `
 
 type CreateProductParams struct {
 	ID          string
 	Name        string
 	Description string
-	Category    string
+	Brand       string
+	ByRequest   int64
+	Discount    float64
 	Price       float64
 	Stock       int64
 	Issued      int64
-	HasStock    int64
-	Discount    float64
-	Rating      float64
 	Images      string
+	CategoryID  string
 	CreatedAt   string
 	UpdatedAt   string
 }
 
-func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (BakeryProduct, error) {
+func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (Product, error) {
 	row := q.db.QueryRowContext(ctx, createProduct,
 		arg.ID,
 		arg.Name,
 		arg.Description,
-		arg.Category,
+		arg.Brand,
+		arg.ByRequest,
+		arg.Discount,
 		arg.Price,
 		arg.Stock,
 		arg.Issued,
-		arg.HasStock,
-		arg.Discount,
-		arg.Rating,
 		arg.Images,
+		arg.CategoryID,
 		arg.CreatedAt,
 		arg.UpdatedAt,
 	)
-	var i BakeryProduct
+	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Description,
-		&i.Category,
+		&i.Brand,
+		&i.ByRequest,
+		&i.Discount,
 		&i.Price,
 		&i.Stock,
 		&i.Issued,
-		&i.HasStock,
-		&i.Discount,
-		&i.Rating,
 		&i.Images,
+		&i.CategoryID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,
@@ -85,7 +85,7 @@ func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (B
 }
 
 const deleteProduct = `-- name: DeleteProduct :exec
-UPDATE bakery_product SET 
+UPDATE products SET 
     deleted_at = ?
 WHERE id = ?
 `
@@ -103,26 +103,26 @@ func (q *Queries) DeleteProduct(ctx context.Context, arg DeleteProductParams) er
 const getProductById = `-- name: GetProductById :one
 ;
 
-select id, name, description, category, price, stock, issued, has_stock, discount, rating, images, created_at, updated_at, deleted_at
-from bakery_product
-where bakery_product.id = ? and bakery_product.deleted_at is null
+select id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, created_at, updated_at, deleted_at
+from products
+where products.id = ? and products.deleted_at is null
 `
 
-func (q *Queries) GetProductById(ctx context.Context, id string) (BakeryProduct, error) {
+func (q *Queries) GetProductById(ctx context.Context, id string) (Product, error) {
 	row := q.db.QueryRowContext(ctx, getProductById, id)
-	var i BakeryProduct
+	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Description,
-		&i.Category,
+		&i.Brand,
+		&i.ByRequest,
+		&i.Discount,
 		&i.Price,
 		&i.Stock,
 		&i.Issued,
-		&i.HasStock,
-		&i.Discount,
-		&i.Rating,
 		&i.Images,
+		&i.CategoryID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,
@@ -131,32 +131,32 @@ func (q *Queries) GetProductById(ctx context.Context, id string) (BakeryProduct,
 }
 
 const getProducts = `-- name: GetProducts :many
-select id, name, description, category, price, stock, issued, has_stock, discount, rating, images, created_at, updated_at, deleted_at
-from bakery_product
-where bakery_product.deleted_at is null
+select id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, created_at, updated_at, deleted_at
+from products
+where products.deleted_at is null
 `
 
-func (q *Queries) GetProducts(ctx context.Context) ([]BakeryProduct, error) {
+func (q *Queries) GetProducts(ctx context.Context) ([]Product, error) {
 	rows, err := q.db.QueryContext(ctx, getProducts)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var items []BakeryProduct
+	var items []Product
 	for rows.Next() {
-		var i BakeryProduct
+		var i Product
 		if err := rows.Scan(
 			&i.ID,
 			&i.Name,
 			&i.Description,
-			&i.Category,
+			&i.Brand,
+			&i.ByRequest,
+			&i.Discount,
 			&i.Price,
 			&i.Stock,
 			&i.Issued,
-			&i.HasStock,
-			&i.Discount,
-			&i.Rating,
 			&i.Images,
+			&i.CategoryID,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.DeletedAt,
@@ -175,62 +175,98 @@ func (q *Queries) GetProducts(ctx context.Context) ([]BakeryProduct, error) {
 }
 
 const updateProduct = `-- name: UpdateProduct :one
-UPDATE bakery_product SET
+UPDATE products SET
     description = ?,
-    category = ?,
+    brand = ?,
+    by_request = ?,
+    discount = ?,
     price = ?,
     stock = ?,
     issued = ?,
-    has_stock = ?,
-    discount = ?,
-    rating = ?,
     images = ?,
+    category_id = ?,
     updated_at = ?
 WHERE id = ?
-RETURNING id, name, description, category, price, stock, issued, has_stock, discount, rating, images, created_at, updated_at, deleted_at
+RETURNING id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, created_at, updated_at, deleted_at
 `
 
 type UpdateProductParams struct {
 	Description string
-	Category    string
+	Brand       string
+	ByRequest   int64
+	Discount    float64
 	Price       float64
 	Stock       int64
 	Issued      int64
-	HasStock    int64
-	Discount    float64
-	Rating      float64
 	Images      string
+	CategoryID  string
 	UpdatedAt   string
 	ID          string
 }
 
-func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (BakeryProduct, error) {
+func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (Product, error) {
 	row := q.db.QueryRowContext(ctx, updateProduct,
 		arg.Description,
-		arg.Category,
+		arg.Brand,
+		arg.ByRequest,
+		arg.Discount,
 		arg.Price,
 		arg.Stock,
 		arg.Issued,
-		arg.HasStock,
-		arg.Discount,
-		arg.Rating,
 		arg.Images,
+		arg.CategoryID,
 		arg.UpdatedAt,
 		arg.ID,
 	)
-	var i BakeryProduct
+	var i Product
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Description,
-		&i.Category,
+		&i.Brand,
+		&i.ByRequest,
+		&i.Discount,
 		&i.Price,
 		&i.Stock,
 		&i.Issued,
-		&i.HasStock,
-		&i.Discount,
-		&i.Rating,
 		&i.Images,
+		&i.CategoryID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.DeletedAt,
+	)
+	return i, err
+}
+
+const updateProductName = `-- name: UpdateProductName :one
+UPDATE products SET
+    name = ?,
+    updated_at = ?
+WHERE id = ?
+RETURNING id, name, description, brand, by_request, discount, price, stock, issued, images, category_id, created_at, updated_at, deleted_at
+`
+
+type UpdateProductNameParams struct {
+	Name      string
+	UpdatedAt string
+	ID        string
+}
+
+func (q *Queries) UpdateProductName(ctx context.Context, arg UpdateProductNameParams) (Product, error) {
+	row := q.db.QueryRowContext(ctx, updateProductName, arg.Name, arg.UpdatedAt, arg.ID)
+	var i Product
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Brand,
+		&i.ByRequest,
+		&i.Discount,
+		&i.Price,
+		&i.Stock,
+		&i.Issued,
+		&i.Images,
+		&i.CategoryID,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.DeletedAt,

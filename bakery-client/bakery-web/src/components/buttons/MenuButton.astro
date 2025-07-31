@@ -1,7 +1,14 @@
 ---
 import MenuIcon from '../icons/MenuIcon.astro';
+
+interface Props {
+  id?: string;
+  className?: string;
+}
+
+const { id, className } = Astro.props;
 ---
 
-<button id="menu-button">
+<button id={id} class={className}>
   <MenuIcon />
 </button>

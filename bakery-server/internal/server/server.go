@@ -33,6 +33,7 @@ func New() *FiberServer {
 
 	return &FiberServer{
 		App: app,
+		db:  db,
 		api: api.New(app, db),
 	}
 }

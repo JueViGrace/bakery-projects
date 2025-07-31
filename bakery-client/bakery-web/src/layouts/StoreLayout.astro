@@ -1,13 +1,19 @@
 ---
 import TopBar from '../components/bars/TopBar.astro';
 import Footer from '../components/Footer.astro';
+import DrawerMenu from '../components/menu/DrawerMenu.astro';
 import Layout from './Layout.astro';
 ---
 
 <Layout title="Bakery and Deserts">
-  <div class="flex min-h-screen w-full flex-col items-center justify-between">
-    <TopBar />
-    <slot />
-    <Footer />
+  <div id="page-wrapper" class="relative overflow-hidden">
+    <DrawerMenu />
+    <div
+      class="relative z-1 flex min-h-screen w-full flex-col items-center justify-between"
+    >
+      <TopBar />
+      <slot />
+      <Footer />
+    </div>
   </div>
 </Layout>

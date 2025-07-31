@@ -36,7 +36,7 @@ type ChangeEmailRequest struct {
 	Email string `json:"email" validate:"required"`
 }
 
-func DbUserToUser(db *database.BakeryUser) (user *UserResponse, err error) {
+func DbUserToUser(db *database.User) (user *UserResponse, err error) {
 	id, err := uuid.Parse(db.ID)
 	if err != nil {
 		return nil, err

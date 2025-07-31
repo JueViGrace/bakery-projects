@@ -39,6 +39,7 @@ plugins {
 
 rootProject.name = "bakery-apps"
 
+// app
 include(
     ":apps:bakeryApp",
 )
