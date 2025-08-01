@@ -1,0 +1,21 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  id: string;
+  href?: string;
+  target?: string;
+  className?: string;
+}
+
+const { id, href = '#', target = '_self', className } = Astro.props;
+---
+
+<Button id={id} className={className}>
+  <slot />
+</Button>
+<script is:inline define:vars={{ id, href, target }}>
+  document.getElementById(id).addEventListener('click', () => {
+    window.open(href, target);
+  });
+</script>

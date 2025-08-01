@@ -1,4 +1,6 @@
 ---
+import { navOptions } from '../../common/constants';
+import LinkButton from '../buttons/LinkButton.astro';
 import Navigation from '../Navigation.astro';
 ---
 
@@ -14,7 +16,21 @@ import Navigation from '../Navigation.astro';
   <div class="flex h-full w-full flex-col items-start justify-start">
     <div>profile section</div>
     <div>auth seccion if not authenticated</div>
-    <Navigation />
+    <Navigation display="column" className="flex w-full px-2">
+      {
+        navOptions.map(({ href, name }) => (
+          <li class="flex w-full">
+            <LinkButton
+              id={`drawer-nav-${name.toLowerCase()}-button`}
+              href={href}
+              className="rounded-md p-2 w-full flex hover:bg-cyan-950"
+            >
+              <p class="text-lg font-bold">{name}</p>
+            </LinkButton>
+          </li>
+        ))
+      }
+    </Navigation>
     <div>other section</div>
   </div>
 </aside>

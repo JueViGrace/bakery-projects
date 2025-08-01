@@ -1,14 +1,15 @@
 ---
 import MenuIcon from '../icons/MenuIcon.astro';
+import Button from './Button.astro';
 
 interface Props {
   id?: string;
   className?: string;
 }
 
-const { id, className } = Astro.props;
+const { id = 'menu-button', className } = Astro.props;
 ---
 
-<button id={id} class={className}>
+<Button id={id} className={className}>
   <MenuIcon />
-</button>
+</Button>

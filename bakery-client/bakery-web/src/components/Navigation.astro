@@ -8,11 +8,13 @@ const { className, display = 'row' } = Astro.props;
 const listDisplay = display == 'column' ? 'flex-col' : '';
 ---
 
-<!-- TODO: navigation for products, categories and other services, same menu for navigation drawer and top bar? -->
 <nav id="nav-section" class={className}>
-  <ul class:list={['flex', listDisplay]}>
-    <li><h1>Products</h1></li>
-    <li><h1>Categories</h1></li>
-    <li><h1>orders</h1></li>
+  <ul
+    class:list={[
+      'flex grow items-center justify-center gap-2 md:gap-6 lg:gap-8',
+      listDisplay,
+    ]}
+  >
+    <slot />
   </ul>
 </nav>

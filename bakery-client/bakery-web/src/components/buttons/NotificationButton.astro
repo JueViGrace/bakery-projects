@@ -1,0 +1,17 @@
+---
+import BellSVG from '../../assets/bell.svg';
+import LinkButton from './LinkButton.astro';
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<LinkButton
+  id="notification-button"
+  className={`${className} rounded-md p-2 hover:bg-cyan-950`}
+>
+  <span><BellSVG class="size-6" /></span>
+</LinkButton>

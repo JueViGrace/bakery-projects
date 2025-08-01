@@ -1,0 +1,21 @@
+---
+import CartSVG from '../../assets/shopping_cart.svg';
+import LinkButton from './LinkButton.astro';
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<LinkButton
+  id="cart-button"
+  href="/cart"
+  className={`${className} rounded-md p-2 hover:bg-cyan-950`}
+>
+  <div class="flex items-center justify-center gap-1">
+    <span><CartSVG class="size-6" /></span>
+    <span><p class="font-bold">Cart</p></span>
+  </div>
+</LinkButton>
