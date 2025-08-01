@@ -1,5 +1,7 @@
 ---
-import NavButton from './NavButton.astro';
+import LogoButton from '../buttons/LogoButton.astro';
+import MenuButton from '../buttons/MenuButton.astro';
+import Navigation from '../Navigation.astro';
 
 export const prerender = true;
 ---
@@ -8,15 +10,13 @@ export const prerender = true;
   class="w-full items-center border-b-1 border-solid border-b-gray-700 p-2"
 >
   <header class="flex items-center justify-between gap-x-6">
-    <NavButton />
+    <LogoButton className="order-1" />
 
-    <nav class="flex grow items-center justify-between">
-      <div>
-        <h1>Nav menu</h1>
-      </div>
-      <div>
-        <h1>Auth section</h1>
-      </div>
-    </nav>
+    <Navigation className="order-2 flex" />
+
+    <MenuButton
+      id="drawer-button"
+      className="order-3 block p-1 hover:cursor-pointer md:hidden"
+    />
   </header>
 </section>
