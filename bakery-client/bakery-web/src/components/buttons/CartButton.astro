@@ -1,21 +1,33 @@
 ---
-import CartSVG from '../../assets/shopping_cart.svg';
 import LinkButton from './LinkButton.astro';
+import { navOptions } from '../../common/constants';
+import ImageIcon from '../icons/ImageIcon.astro';
 
 interface Props {
   className?: string;
 }
 
 const { className } = Astro.props;
+const { name, href, icon } = navOptions.cart;
 ---
 
 <LinkButton
-  id="cart-button"
-  href="/cart"
+  id={`${name.toLowerCase()}-button`}
+  href={href}
   className={`${className} rounded-md p-2 hover:bg-cyan-950`}
 >
   <div class="flex items-center justify-center gap-1">
-    <span><CartSVG class="size-6" /></span>
+    <span>
+      {
+        icon && (
+          <ImageIcon
+            src={icon}
+            alt={`${name.toLowerCase()}_img.png`}
+            className="size-6"
+          />
+        )
+      }
+    </span>
     <span><p class="font-bold">Cart</p></span>
   </div>
 </LinkButton>

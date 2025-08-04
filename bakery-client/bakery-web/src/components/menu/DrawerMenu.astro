@@ -1,7 +1,11 @@
 ---
 import { navOptions } from '../../common/constants';
 import LinkButton from '../buttons/LinkButton.astro';
-import Navigation from '../Navigation.astro';
+import ImageIcon from '../icons/ImageIcon.astro';
+import MenuProfileSection from './MenuProfileSection.astro';
+
+const { products, contact, about } = navOptions;
+// TODO: make selected status for nav options
 ---
 
 <div
@@ -14,24 +18,53 @@ import Navigation from '../Navigation.astro';
   class="absolute inset-y-0 z-1000 hidden h-screen w-[60%] -translate-x-full transform overflow-y-auto rounded-lg bg-[#13151a] transition-transform duration-300 ease-in-out sm:w-[40%] md:w-[30%] lg:w-[25%]"
 >
   <div class="flex h-full w-full flex-col items-start justify-start">
-    <div>profile section</div>
-    <div>auth seccion if not authenticated</div>
-    <Navigation display="column" className="flex w-full px-2">
-      {
-        navOptions.map(({ href, name }) => (
-          <li class="flex w-full">
-            <LinkButton
-              id={`drawer-nav-${name.toLowerCase()}-button`}
-              href={href}
-              className="rounded-md p-2 w-full flex hover:bg-cyan-950"
-            >
-              <p class="text-lg font-bold">{name}</p>
-            </LinkButton>
-          </li>
-        ))
-      }
-    </Navigation>
-    <div>other section</div>
+    <MenuProfileSection />
+    <nav class="flex w-full">
+      <ul class="flex grow flex-col">
+        <li>
+          <LinkButton
+            id={`drawer-nav-${products.name.toLowerCase()}-button`}
+            href={products.href}
+            className="flex w-full items-center justify-start gap-1 px-2 py-4 hover:bg-gray-400/10"
+          >
+            {
+              products.icon && (
+                <ImageIcon
+                  src={products.icon}
+                  alt={`${products.name.toLowerCase()}_img.png`}
+                  className="size-6"
+                />
+              )
+            }
+            <p class="text-base font-bold">{products.name}</p>
+          </LinkButton>
+        </li>
+        <li>
+          <div class="w-full border-t-1 border-t-gray-700"></div>
+        </li>
+        {
+          [contact, about].map(({ name, href, icon }) => (
+            <li>
+              <LinkButton
+                id={`drawer-nav-${name.toLowerCase()}-button`}
+                href={href}
+                className="flex w-full px-2 py-4 hover:bg-gray-400/10 gap-1 justify-start items-center"
+              >
+                {icon && (
+                  <ImageIcon
+                    src={icon}
+                    alt={`${name.toLowerCase()}_img.png`}
+                    className="size-6"
+                  />
+                )}
+                <img />
+                <p class="text-base font-bold">{name}</p>
+              </LinkButton>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
   </div>
 </aside>
 

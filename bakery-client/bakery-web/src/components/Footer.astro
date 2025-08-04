@@ -1,11 +1,39 @@
 ---
+import { footerOptions } from '../common/constants';
+
 export const prerender = true;
 ---
 
 <section
-  class="flex w-full flex-col items-center justify-between border-t-1 border-solid border-t-gray-700 p-2 md:flex-row md:p-6"
+  class="flex w-full flex-col items-center justify-between border-t-1 border-t-gray-700 p-2 md:flex-row md:p-6"
 >
-  <footer>
-    <h1>Footer</h1>
+  <footer class="flex min-h-64 grow items-center justify-evenly">
+    <div class="flex flex-col items-center justify-evenly">
+      {
+        footerOptions.map(({ title, options }) => (
+          <div class="flex flex-col items-center justify-center gap-4">
+            <div class="flex flex-col items-center justify-center gap-3">
+              <h1 class="text-center text-lg font-bold">{title}</h1>
+              <div class="w-full border-b-2 border-b-white" />
+            </div>
+            {options.map(({ name, href }) => (
+              <div class="flex w-full items-center justify-start gap-2">
+                <span>
+                  <p>•</p>
+                </span>
+                <a href={href} class="hover:cursor-pointer hover:underline">
+                  <p class="text-base">{name}</p>
+                </a>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <div class="flex flex-col items-center justify-center gap-4">
+      <img src="./src/assets/chef.png" alt="logo.png" class="size-44" />
+      <p>This is a pastry like eCommerce.</p>
+      <!-- TODO: social media -->
+    </div>
   </footer>
 </section>
