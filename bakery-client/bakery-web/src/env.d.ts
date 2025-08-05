@@ -12,7 +12,7 @@ export type FooterOptions = {
 export type NavOption = {
   name: string;
   href: string;
-  icon?: string;
+  icon?: ImageMetadata;
   expand?: boolean;
 };
 

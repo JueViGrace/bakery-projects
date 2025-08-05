@@ -1,14 +1,16 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
-  src: string;
+  src: ImageMetadata;
   alt: string;
-  className: string;
+  className?: string;
 }
 
 const { src, alt, className } = Astro.props;
 ---
 
-<img
+<Image
   src={src}
   alt={alt}
   class:list={[className, 'dark:brightness-0 dark:invert dark:filter']}

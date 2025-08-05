@@ -3,9 +3,17 @@ import TopBar from '../components/bars/TopBar.astro';
 import Footer from '../components/Footer.astro';
 import DrawerMenu from '../components/menu/DrawerMenu.astro';
 import Layout from './Layout.astro';
+
+interface Props {
+  title?: string;
+}
+
+const { title = 'Bakery and Deserts' } = Astro.props;
+
+export const prerender = true;
 ---
 
-<Layout title="Bakery and Deserts">
+<Layout title={title}>
   <div id="page-wrapper" class="relative overflow-hidden">
     <DrawerMenu />
     <div

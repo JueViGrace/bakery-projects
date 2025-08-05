@@ -1,1 +1,12 @@
-<img class="size-10 lg:size-12" src="/src/assets/chef.png" alt="logo" />
+---
+import { Image } from 'astro:assets';
+import ChefImg from '../../assets/chef.png';
+
+interface Props {
+  className?: string;
+}
+
+const { className = 'size-10 lg:size-12' } = Astro.props;
+---
+
+<Image class={className} src={ChefImg} alt="logo.png" />

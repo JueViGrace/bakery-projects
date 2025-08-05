@@ -4,7 +4,7 @@ import LinkButton from '../buttons/LinkButton.astro';
 import ImageIcon from '../icons/ImageIcon.astro';
 import MenuProfileSection from './MenuProfileSection.astro';
 
-const { products, contact, about } = navOptions;
+const { home, products, contact, about } = navOptions;
 // TODO: make selected status for nav options
 ---
 
@@ -21,24 +21,27 @@ const { products, contact, about } = navOptions;
     <MenuProfileSection />
     <nav class="flex w-full">
       <ul class="flex grow flex-col">
-        <li>
-          <LinkButton
-            id={`drawer-nav-${products.name.toLowerCase()}-button`}
-            href={products.href}
-            className="flex w-full items-center justify-start gap-1 px-2 py-4 hover:bg-gray-400/10"
-          >
-            {
-              products.icon && (
-                <ImageIcon
-                  src={products.icon}
-                  alt={`${products.name.toLowerCase()}_img.png`}
-                  className="size-6"
-                />
-              )
-            }
-            <p class="text-base font-bold">{products.name}</p>
-          </LinkButton>
-        </li>
+        {
+          [home, products].map(({ name, href, icon }) => (
+            <li>
+              <LinkButton
+                id={`drawer-nav-${name.toLowerCase()}-button`}
+                href={href}
+                className="flex w-full items-center justify-start gap-1 px-2 py-4 hover:bg-gray-400/10"
+              >
+                {icon && (
+                  <ImageIcon
+                    src={icon}
+                    alt={`${name.toLowerCase()}_img.png`}
+                    className="size-6"
+                  />
+                )}
+                <p class="text-base font-bold">{name}</p>
+              </LinkButton>
+            </li>
+          ))
+        }
+
         <li>
           <div class="w-full border-t-1 border-t-gray-700"></div>
         </li>
@@ -57,7 +60,6 @@ const { products, contact, about } = navOptions;
                     className="size-6"
                   />
                 )}
-                <img />
                 <p class="text-base font-bold">{name}</p>
               </LinkButton>
             </li>

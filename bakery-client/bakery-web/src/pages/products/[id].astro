@@ -1,0 +1,22 @@
+---
+import StoreLayout from '../../layouts/StoreLayout.astro';
+
+export async function getStaticPaths() {
+  const products = [
+    { id: 1, name: 'Poceta' },
+    { id: 2, name: 'Lavamano' },
+  ];
+
+  return products.map(({ id, name }) => ({
+    params: { id: id },
+    props: { id: id, name: name },
+  }));
+}
+
+const { id, name } = Astro.props;
+export const prerender = true;
+---
+
+<StoreLayout title={name}>
+  <h1>Product {id}</h1>
+</StoreLayout>
