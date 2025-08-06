@@ -1,7 +1,7 @@
 ---
 import LinkButton from './LinkButton.astro';
 import { navOptions } from '../../common/constants';
-import ImageIcon from '../icons/ImageIcon.astro';
+import { Image } from 'astro:assets';
 
 interface Props {
   className?: string;
@@ -14,20 +14,9 @@ const { name, href, icon } = navOptions.cart;
 <LinkButton
   id={`${name.toLowerCase()}-button`}
   href={href}
-  className={`${className} rounded-md p-2 hover:bg-cyan-950`}
+  className={className}
 >
   <div class="flex items-center justify-center gap-1">
-    <span>
-      {
-        icon && (
-          <ImageIcon
-            src={icon}
-            alt={`${name.toLowerCase()}_img.png`}
-            className="size-6"
-          />
-        )
-      }
-    </span>
-    <span><p class="font-bold">Cart</p></span>
+    <span>{}</span>
   </div>
 </LinkButton>

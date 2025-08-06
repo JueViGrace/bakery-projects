@@ -16,12 +16,14 @@ export const prerender = true;
 <Layout title={title}>
   <div id="page-wrapper" class="relative overflow-hidden">
     <DrawerMenu />
-    <div
+    <section
       class="relative z-1 flex min-h-screen w-full flex-col items-center justify-between"
     >
       <TopBar />
-      <slot />
+      <section class="flex w-full flex-1 grow justify-center">
+        <slot />
+      </section>
       <Footer />
-    </div>
+    </section>
   </div>
 </Layout>

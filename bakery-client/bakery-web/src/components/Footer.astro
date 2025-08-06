@@ -1,94 +1,107 @@
 ---
-import { footerOptions } from '../common/constants';
+import { footerOptions, socialOptionList } from '../common/constants';
 import WhatsAppSVG from '../assets/brand_whatsapp.svg';
 import PhoneSVG from '../assets/phone.svg';
-import LinkButton from './buttons/LinkButton.astro';
-import LogoIcon from './icons/LogoIcon.astro';
 import { Image } from 'astro:assets';
 import GoogleButtonImg from '../assets/google_play.png';
+import { Separator } from './ui/separator';
+import LogoButton from './buttons/LogoButton.astro';
 ---
 
-<section
-  class="flex w-full flex-col items-center justify-between border-t-1 border-t-gray-700 md:flex-row"
->
-  <footer class="min-h-64 w-full">
-    <div class="flex h-full w-full flex-col items-center justify-center">
+<footer class="min-h-64 w-full">
+  <Separator />
+  <div
+    class="flex flex-col items-center justify-evenly gap-8 py-8 md:flex-row md:items-start"
+  >
+    <div
+      class="flex w-full flex-col items-center justify-evenly gap-4 px-2 sm:flex-row sm:items-start md:w-auto md:gap-6 lg:gap-8"
+    >
       <div
-        class="flex w-full flex-col items-center justify-evenly gap-y-8 pt-4 md:flex-row md:items-start md:px-8 md:pt-8"
+        class="flex w-full flex-wrap items-center justify-evenly gap-x-2 gap-y-4 sm:w-auto sm:flex-col sm:items-start"
       >
-        <div class="flex items-start justify-center gap-x-6 md:gap-x-12">
-          <div class="flex flex-col gap-8">
-            <div class="flex flex-col items-start justify-center gap-4">
-              <LogoIcon className="size-24" />
-              <h1 class="text-xl font-bold">Bakery and Deserts</h1>
-            </div>
-            <div class="flex flex-col items-start justify-center gap-2">
-              <h1 class="text-lg"><strong>Download App</strong></h1>
-              <LinkButton id="google-download-button" href="#">
-                <Image
-                  src={GoogleButtonImg}
-                  alt="get_it_on_google_play.png"
-                  class="aspect-auto h-auto w-44"
-                />
-              </LinkButton>
-            </div>
-          </div>
-          <div class="flex flex-col gap-4">
-            <h1 class="text-lg"><strong>Contact Us</strong></h1>
-            <div class="flex flex-col items-center justify-center gap-2">
-              <div class="flex items-start justify-center gap-2">
-                <WhatsAppSVG />
-                <span
-                  class="inline-flex flex-col items-start justify-center gap-1"
-                >
-                  <p class="text-sm">Whats App</p>
-                  <p class="text-sm">+58 424-000-0000</p>
-                </span>
-              </div>
-              <div class="flex items-start justify-center gap-2">
-                <PhoneSVG />
-                <span
-                  class="inline-flex flex-col items-start justify-center gap-1"
-                >
-                  <p class="text-sm">Call us</p>
-                  <p class="text-sm">+58 424-000-0000</p>
-                </span>
-              </div>
-            </div>
-          </div>
+        <div class="flex flex-col items-start justify-center gap-1">
+          <LogoButton className="size-24" />
+          <h1 class="text-lg font-bold md:text-xl">Bakery and Deserts</h1>
         </div>
-
-        <div class="flex items-center justify-center gap-x-12">
-          {
-            footerOptions.map(({ title, options }) => (
-              <div class="flex flex-col items-start justify-center gap-4">
-                <div class="flex flex-col items-center justify-center gap-3">
-                  <h1 class="text-center text-lg font-bold">{title}</h1>
-                  <div class="w-full border-b-2 border-b-white" />
-                </div>
-                {options.map(({ name, href }) => (
-                  <div class="flex w-full items-center justify-start gap-2">
-                    <span>
-                      <p>•</p>
-                    </span>
-                    <a href={href} class="hover:cursor-pointer hover:underline">
-                      <p class="text-base">{name}</p>
-                    </a>
-                  </div>
-                ))}
-              </div>
-            ))
-          }
+        <div class="flex flex-col items-start">
+          <h1 class="text-base md:text-lg"><strong>Download App</strong></h1>
+          <a href="#">
+            <Image
+              src={GoogleButtonImg}
+              alt="Get it on google play"
+              class="aspect-auto h-auto w-44"
+            />
+          </a>
         </div>
       </div>
       <div
-        class="flex w-full flex-col items-center justify-center gap-4 py-4 md:p-8"
+        class="flex flex-col items-center justify-center gap-2 sm:items-start sm:gap-4"
       >
-        <div class="w-full border-t-1 border-t-gray-700"></div>
-        <div>
-          <p>© 2025 All rights reserved. Bakery and Deserts.</p>
+        <h1 class="text-base sm:text-lg"><strong>Contact Us</strong></h1>
+        <div
+          class="flex flex-wrap items-center justify-evenly gap-2 sm:flex-col sm:gap-4"
+        >
+          <div class="flex items-start justify-center gap-x-1.5">
+            <WhatsAppSVG />
+            <span
+              class="inline-flex flex-col items-start justify-center gap-y-1"
+            >
+              <p class="text-sm">Whats App</p>
+              <p class="text-sm">+58 424-000-0000</p>
+            </span>
+          </div>
+          <div class="flex items-start justify-center gap-x-1.5">
+            <PhoneSVG />
+            <span
+              class="inline-flex flex-col items-start justify-center gap-y-1"
+            >
+              <p class="text-sm">Call us</p>
+              <p class="text-sm">+58 424-000-0000</p>
+            </span>
+          </div>
         </div>
       </div>
     </div>
-  </footer>
-</section>
+    <Separator className="md:hidden" />
+    <div
+      class="flex h-full flex-wrap items-start justify-center gap-x-4 px-2 sm:gap-x-12"
+    >
+      {
+        footerOptions.map(({ title, options }) => (
+          <div class="flex flex-1 flex-col items-start justify-center gap-4">
+            <div class="flex flex-col items-center justify-center gap-3">
+              <h1 class="text-center text-lg font-bold">{title}</h1>
+              <div class="w-full border-b-2 border-b-white" />
+            </div>
+            {options.map(({ name, href }) => (
+              <p class="text-base">
+                <a href={href} class="hover:cursor-pointer hover:underline">
+                  {name}
+                </a>
+              </p>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <Separator />
+  <div class="flex items-center justify-around px-2 py-8">
+    <div class="flex items-center justify-center gap-x-4">
+      {
+        socialOptionList.map(
+          ({ name, href, icon }) =>
+            icon && (
+              <a href={href}>
+                <Image src={icon} alt={name} class="size-6" />
+              </a>
+            )
+        )
+      }
+    </div>
+    <p class="text-center text-base">
+      © 2025 All rights reserved. Bakery and Deserts.
+    </p>
+  </div>
+</footer>

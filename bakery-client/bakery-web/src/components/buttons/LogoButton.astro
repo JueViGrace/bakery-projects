@@ -1,14 +1,15 @@
 ---
-import LogoIcon from '../icons/LogoIcon.astro';
-import LinkButton from './LinkButton.astro';
+import { Image } from 'astro:assets';
+import ChefImg from '../../assets/chef.png';
 
 interface Props {
+  linkClass?: string;
   className?: string;
 }
 
-const { className } = Astro.props;
+const { className, linkClass = '' } = Astro.props;
 ---
 
-<LinkButton id="logo-button" href="/" className={className}>
-  <LogoIcon />
-</LinkButton>
+<a href="/" class={linkClass}>
+  <Image class={className} src={ChefImg} alt="logo.png" />
+</a>

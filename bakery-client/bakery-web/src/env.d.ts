@@ -1,9 +1,3 @@
-export type ButtonColors = {
-  containerColor: string;
-  focusedContainerColor: string;
-  disabledContainerColor: string;
-};
-
 export type FooterOptions = {
   title: string;
   options: NavOption[];
@@ -12,7 +6,7 @@ export type FooterOptions = {
 export type NavOption = {
   name: string;
   href: string;
-  icon?: ImageMetadata;
+  icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
   expand?: boolean;
 };
 

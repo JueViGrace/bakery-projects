@@ -9,9 +9,6 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<LinkButton
-  id="notification-button"
-  className={`${className} rounded-md p-2 hover:bg-cyan-950`}
->
-  <span><BellSVG class="size-6" /></span>
+<LinkButton id="notification-button" className={className}>
+  <BellSVG class="size-full" />
 </LinkButton>

@@ -1,5 +1,5 @@
 ---
-import Button from './Button.astro';
+import { Button } from '../ui/button';
 
 interface Props {
   id: string;
@@ -11,11 +11,14 @@ interface Props {
 const { id, href = '#', target = '_self', className } = Astro.props;
 ---
 
-<Button id={id} className={className}>
+<Button
+  id={id}
+  variant="secondary"
+  className={`${className} hover:cursor-pointer`}
+>
   <slot />
 </Button>
 <script is:inline define:vars={{ id, href, target }}>
-  document.getElementById(id).addEventListener('click', () => {
-    window.open(href, target);
-  });
+  import { onButtonClick } from '@/scripts/button-click';
+  onButtonClick(id, href, target);
 </script>

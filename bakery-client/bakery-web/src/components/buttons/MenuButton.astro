@@ -1,6 +1,6 @@
 ---
-import MenuIcon from '../icons/MenuIcon.astro';
-import Button from './Button.astro';
+import { Button } from '../ui/button';
+import { Menu } from 'lucide-react';
 
 interface Props {
   id?: string;
@@ -10,6 +10,6 @@ interface Props {
 const { id = 'menu-button', className } = Astro.props;
 ---
 
-<Button id={id} className={className}>
-  <MenuIcon />
+<Button id={id} variant="secondary" size="icon" className={className}>
+  <Menu />
 </Button>

@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { navOptions } from '../../common/constants';
 import LinkButton from '../buttons/LinkButton.astro';
 import ImageIcon from '../icons/ImageIcon.astro';
@@ -22,20 +23,14 @@ const { home, products, contact, about } = navOptions;
     <nav class="flex w-full">
       <ul class="flex grow flex-col">
         {
-          [home, products].map(({ name, href, icon }) => (
+          [home, products].map(({ name, href, icon: Icon }) => (
             <li>
               <LinkButton
                 id={`drawer-nav-${name.toLowerCase()}-button`}
                 href={href}
                 className="flex w-full items-center justify-start gap-1 px-2 py-4 hover:bg-gray-400/10"
               >
-                {icon && (
-                  <ImageIcon
-                    src={icon}
-                    alt={`${name.toLowerCase()}_img.png`}
-                    className="size-6"
-                  />
-                )}
+                {Icon && <Icon />}
                 <p class="text-base font-bold">{name}</p>
               </LinkButton>
             </li>
@@ -51,13 +46,13 @@ const { home, products, contact, about } = navOptions;
               <LinkButton
                 id={`drawer-nav-${name.toLowerCase()}-button`}
                 href={href}
-                className="flex w-full px-2 py-4 hover:bg-gray-400/10 gap-1 justify-start items-center"
+                className="flex w-full px-2 py-4 gap-1 justify-start items-center"
               >
                 {icon && (
-                  <ImageIcon
+                  <Image
                     src={icon}
                     alt={`${name.toLowerCase()}_img.png`}
-                    className="size-6"
+                    class="size-6"
                   />
                 )}
                 <p class="text-base font-bold">{name}</p>
