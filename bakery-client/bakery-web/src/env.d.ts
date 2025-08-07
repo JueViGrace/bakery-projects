@@ -6,7 +6,7 @@ export type FooterOptions = {
 export type NavOption = {
   name: string;
   href: string;
-  icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
+  Icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
   expand?: boolean;
 };
 

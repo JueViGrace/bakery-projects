@@ -9,6 +9,12 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<LinkButton id="notification-button" className={className}>
-  <BellSVG class="size-full" />
+<LinkButton
+  id="notification-button"
+  href="/notifications"
+  className={className}
+  size="icon"
+  variant="secondary"
+>
+  <BellSVG class="size-6" />
 </LinkButton>

@@ -15,32 +15,26 @@ import InstagramSVG from '../assets/brand_instagram.svg';
 const home: NavOption = {
   name: 'Home',
   href: '/',
-  icon: HomeImg,
+  Icon: HomeImg,
 };
 
 const products: NavOption = {
   name: 'Products',
   href: '/products',
-  icon: StackImg,
+  Icon: StackImg,
   expand: false,
 };
 
 const about: NavOption = {
   name: 'About us',
   href: '/about',
-  icon: InfoCircleImg,
+  Icon: InfoCircleImg,
 };
 
 const contact: NavOption = {
   name: 'Contact',
   href: '/contact',
-  icon: AddressImg,
-};
-
-const cart: NavOption = {
-  name: 'Cart',
-  href: '/cart',
-  icon: CartImg,
+  Icon: AddressImg,
 };
 
 /**
@@ -69,25 +63,25 @@ const faq: NavOption = {
 const whatsApp: NavOption = {
   name: 'WhatsApp',
   href: '#',
-  icon: WhatsAppSVG,
+  Icon: WhatsAppSVG,
 };
 
 const instagram: NavOption = {
   name: 'Instagram',
   href: '#',
-  icon: InstagramSVG,
+  Icon: InstagramSVG,
 };
 
 const facebook: NavOption = {
   name: 'Facebook',
   href: '#',
-  icon: FacebookSVG,
+  Icon: FacebookSVG,
 };
 
 const tiktok: NavOption = {
   name: 'TikTok',
   href: '#',
-  icon: TikTokSVG,
+  Icon: TikTokSVG,
 };
 
 export const navOptions = {
@@ -95,7 +89,6 @@ export const navOptions = {
   products: products,
   about: about,
   contact: contact,
-  cart: cart,
 };
 
 export const socialOptionList: NavOption[] = [
