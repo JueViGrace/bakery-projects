@@ -1,87 +1,53 @@
 ---
-import { navOptions } from '../../common/constants';
-import LinkButton from '../buttons/LinkButton.astro';
-import MenuButton from '../buttons/MenuButton.astro';
+import { navOptionList } from '@/common/constants';
+import { Separator } from '@/components/ui/separator';
+import MenuButton from '@/components/buttons/MenuButton.astro';
+import DrawerBackdrop from './DrawerBackdrop.astro';
 
-const { home, products, contact, about } = navOptions;
 // TODO: make selected status for nav options
 ---
 
-<div
-  id="drawer-overlay"
-  class="pointer-events-none absolute inset-0 z-10 hidden bg-black/35 opacity-0 transition-opacity duration-300"
->
-</div>
-<aside
-  id="drawer-menu"
-  class="bg-sidebar absolute inset-y-0 z-1000 hidden h-screen w-[60%] -translate-x-full transform overflow-y-auto rounded-tr-lg rounded-br-lg transition-transform duration-300 ease-in-out sm:w-[40%] md:w-[30%] lg:w-[25%]"
->
-  <div class="flex h-full w-full flex-col items-start justify-start gap-1">
-    <div class="px-2 py-4">
-      <MenuButton id="drawer-menu-button" />
-    </div>
-    <nav class="flex w-full">
-      <ul class="flex grow flex-col">
-        {
-          [home, products].map(({ name, href, Icon }) => (
-            <li>
-              <LinkButton
-                id={`drawer-nav-${name.toLowerCase()}-button`}
-                href={href}
-                className="flex w-full items-center justify-start gap-1 px-2 py-4 "
-              >
-                {Icon && <Icon class="size-6" />}
-                <p class="text-base font-bold">{name}</p>
-              </LinkButton>
-            </li>
-          ))
-        }
-
-        <li>
-          <div class="w-full border-t-1 border-t-gray-700"></div>
-        </li>
-        {
-          [contact, about].map(({ name, href, Icon }) => (
-            <li>
-              <LinkButton
-                id={`drawer-nav-${name.toLowerCase()}-button`}
-                href={href}
-                className="flex w-full px-2 py-4 gap-1 justify-start items-center"
-              >
-                {Icon && <Icon class="size-6" />}
-                <p class="text-base font-bold">{name}</p>
-              </LinkButton>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+<DrawerBackdrop />
+<aside class="drawer flex flex-col" aria-hidden="true" data-nav-drawer>
+  <div class="flex items-center justify-start gap-x-4 p-2">
+    <MenuButton data-drawer-close-button />
+    <p class="text-base">Bakery and Deserts</p>
   </div>
+  <Separator />
+  <nav class="flex w-full py-4">
+    <ul class="flex grow flex-col gap-2 px-2">
+      {
+        navOptionList.map(({ name, href, Icon }) => (
+          <li>
+            <a
+              href={href}
+              class="button inline-flex h-10 w-full items-center justify-start"
+            >
+              {Icon && <Icon class="size-6" />}
+              <p class="text-base">{name}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
 </aside>
 <style>
   .drawer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
+    background-color: var(--color-sidebar);
     height: 100%;
-    background: #fff;
-    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+    width: 240px;
+    border-top-right-radius: calc(var(--radius) /* 0.25rem = 4px */ - 2px);
+    border-bottom-right-radius: calc(var(--radius) /* 0.25rem = 4px */ - 2px);
+    visibility: hidden;
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.2s ease;
+    z-index: 50;
     overflow-y: auto;
-    padding: 1rem;
   }
-
   .drawer.open {
     transform: translateX(0);
   }
-
-  .drawer-close {
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-  }
 </style>
-<script src="../../scripts/drawer.ts"></script>
+<script src="@/scripts/drawer.ts"></script>

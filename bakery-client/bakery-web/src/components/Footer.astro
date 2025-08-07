@@ -1,11 +1,11 @@
 ---
-import { footerOptions, socialOptionList } from '../common/constants';
-import WhatsAppSVG from '../assets/brand_whatsapp.svg';
-import PhoneSVG from '../assets/phone.svg';
+import { footerOptions, socialOptionList } from '@/common/constants';
+import WhatsAppSVG from '@/assets/brand_whatsapp.svg';
+import PhoneSVG from '@/assets/phone.svg';
 import { Image } from 'astro:assets';
-import GoogleButtonImg from '../assets/google_play.png';
-import { Separator } from './ui/separator';
-import LogoButton from './buttons/LogoButton.astro';
+import GoogleButtonImg from '@/assets/google_play.png';
+import { Separator } from '@/components/ui/separator';
+import LogoIcon from '@/components/icons/LogoIcon.astro';
 ---
 
 <footer class="min-h-64 w-full">
@@ -20,7 +20,9 @@ import LogoButton from './buttons/LogoButton.astro';
         class="flex w-full flex-wrap items-center justify-evenly gap-x-2 gap-y-4 sm:w-auto sm:flex-col sm:items-start"
       >
         <div class="flex flex-col items-start justify-center gap-1">
-          <LogoButton className="size-24" />
+          <a href="/">
+            <LogoIcon className="size-24 hover:scale-105" />
+          </a>
           <h1 class="text-lg font-bold md:text-xl">Bakery and Deserts</h1>
         </div>
         <div class="flex flex-col items-start">
@@ -87,8 +89,10 @@ import LogoButton from './buttons/LogoButton.astro';
   </div>
 
   <Separator />
-  <div class="flex items-center justify-evenly gap-x-4 px-2 py-8">
-    <div class="flex flex-wrap items-center justify-center gap-x-4">
+  <div class="flex items-center justify-evenly gap-x-2 px-1 py-8">
+    <div
+      class="grid grid-cols-2 items-center justify-center gap-4 sm:inline-flex"
+    >
       {
         socialOptionList.map(
           ({ href, Icon }) =>

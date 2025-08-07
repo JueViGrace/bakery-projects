@@ -6,7 +6,7 @@ interface Props {
   className?: string;
 }
 
-const { className = 'size-10 lg:size-12' } = Astro.props;
+const { className } = Astro.props;
 ---
 
-<Image class={className} src={ChefImg} alt="logo.png" />
+<Image class={className} src={ChefImg} alt="logo" />

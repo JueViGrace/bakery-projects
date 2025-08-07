@@ -1,6 +1,6 @@
 ---
-import BellSVG from '../../assets/bell.svg';
-import LinkButton from './LinkButton.astro';
+import BellSVG from '@/assets/bell.svg';
+import { Button } from '@/components/ui/button';
 
 interface Props {
   className?: string;
@@ -9,12 +9,6 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<LinkButton
-  id="notification-button"
-  href="/notifications"
-  className={className}
-  size="icon"
-  variant="secondary"
->
-  <BellSVG class="size-6" />
-</LinkButton>
+<Button size="icon" variant="ghost" className={`${className} cursor-pointer`}>
+  <BellSVG class="size-fit" />
+</Button>

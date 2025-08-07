@@ -1,27 +1,17 @@
 ---
-import { navOptionList } from '../../common/constants.ts';
-import CartButton from '../buttons/CartButton.astro';
-import LinkButton from '../buttons/LinkButton.astro';
-import LogoButton from '../buttons/LogoButton.astro';
+import { navOptionList } from '@/common/constants.ts';
+import { Separator } from '@/components/ui/separator';
+import LogoIcon from '../icons/LogoIcon.astro';
 import MenuButton from '../buttons/MenuButton.astro';
-import NotificationButton from '../buttons/NotificationButton.astro';
-import { Separator } from '../ui/separator';
+import CartButton from '../buttons/CartButton.astro';
+import { Button } from '../ui/button';
 
-/*
- * TOP BAR LAYOUT
- * desktop(logo) - mobile(DRAWER MENU) | desktop(NAVIGATION) - mobile(logo) | desktop(CART/NOTIFICATIONS/AUTHENTICATION)
- * */
-
-const isAuthenticated = true;
+const isAuthenticated = false;
 ---
 
 <header class="flex w-full flex-col">
-  <div class="flex items-center justify-between gap-4 p-2 lg:px-4">
-    <MenuButton
-      id="drawer-button"
-      className="order-1 hover:cursor-pointer lg:hidden size-8"
-    />
-
+  <div class="flex items-center justify-between gap-4 px-2 py-2 lg:px-4">
+    <MenuButton className="order-1 lg:hidden" data-open-drawer-button />
     <nav class="hidden lg:order-2 lg:flex lg:flex-1">
       <ul class="flex grow items-center justify-start gap-6">
         {
@@ -36,30 +26,30 @@ const isAuthenticated = true;
       </ul>
     </nav>
 
-    <LogoButton linkClass='hidden lg:order-1 lg:block' className="size-12 hover:scale-105 " />
+    <a href="/" class="hidden lg:order-1 lg:inline-block">
+      <LogoIcon className="size-8 hover:scale-105" />
+    </a>
 
     <div class="order-3 flex items-center justify-center gap-x-4">
       <div class="flex items-center justify-center gap-x-2">
         <!-- TODO: AUTH-PROFILE COMPONENT -->
         {
           isAuthenticated ? (
-
-          <CartButton  />
-          <NotificationButton  />
-            <div class="hidden lg:block">Profile button</div>
+            <div class="flex items-center justify-center gap-2">
+              <CartButton />
+              <div>Profile button</div>
+            </div>
           ) : (
-              <LinkButton
-                id="sign-in-button"
-                href="/auth/signin"
-              >
-                <p>Sign In</p>
-              </LinkButton>
-              <LinkButton
-                id="sign-up-button"
-                href="/auth/signup"
-              >
-                <p>Sign Up</p>
-              </LinkButton>
+            <div class="flex items-center justify-center gap-2">
+              <a href="/auth/signin" class="rounded-md">
+                <Button variant="outline" className="cursor-pointer">
+                  Sign In
+                </Button>
+              </a>
+              <a href="/auth/signup" class="rounded-md">
+                <Button className="cursor-pointer">Sign Up</Button>
+              </a>
+            </div>
           )
         }
       </div>

@@ -1,5 +1,4 @@
 ---
-import LinkButton from './LinkButton.astro';
 import CartSVG from '@/assets/shopping_cart.svg';
 
 interface Props {
@@ -9,12 +8,12 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<LinkButton
-  id={`top-cart-button`}
+<a
   href="/cart"
-  variant="secondary"
-  size="icon"
-  className={className}
+  class:list={[
+    className,
+    'hover:bg-accent inline-flex items-center justify-center rounded-md p-1',
+  ]}
 >
-  <CartSVG class="size-6" />
-</LinkButton>
+  <CartSVG class="size-fit" />
+</a>
