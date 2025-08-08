@@ -27,8 +27,9 @@ import LogoIcon from '@/components/icons/LogoIcon.astro';
         </div>
         <div class="flex flex-col items-start">
           <h1 class="text-base md:text-lg"><strong>Download App</strong></h1>
-          <a href="#">
+          <a href="/">
             <Image
+              loading="eager"
               src={GoogleButtonImg}
               alt="Get it on google play"
               class="aspect-auto h-auto w-44"
@@ -95,9 +96,9 @@ import LogoIcon from '@/components/icons/LogoIcon.astro';
     >
       {
         socialOptionList.map(
-          ({ href, Icon }) =>
+          ({ name, href, Icon }) =>
             Icon && (
-              <a href={href}>
+              <a href={href} aria-label={name}>
                 <Icon class="size-6" />
               </a>
             )

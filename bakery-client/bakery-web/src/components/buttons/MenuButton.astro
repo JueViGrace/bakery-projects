@@ -1,14 +1,21 @@
 ---
 import { Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Props {
+  id: string;
   className?: string;
 }
 
-const { className } = Astro.props;
+const { className, id } = Astro.props;
 ---
 
-<Button variant="ghost" size="icon" className={`${className} cursor-pointer`}>
+<Button
+  id={id}
+  variant="ghost"
+  size="icon"
+  className={cn('cursor-pointer', className)}
+>
   <Menu className="size-fit" />
 </Button>

@@ -62,25 +62,25 @@ const faq: NavOption = {
 
 const whatsApp: NavOption = {
   name: 'WhatsApp',
-  href: '#',
+  href: '/',
   Icon: WhatsAppSVG,
 };
 
 const instagram: NavOption = {
   name: 'Instagram',
-  href: '#',
+  href: '/',
   Icon: InstagramSVG,
 };
 
 const facebook: NavOption = {
   name: 'Facebook',
-  href: '#',
+  href: '/',
   Icon: FacebookSVG,
 };
 
 const tiktok: NavOption = {
   name: 'TikTok',
-  href: '#',
+  href: '/',
   Icon: TikTokSVG,
 };
 

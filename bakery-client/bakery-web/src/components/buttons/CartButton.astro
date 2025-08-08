@@ -1,5 +1,6 @@
 ---
 import CartSVG from '@/assets/shopping_cart.svg';
+import { Button } from '../ui/button';
 
 interface Props {
   className?: string;
@@ -10,10 +11,10 @@ const { className } = Astro.props;
 
 <a
   href="/cart"
-  class:list={[
-    className,
-    'hover:bg-accent inline-flex items-center justify-center rounded-md p-1',
-  ]}
+  aria-label="cart"
+  class:list={[className, 'rounded-md hover:cursor-pointer']}
 >
-  <CartSVG class="size-fit" />
+  <Button size="icon" variant="ghost" className="cursor-pointer">
+    <CartSVG class="size-fit" />
+  </Button>
 </a>

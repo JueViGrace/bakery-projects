@@ -2,15 +2,23 @@
 import { navOptionList } from '@/common/constants';
 import { Separator } from '@/components/ui/separator';
 import MenuButton from '@/components/buttons/MenuButton.astro';
-import DrawerBackdrop from './DrawerBackdrop.astro';
+import { Button } from '../ui/button';
 
-// TODO: make selected status for nav options
+export const prerender = true;
 ---
 
-<DrawerBackdrop />
-<aside class="drawer flex flex-col" aria-hidden="true" data-nav-drawer>
+<div
+  id="drawer-backdrop"
+  class="bg-background/40 ease fixed inset-0 z-40 hidden opacity-0 transition-opacity duration-300"
+>
+</div>
+<aside
+  id="nav-drawer"
+  class="bg-sidebar ease fixed z-50 hidden h-full w-60 -translate-x-full flex-col overflow-y-auto rounded-tr-md rounded-br-md transition-transform duration-300"
+  aria-hidden="true"
+>
   <div class="flex items-center justify-start gap-x-4 p-2">
-    <MenuButton data-drawer-close-button />
+    <MenuButton id="close-drawer-button" />
     <p class="text-base">Bakery and Deserts</p>
   </div>
   <Separator />
@@ -21,10 +29,16 @@ import DrawerBackdrop from './DrawerBackdrop.astro';
           <li>
             <a
               href={href}
-              class="button inline-flex h-10 w-full items-center justify-start"
+              class="w-full rounded-md hover:cursor-pointer"
+              aria-label={name}
             >
-              {Icon && <Icon class="size-6" />}
-              <p class="text-base">{name}</p>
+              <Button
+                variant="ghost"
+                className="w-full cursor-pointer inline-flex items-center justify-start"
+              >
+                {Icon && <Icon class="size-6" />}
+                <p class="text-base">{name}</p>
+              </Button>
             </a>
           </li>
         ))
@@ -32,22 +46,4 @@ import DrawerBackdrop from './DrawerBackdrop.astro';
     </ul>
   </nav>
 </aside>
-<style>
-  .drawer {
-    position: fixed;
-    background-color: var(--color-sidebar);
-    height: 100%;
-    width: 240px;
-    border-top-right-radius: calc(var(--radius) /* 0.25rem = 4px */ - 2px);
-    border-bottom-right-radius: calc(var(--radius) /* 0.25rem = 4px */ - 2px);
-    visibility: hidden;
-    transform: translateX(-100%);
-    transition: transform 0.2s ease;
-    z-index: 50;
-    overflow-y: auto;
-  }
-  .drawer.open {
-    transform: translateX(0);
-  }
-</style>
-<script src="@/scripts/drawer.ts"></script>
+<script src="@/scripts/drawer"></script>

@@ -1,6 +1,7 @@
 ---
 import BellSVG from '@/assets/bell.svg';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface Props {
   className?: string;
@@ -9,6 +10,6 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<Button size="icon" variant="ghost" className={`${className} cursor-pointer`}>
+<Button size="icon" variant="ghost" className={cn('cursor-pointer', className)}>
   <BellSVG class="size-fit" />
 </Button>

@@ -1,17 +1,20 @@
 ---
-import { navOptionList } from '@/common/constants.ts';
 import { Separator } from '@/components/ui/separator';
+import TopUserMenu from './TopUserMenu.astro';
 import LogoIcon from '../icons/LogoIcon.astro';
 import MenuButton from '../buttons/MenuButton.astro';
-import CartButton from '../buttons/CartButton.astro';
-import { Button } from '../ui/button';
+import { navOptionList } from '@/common/constants';
+import { Skeleton } from '../ui/skeleton';
 
-const isAuthenticated = false;
+export const prerender = true;
 ---
 
 <header class="flex w-full flex-col">
   <div class="flex items-center justify-between gap-4 px-2 py-2 lg:px-4">
-    <MenuButton className="order-1 lg:hidden" data-open-drawer-button />
+    <a href="/" class="hidden lg:order-1 lg:inline-block">
+      <LogoIcon className="size-8 hover:scale-105" />
+    </a>
+    <MenuButton id="open-drawer-button" className="order-1 lg:hidden" />
     <nav class="hidden lg:order-2 lg:flex lg:flex-1">
       <ul class="flex grow items-center justify-start gap-6">
         {
@@ -26,33 +29,16 @@ const isAuthenticated = false;
       </ul>
     </nav>
 
-    <a href="/" class="hidden lg:order-1 lg:inline-block">
-      <LogoIcon className="size-8 hover:scale-105" />
-    </a>
-
-    <div class="order-3 flex items-center justify-center gap-x-4">
-      <div class="flex items-center justify-center gap-x-2">
-        <!-- TODO: AUTH-PROFILE COMPONENT -->
-        {
-          isAuthenticated ? (
-            <div class="flex items-center justify-center gap-2">
-              <CartButton />
-              <div>Profile button</div>
-            </div>
-          ) : (
-            <div class="flex items-center justify-center gap-2">
-              <a href="/auth/signin" class="rounded-md">
-                <Button variant="outline" className="cursor-pointer">
-                  Sign In
-                </Button>
-              </a>
-              <a href="/auth/signup" class="rounded-md">
-                <Button className="cursor-pointer">Sign Up</Button>
-              </a>
-            </div>
-          )
-        }
-      </div>
+    <div class="order-2 flex items-center justify-center gap-x-4 lg:order-3">
+      <TopUserMenu server:defer>
+        <div
+          class="inline-flex items-center justify-center gap-2"
+          slot="fallback"
+        >
+          <Skeleton className="size-8 rounded-md" />
+          <Skeleton className="size-8 rounded-full" />
+        </div>
+      </TopUserMenu>
     </div>
   </div>
   <Separator />

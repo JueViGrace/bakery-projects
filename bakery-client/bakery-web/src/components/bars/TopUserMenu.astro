@@ -1,0 +1,19 @@
+---
+import CartButton from '../buttons/CartButton.astro';
+import ProfileButton from '../buttons/ProfileButton';
+import AuthMenu from '../menu/AuthMenu.astro';
+
+let isAuthenticated: boolean = false;
+let imgUrl = '/favicon.svg';
+---
+
+{
+  isAuthenticated ? (
+    <div class="flex items-center justify-center gap-2">
+      <CartButton />
+      <ProfileButton client:load src={imgUrl} />
+    </div>
+  ) : (
+    <AuthMenu auth-section />
+  )
+}

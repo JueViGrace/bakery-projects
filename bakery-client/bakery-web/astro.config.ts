@@ -18,5 +18,8 @@ export default defineConfig({
     mode: 'standalone',
   }),
 
-  integrations: [starlight({ title: 'Bakery and deserts documentation page' }), react()],
+  integrations: [
+    starlight({ title: 'Bakery and deserts documentation page' }),
+    react(),
+  ],
 });
