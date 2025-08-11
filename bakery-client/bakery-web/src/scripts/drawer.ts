@@ -1,15 +1,15 @@
 function getElement(id: string): HTMLElement {
-  const element = document.getElementById(id);
+  const element: HTMLElement | null = document.querySelector(id);
   if (!element) {
     throw Error(`DrawerController: Element ${element} not found`);
   }
   return element;
 }
 
-const navDrawer: HTMLElement = getElement('nav-drawer');
-const backdropEl: HTMLElement = getElement('drawer-backdrop');
-const openBtn: HTMLElement = getElement('open-drawer-button');
-const closeBtn: HTMLElement = getElement('close-drawer-button');
+const navDrawer: HTMLElement = getElement('[data-nav-drawer]');
+const backdropEl: HTMLElement = getElement('[data-drawer-backdrop]');
+const openBtn: HTMLElement = getElement('[data-open-drawer-button]');
+const closeBtn: HTMLElement = getElement('[data-close-drawer-button]');
 
 function openDrawer() {
   backdropEl.classList.remove('hidden');
@@ -34,21 +34,17 @@ function closeDrawer() {
 }
 
 window.addEventListener('resize', () => {
-  console.log('resize');
   if (window.innerWidth > 1024) {
     closeDrawer();
   }
 });
 backdropEl.addEventListener('click', () => {
-  console.log('backdrop');
   closeDrawer();
 });
 openBtn.addEventListener('click', (e: MouseEvent) => {
-  console.log('open');
   e.stopPropagation();
   openDrawer();
 });
 closeBtn.addEventListener('click', () => {
-  console.log('close');
   closeDrawer();
 });

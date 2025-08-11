@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { className } = Astro.props;
+
+export const prerender = true;
 ---
 
 <Image loading="eager" class={className} src={ChefImg} alt="logo" />

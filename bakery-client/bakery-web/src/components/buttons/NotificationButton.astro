@@ -8,6 +8,8 @@ interface Props {
 }
 
 const { className } = Astro.props;
+
+export const prerender = true;
 ---
 
 <Button size="icon" variant="ghost" className={cn('cursor-pointer', className)}>

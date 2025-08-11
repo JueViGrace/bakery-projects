@@ -2,8 +2,10 @@
 import { Separator } from '@/components/ui/separator';
 import TopUserMenu from './TopUserMenu.astro';
 import LogoIcon from '../icons/LogoIcon.astro';
-import MenuButton from '../buttons/MenuButton.astro';
 import { navOptionList } from '@/common/constants';
+import { Button } from '../ui/button';
+import { Menu } from 'lucide-react';
+import { ThemeToggle } from '../modals/ThemeToggle';
 import { Skeleton } from '../ui/skeleton';
 
 export const prerender = true;
@@ -11,10 +13,18 @@ export const prerender = true;
 
 <header class="flex w-full flex-col">
   <div class="flex items-center justify-between gap-4 px-2 py-2 lg:px-4">
+    <Button
+      variant="ghost"
+      size="icon"
+      className="order-1 cursor-pointer lg:hidden"
+      data-open-drawer-button
+    >
+      <Menu className="size-fit" />
+    </Button>
     <a href="/" class="hidden lg:order-1 lg:inline-block">
       <LogoIcon className="size-8 hover:scale-105" />
     </a>
-    <MenuButton id="open-drawer-button" className="order-1 lg:hidden" />
+
     <nav class="hidden lg:order-2 lg:flex lg:flex-1">
       <ul class="flex grow items-center justify-start gap-6">
         {
@@ -29,13 +39,11 @@ export const prerender = true;
       </ul>
     </nav>
 
-    <div class="order-2 flex items-center justify-center gap-x-4 lg:order-3">
-      <TopUserMenu server:defer>
-        <div
-          class="inline-flex items-center justify-center gap-2"
-          slot="fallback"
-        >
-          <Skeleton className="size-8 rounded-md" />
+    <div class="order-2 flex items-center justify-center gap-2 lg:order-3">
+      <ThemeToggle client:load />
+      <TopUserMenu className="order-2 lg:order-3" server:defer>
+        <div class="flex items-center justify-center gap-2" slot="fallback">
+          <Skeleton className="h-8 w-16 rounded-md" />
           <Skeleton className="size-8 rounded-full" />
         </div>
       </TopUserMenu>

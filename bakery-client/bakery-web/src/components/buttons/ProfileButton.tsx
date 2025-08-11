@@ -9,7 +9,7 @@ type Props = {
   className?: string;
 };
 
-export default function ProfileButton({ className, src, alt = 'GU' }: Props) {
+export function ProfileButton({ className, src, alt = 'GU' }: Props) {
   const handleClick = () => {
     window.open('/profile', '_self');
   };
