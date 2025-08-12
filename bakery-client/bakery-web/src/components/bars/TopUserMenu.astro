@@ -1,11 +1,12 @@
 ---
-import { Button } from '../ui/button';
 import CartButton from '../buttons/CartButton.astro';
 import { ProfileButton } from '../buttons/ProfileButton';
+import { LinkButton } from '../buttons/LinkButton';
 
 let isAuthenticated = false;
 let imgUrl: string = '';
 
+// TODO: could change profile button image for astro image
 if (isAuthenticated) {
   imgUrl = 'https://github.com/shadcn.png';
 } else {
@@ -23,14 +24,10 @@ if (isAuthenticated) {
 {
   !isAuthenticated && (
     <div class="flex items-center justify-center gap-2">
-      <a href="/auth/signin">
-        <Button variant="outline" className="cursor-pointer">
-          Sign In
-        </Button>
-      </a>
-      <a href="/auth/signup">
-        <Button className="cursor-pointer">Sign Up</Button>
-      </a>
+      <LinkButton variant="outline" href="/auth/signin">
+        Sign in
+      </LinkButton>
+      <LinkButton href="/auth/signup">Sign up</LinkButton>
     </div>
   )
 }

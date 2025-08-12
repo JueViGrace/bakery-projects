@@ -1,9 +1,103 @@
 ---
+import { providerList } from '@/common/providers';
+import { LinkButton } from '@/components/buttons/LinkButton';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import StoreLayout from '@/layouts/StoreLayout.astro';
+import { Image } from 'astro:assets';
+import { ArrowRight } from 'lucide-react';
 
 export const prerender = true;
 ---
 
 <StoreLayout title="Sign In">
-  <h1>Sign In</h1>
+  <main class="container flex items-center justify-center py-24">
+    <div class="flex w-full flex-col items-center justify-center gap-8">
+      <div class="flex flex-col items-center justify-center gap-1">
+        <h1 class="text-3xl font-bold">Welcome to Bakery and Deserts</h1>
+        <h2 class="text-lg">Plese sign in to continue.</h2>
+      </div>
+      <Card className="w-full max-w-sm">
+        <CardContent>
+          <form action="/api/auth/signin" method="post">
+            <div class="flex flex-col items-center justify-center gap-10">
+              <div
+                class="flex w-full flex-col items-center justify-center gap-6"
+              >
+                <div class="grid w-full gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input
+                    className="w-full"
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Your username or email..."
+                    required
+                  />
+                </div>
+                <div class="grid w-full gap-2">
+                  <div class="flex items-center justify-between">
+                    <Label htmlFor="password">Password</Label>
+                    <a
+                      class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                      href="/auth/forgot/password">Forgot password?</a
+                    >
+                  </div>
+                  <Input
+                    className="w-full"
+                    id="username"
+                    name="username"
+                    type="text"
+                    placeholder="Your username or email..."
+                    required
+                  />
+                </div>
+              </div>
+              <Button className="w-full" type="submit"> Submit </Button>
+            </div>
+          </form>
+          <CardFooter>
+            <div
+              class="flex w-full flex-col items-center justify-between gap-4 pt-4"
+            >
+              <p>Or sign in with</p>
+              <div
+                class="flex w-full flex-wrap items-center justify-center gap-2"
+              >
+                {
+                  providerList.map(({ name, icon, href }) => (
+                    <LinkButton
+                      className="p-1"
+                      variant="outline"
+                      size="icon"
+                      href={href}
+                    >
+                      {icon && (
+                        <Image
+                          loading="eager"
+                          src={icon}
+                          alt={name}
+                          class="aspect-auto size-fit"
+                        />
+                      )}
+                    </LinkButton>
+                  ))
+                }
+              </div>
+            </div>
+          </CardFooter>
+        </CardContent>
+      </Card>
+
+      <LinkButton
+        href="/auth/signup"
+        className="inline-flex items-center justify-center gap-2"
+      >
+        <p>Don't have an account? Sign up here</p>
+        <ArrowRight />
+      </LinkButton>
+    </div>
+  </main>
 </StoreLayout>

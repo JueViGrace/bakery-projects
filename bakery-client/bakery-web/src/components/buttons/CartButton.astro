@@ -1,6 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import { LinkButton } from './LinkButton';
 import CartSVG from '@/assets/shopping_cart.svg';
-import { Button } from '../ui/button';
 
 interface Props {
   className?: string;
@@ -11,12 +12,6 @@ const { className } = Astro.props;
 export const prerender = true;
 ---
 
-<a
-  href="/cart"
-  aria-label="cart"
-  class:list={[className, 'rounded-md hover:cursor-pointer']}
->
-  <Button size="icon" variant="ghost" className="cursor-pointer">
-    <CartSVG class="size-fit" />
-  </Button>
-</a>
+<LinkButton href="/cart" size="icon" variant="outline" className={className}>
+  <Image loading="eager" src={CartSVG} alt="cart" class="icon-image" />
+</LinkButton>

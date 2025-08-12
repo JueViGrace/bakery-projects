@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '../ui/button';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '../ui/skeleton';
+import { LinkButton } from './LinkButton';
 
 type Props = {
   src: string;
@@ -10,23 +10,19 @@ type Props = {
 };
 
 export function ProfileButton({ className, src, alt = 'GU' }: Props) {
-  const handleClick = () => {
-    window.open('/profile', '_self');
-  };
-
   return (
-    <Button
-      onClick={handleClick}
+    <LinkButton
+      href="/profile"
       variant="link"
-      className="cursor-pointer rounded-full"
+      className={cn('rounded-full', className)}
       size="icon"
     >
-      <Avatar className={cn('cursor-pointer', className)}>
-        <AvatarImage src={src} alt={alt} />
+      <Avatar>
+        <AvatarImage loading="eager" src={src} alt={alt} />
         <AvatarFallback>
           <Skeleton className="rounded-full" />
         </AvatarFallback>
       </Avatar>
-    </Button>
+    </LinkButton>
   );
 }

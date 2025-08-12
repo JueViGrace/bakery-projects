@@ -1,11 +1,12 @@
 ---
-import { footerOptions, socialOptionList } from '@/common/constants';
+import { footerOptionList, socialOptionList } from '@/common/navOptions';
 import WhatsAppSVG from '@/assets/brand_whatsapp.svg';
 import PhoneSVG from '@/assets/phone.svg';
 import { Image } from 'astro:assets';
 import GoogleButtonImg from '@/assets/google_play.png';
 import { Separator } from '@/components/ui/separator';
 import LogoIcon from '@/components/icons/LogoIcon.astro';
+import { LinkButton } from './buttons/LinkButton';
 
 export const prerender = true;
 ---
@@ -72,7 +73,7 @@ export const prerender = true;
       class="flex h-full flex-wrap items-start justify-center gap-x-4 px-2 sm:gap-x-12"
     >
       {
-        footerOptions.map(({ title, options }) => (
+        footerOptionList.map(({ title, options }) => (
           <div class="flex flex-1 flex-col items-start justify-center gap-4">
             <div class="flex flex-col items-center justify-center gap-3">
               <h1 class="text-center text-lg font-bold">{title}</h1>
@@ -98,11 +99,16 @@ export const prerender = true;
     >
       {
         socialOptionList.map(
-          ({ name, href, Icon }) =>
-            Icon && (
-              <a href={href} aria-label={name}>
-                <Icon class="size-6" />
-              </a>
+          ({ name, href, icon }) =>
+            icon && (
+              <LinkButton href={href} variant="outline" size="icon">
+                <Image
+                  loading="eager"
+                  src={icon}
+                  alt={name}
+                  class="icon-image"
+                />
+              </LinkButton>
             )
         )
       }

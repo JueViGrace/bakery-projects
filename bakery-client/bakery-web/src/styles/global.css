@@ -25,6 +25,10 @@ html {
     sans-serif;
 }
 
+.icon-image {
+  @apply aspect-auto size-fit dark:invert;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

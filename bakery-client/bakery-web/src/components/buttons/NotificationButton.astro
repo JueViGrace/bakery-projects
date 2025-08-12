@@ -1,7 +1,7 @@
 ---
 import BellSVG from '@/assets/bell.svg';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { LinkButton } from './LinkButton';
+import { Image } from 'astro:assets';
 
 interface Props {
   className?: string;
@@ -12,6 +12,11 @@ const { className } = Astro.props;
 export const prerender = true;
 ---
 
-<Button size="icon" variant="ghost" className={cn('cursor-pointer', className)}>
-  <BellSVG class="size-fit" />
-</Button>
+<LinkButton
+  href="/notifications"
+  size="icon"
+  variant="ghost"
+  className={className}
+>
+  <Image src={BellSVG} alt="notifications" class="icon-image" />
+</LinkButton>

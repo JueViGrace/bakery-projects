@@ -2,11 +2,12 @@
 import { Separator } from '@/components/ui/separator';
 import TopUserMenu from './TopUserMenu.astro';
 import LogoIcon from '../icons/LogoIcon.astro';
-import { navOptionList } from '@/common/constants';
+import { navOptionList } from '@/common/navOptions';
 import { Button } from '../ui/button';
 import { Menu } from 'lucide-react';
 import { ThemeToggle } from '../modals/ThemeToggle';
 import { Skeleton } from '../ui/skeleton';
+import { LinkButton } from '../buttons/LinkButton';
 
 export const prerender = true;
 ---
@@ -21,9 +22,15 @@ export const prerender = true;
     >
       <Menu className="size-fit" />
     </Button>
-    <a href="/" class="hidden lg:order-1 lg:inline-block">
-      <LogoIcon className="size-8 hover:scale-105" />
-    </a>
+
+    <LinkButton
+      href="/"
+      variant="link"
+      size="icon"
+      className="hidden lg:order-1 lg:inline-block"
+    >
+      <LogoIcon className="hover:scale-105" />
+    </LinkButton>
 
     <nav class="hidden lg:order-2 lg:flex lg:flex-1">
       <ul class="flex grow items-center justify-start gap-6">

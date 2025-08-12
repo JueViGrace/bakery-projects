@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import ChefImg from '../../assets/chef.png';
+import { cn } from '@/lib/utils';
 
 interface Props {
   className?: string;
@@ -11,4 +12,9 @@ const { className } = Astro.props;
 export const prerender = true;
 ---
 
-<Image loading="eager" class={className} src={ChefImg} alt="logo" />
+<Image
+  loading="eager"
+  class={cn('size-fit', className)}
+  src={ChefImg}
+  alt="logo"
+/>

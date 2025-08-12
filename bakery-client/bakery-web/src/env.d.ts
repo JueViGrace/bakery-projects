@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro';
+
 export type FooterOptions = {
   title: string;
   options: NavOption[];
@@ -6,7 +8,7 @@ export type FooterOptions = {
 export type NavOption = {
   name: string;
   href: string;
-  Icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
+  icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;;
   expand?: boolean;
 };
 
@@ -18,3 +20,4 @@ export type User = {
 export type Category = {
   name: string;
 };
+

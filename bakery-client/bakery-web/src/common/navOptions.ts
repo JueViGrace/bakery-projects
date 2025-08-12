@@ -1,9 +1,8 @@
 import type { FooterOptions, NavOption } from '../env';
-import HomeImg from '../assets/home.svg';
-import StackImg from '../assets/stack.svg';
-import InfoCircleImg from '../assets/info_circle.svg';
-import CartImg from '../assets/shopping_cart.svg';
-import AddressImg from '../assets/address_book.svg';
+import HomeSVG from '../assets/home.svg';
+import StackSVG from '../assets/stack.svg';
+import InfoCircleSVG from '../assets/info_circle.svg';
+import AddressSVG from '../assets/address_book.svg';
 import WhatsAppSVG from '../assets/brand_whatsapp.svg';
 import FacebookSVG from '../assets/brand_facebook.svg';
 import TikTokSVG from '../assets/brand_tiktok.svg';
@@ -15,26 +14,26 @@ import InstagramSVG from '../assets/brand_instagram.svg';
 const home: NavOption = {
   name: 'Home',
   href: '/',
-  Icon: HomeImg,
+  icon: HomeSVG,
 };
 
 const products: NavOption = {
   name: 'Products',
   href: '/products',
-  Icon: StackImg,
+  icon: StackSVG,
   expand: false,
 };
 
 const about: NavOption = {
   name: 'About us',
   href: '/about',
-  Icon: InfoCircleImg,
+  icon: InfoCircleSVG,
 };
 
 const contact: NavOption = {
   name: 'Contact',
   href: '/contact',
-  Icon: AddressImg,
+  icon: AddressSVG,
 };
 
 /**
@@ -63,42 +62,37 @@ const faq: NavOption = {
 const whatsApp: NavOption = {
   name: 'WhatsApp',
   href: '/',
-  Icon: WhatsAppSVG,
+  icon: WhatsAppSVG,
 };
 
 const instagram: NavOption = {
   name: 'Instagram',
   href: '/',
-  Icon: InstagramSVG,
+  icon: InstagramSVG,
 };
 
 const facebook: NavOption = {
   name: 'Facebook',
   href: '/',
-  Icon: FacebookSVG,
+  icon: FacebookSVG,
 };
 
 const tiktok: NavOption = {
   name: 'TikTok',
   href: '/',
-  Icon: TikTokSVG,
+  icon: TikTokSVG,
 };
 
-export const navOptions = {
+const navOptions = {
   home: home,
   products: products,
   about: about,
   contact: contact,
 };
 
-export const socialOptionList: NavOption[] = [
-  whatsApp,
-  instagram,
-  facebook,
-  tiktok,
-];
+const navOptionList: NavOption[] = [home, products, contact, about];
 
-export const navOptionList: NavOption[] = [home, products, contact, about];
+const socialOptionList: NavOption[] = [whatsApp, instagram, facebook, tiktok];
 
 /**
  * Footer navigation options
@@ -114,4 +108,6 @@ const help: FooterOptions = {
   options: [about, terms, privacy, faq],
 };
 
-export const footerOptions = [links, help];
+const footerOptionList = [links, help];
+
+export { navOptions, navOptionList, socialOptionList, footerOptionList };
