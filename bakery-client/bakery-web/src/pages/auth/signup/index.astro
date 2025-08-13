@@ -1,9 +1,106 @@
 ---
-import StoreLayout from '@/layouts/StoreLayout.astro';
+import AuthTitle from '@auth/components/AuthTitle.astro';
+import { LinkButton } from '@ui/buttons/LinkButton';
+import { Card, CardContent } from '@ui/ui/card';
+import AuthLayout from '@layouts/AuthLayout.astro';
+import { ArrowRight } from 'lucide-react';
+import InputComponent from '@/components/inputs/InputComponent.astro';
+import { Button } from '@ui/ui/button';
 
 export const prerender = true;
 ---
 
-<StoreLayout title="Sign Up">
-  <h1>Sign Up</h1>
-</StoreLayout>
+<AuthLayout title="Sign Up">
+  <AuthTitle
+    title="Welcome to Bakery and Deserts"
+    subTitle="Create an account with us and start enjoying our services!"
+  />
+  <Card className="w-full max-w-2xl">
+    <CardContent>
+      <form action="/api/auth/signup" method="post">
+        <div class="flex w-full flex-col items-start justify-center gap-4">
+          <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
+            <InputComponent
+              className="w-full"
+              name="first_name"
+              label="First name"
+              type="text"
+              placeholder="Your name..."
+              required
+            />
+            <InputComponent
+              className="w-full"
+              name="last_name"
+              label="Last name"
+              type="text"
+              placeholder="Your last name..."
+              required
+            />
+          </div>
+          <div class="grid w-full grid-cols-1 gap-4 sm:grid-cols-3">
+            <InputComponent
+              className="w-full"
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="Your email..."
+              required
+            />
+            <InputComponent
+              className="w-full"
+              name="phone_number"
+              label="Phone number"
+              type="tel"
+              placeholder="Your phone number..."
+              required
+            />
+            <InputComponent
+              className="w-full"
+              name="birth_date"
+              label="Birth date"
+              type="date"
+              placeholder="Your birth date..."
+              required
+            />
+          </div>
+
+          <InputComponent
+            className="w-full sm:col-span-full"
+            name="username"
+            label="Username"
+            type="text"
+            placeholder="Your username..."
+          />
+
+          <InputComponent
+            className="w-full"
+            name="password"
+            label="Password"
+            type="password"
+            placeholder="Your password..."
+            required
+          />
+
+          <InputComponent
+            className="w-full"
+            name="confirm_password"
+            label="Confirm password"
+            type="password"
+            placeholder="Your password..."
+            required
+          />
+
+          <Button className="w-full" type="submit"> Submit </Button>
+        </div>
+      </form>
+    </CardContent>
+  </Card>
+
+  <LinkButton
+    href="/auth/signin"
+    className="inline-flex items-center justify-center gap-2"
+  >
+    <p>Do you have an account? Sign in here</p>
+    <ArrowRight />
+  </LinkButton>
+</AuthLayout>

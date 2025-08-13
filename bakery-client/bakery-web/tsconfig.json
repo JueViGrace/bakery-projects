@@ -14,6 +14,24 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@assets/*": [
+        "./src/assets/*"
+      ],
+      "@layouts/*": [
+        "./src/layouts/*"
+      ],
+      "@ui/*": [
+        "./src/components/*"
+      ],
+      "@auth/*": [
+        "./src/features/auth/*"
+      ],
+      "@cart/*": [
+        "./src/features/cart/*"
+      ],
+      "@profile/*": [
+        "./src/features/profile/*"
       ]
     }
   }

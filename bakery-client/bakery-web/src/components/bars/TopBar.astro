@@ -1,13 +1,13 @@
 ---
-import { Separator } from '@/components/ui/separator';
-import TopUserMenu from './TopUserMenu.astro';
-import LogoIcon from '../icons/LogoIcon.astro';
+import { Separator } from '@ui/ui/separator';
+import TopUserMenu from '@ui/bars/TopUserMenu.astro';
+import LogoIcon from '@ui/icons/LogoIcon.astro';
 import { navOptionList } from '@/common/navOptions';
-import { Button } from '../ui/button';
+import { Button } from '@ui/ui/button';
 import { Menu } from 'lucide-react';
-import { ThemeToggle } from '../modals/ThemeToggle';
-import { Skeleton } from '../ui/skeleton';
-import { LinkButton } from '../buttons/LinkButton';
+import { ThemeToggle } from '@ui/buttons/ThemeToggle';
+import { Skeleton } from '@ui/ui/skeleton';
+import { LinkButton } from '@ui/buttons/LinkButton';
 
 export const prerender = true;
 ---

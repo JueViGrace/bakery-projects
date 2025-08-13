@@ -1,12 +1,12 @@
-import type { FooterOptions, NavOption } from '../env';
-import HomeSVG from '../assets/home.svg';
-import StackSVG from '../assets/stack.svg';
-import InfoCircleSVG from '../assets/info_circle.svg';
-import AddressSVG from '../assets/address_book.svg';
-import WhatsAppSVG from '../assets/brand_whatsapp.svg';
-import FacebookSVG from '../assets/brand_facebook.svg';
-import TikTokSVG from '../assets/brand_tiktok.svg';
-import InstagramSVG from '../assets/brand_instagram.svg';
+import type { FooterOptions, NavOption } from '@/env';
+import HomeSVG from '@assets/home.svg';
+import StackSVG from '@assets/stack.svg';
+import InfoCircleSVG from '@assets/info_circle.svg';
+import AddressSVG from '@assets/address_book.svg';
+import WhatsAppSVG from '@assets/brand_whatsapp.svg';
+import FacebookSVG from '@assets/brand_facebook.svg';
+import TikTokSVG from '@assets/brand_tiktok.svg';
+import InstagramSVG from '@assets/brand_instagram.svg';
 
 /**
  * Main navigation
