@@ -15,7 +15,7 @@ type AuthStore interface {
 	LogOut(sessionId uuid.UUID) (msg string, err error)
 	SignIn(r *types.SignInRequest) (*types.AuthResponse, error)
 	SignUp(r *types.SignUpRequest) (*types.AuthResponse, error)
-	Refresh(r *types.RefreshRequest, a *types.AuthData) (*types.AuthResponse, error)
+	Refresh(a *types.AuthData) (*types.AuthResponse, error)
 	RecoverPassword(r *types.RecoverPasswordRequest) (string, error)
 }
 
@@ -47,8 +47,8 @@ func (s *authStore) LogOut(sessionId uuid.UUID) (string, error) {
 // TODO: limit sessions to 5?
 func (s *authStore) SignIn(r *types.SignInRequest) (*types.AuthResponse, error) {
 	user, err := s.db.GetUser(s.ctx, database.GetUserParams{
-		Email:    r.Email,
-		Username: r.Email,
+		Email:    r.Username,
+		Username: r.Username,
 	})
 	if err != nil {
 		return nil, errors.New("user not found")
@@ -132,7 +132,7 @@ func (s *authStore) SignUp(r *types.SignUpRequest) (*types.AuthResponse, error) 
 	return newTokens, nil
 }
 
-func (s *authStore) Refresh(r *types.RefreshRequest, a *types.AuthData) (*types.AuthResponse, error) {
+func (s *authStore) Refresh(a *types.AuthData) (*types.AuthResponse, error) {
 	user, err := s.db.GetUserById(s.ctx, a.UserId.String())
 	if err != nil {
 		return nil, err

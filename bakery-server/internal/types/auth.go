@@ -24,7 +24,7 @@ type AuthResponse struct {
 }
 
 type SignInRequest struct {
-	Email    string `json:"email" validate:"required,min=1,max=255"`
+	Username string `json:"username" validate:"required,min=1,max=255"`
 	Password string `json:"password" validate:"required,min=1,max=255"`
 }
 
@@ -36,10 +36,6 @@ type SignUpRequest struct {
 	Email       string `json:"email" validate:"required,email,max=255"`
 	Username    string `json:"username" validate:"max=255"`
 	Password    string `json:"password" validate:"required,min=1,max=255"`
-}
-
-type RefreshRequest struct {
-	RefreshToken string `json:"refresh_token" validate:"required,min=1,max=255"`
 }
 
 type RequestPasswordReset struct {

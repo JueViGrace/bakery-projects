@@ -1,13 +1,12 @@
 ---
 import { providerList } from '@/common/providers';
 import AuthTitle from '@auth/components/AuthTitle.astro';
-import { LinkButton } from '@ui/buttons/LinkButton';
-import { Button } from '@ui/ui/button';
+import LinkButton from '@ui/buttons/LinkButton';
 import { Card, CardContent, CardFooter } from '@ui/ui/card';
 import AuthLayout from '@layouts/AuthLayout.astro';
 import { Image } from 'astro:assets';
 import { ArrowRight } from 'lucide-react';
-import InputComponent from '@/components/inputs/InputComponent.astro';
+import SignInForm from '@auth/components/SignInForm';
 
 export const prerender = true;
 ---
@@ -19,34 +18,7 @@ export const prerender = true;
   />
   <Card className="w-full max-w-sm">
     <CardContent>
-      <form action="/api/auth/signin" method="post">
-        <div class="flex flex-col items-center justify-center gap-6">
-          <InputComponent
-            className="w-full"
-            name="username"
-            label="Username"
-            type="text"
-            placeholder="Your username or email..."
-            required
-          />
-          <div class="flex w-full flex-col items-center justify-center gap-1">
-            <InputComponent
-              className="w-full"
-              name="password"
-              label="Password"
-              type="password"
-              placeholder="Your password..."
-              required
-            />
-            <a
-              class="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-              href="/auth/forgot/password">Forgot password?</a
-            >
-          </div>
-
-          <Button className="w-full" type="submit"> Submit </Button>
-        </div>
-      </form>
+      <SignInForm client:load />
     </CardContent>
     <CardFooter>
       <div class="flex w-full flex-col items-center justify-between gap-4">

@@ -1,9 +1,8 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
 import node from '@astrojs/node';
-import starlight from '@astrojs/starlight';
 
 import react from '@astrojs/react';
 
@@ -18,8 +17,17 @@ export default defineConfig({
     mode: 'standalone',
   }),
 
-  integrations: [
-    starlight({ title: 'Bakery and deserts documentation page' }),
-    react(),
-  ],
+  env: {
+    schema: {
+      SERVER_URL: envField.string({
+        default: '',
+        context: 'server',
+        access: 'secret',
+        optional: false,
+      }),
+    },
+    validateSecrets: true,
+  },
+
+  integrations: [react()],
 });

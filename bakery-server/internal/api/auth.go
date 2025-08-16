@@ -15,14 +15,7 @@ func (a *api) AuthRoutes(api fiber.Router) {
 	authGroup.Post("/reset/password/confirm", validatedMiddleware(types.ConfirmPasswordReset{}, authHandler.ConfirmPasswordReset))
 	authGroup.Post("/reset/password", validatedMiddleware(types.RecoverPasswordRequest{}, authHandler.RecoverPassword))
 	authGroup.Post("/logout", a.authenticatedMiddleware(authHandler.LogOut))
-	authGroup.Post(
-		"/refresh",
-		a.authenticatedMiddleware(func(c *fiber.Ctx, data *types.AuthData) error {
-			return validatedHandler(types.RefreshRequest{}, c, func(t *types.RefreshRequest) error {
-				return authHandler.Refresh(c, t, data)
-			})
-		}),
-	)
+	authGroup.Post("/refresh", a.authenticatedMiddleware(authHandler.Refresh))
 	authGroup.Post("/login", validatedMiddleware(types.SignInRequest{}, authHandler.SignIn))
 	authGroup.Post("/signup", validatedMiddleware(types.SignUpRequest{}, authHandler.SignUp))
 }

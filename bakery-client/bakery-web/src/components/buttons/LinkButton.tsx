@@ -18,7 +18,7 @@ type Props = {
   children?: ReactNode;
 };
 
-export function LinkButton({
+export default function LinkButton({
   href,
   className,
   variant = 'default',

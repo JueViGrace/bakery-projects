@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/ui/avatar';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@ui/ui/skeleton';
-import { LinkButton } from '@ui/buttons/LinkButton';
+import LinkButton from '@ui/buttons/LinkButton';
 
 type Props = {
   src: string;
