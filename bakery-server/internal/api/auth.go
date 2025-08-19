@@ -16,6 +16,6 @@ func (a *api) AuthRoutes(api fiber.Router) {
 	authGroup.Post("/reset/password", validatedMiddleware(types.RecoverPasswordRequest{}, authHandler.RecoverPassword))
 	authGroup.Post("/logout", a.authenticatedMiddleware(authHandler.LogOut))
 	authGroup.Post("/refresh", a.authenticatedMiddleware(authHandler.Refresh))
-	authGroup.Post("/login", validatedMiddleware(types.SignInRequest{}, authHandler.SignIn))
+	authGroup.Post("/signin", validatedMiddleware(types.SignInRequest{}, authHandler.SignIn))
 	authGroup.Post("/signup", validatedMiddleware(types.SignUpRequest{}, authHandler.SignUp))
 }

@@ -49,7 +49,6 @@ func validatedMiddleware[T any](t T, handler func(c *fiber.Ctx, t *T) error) fib
 			res = types.RespondBadRequest(nil, err.Error())
 			return c.Status(res.Status).JSON(res)
 		}
-
 		return handler(c, body)
 	}
 }

@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS sessions(
     access_token TEXT NOT NULL,
     username TEXT NOT NULL,
     user_id TEXT NOT NULL,
-    device TEXT NOT NULL,
+    device TEXT NOT NULL DEFAULT '',
     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(user_id) REFERENCES bakery_user(id)
 );
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS cart_products(
     quantity INTEGER NOT NULL,
     final_price REAL NOT NULL,
     PRIMARY KEY (cart_id, product_id),
-    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (cart_id) REFERENCES carts(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
