@@ -58,6 +58,7 @@ export default function SignInForm() {
       }
 
       toast.success('Welcome!');
+      window.open('/', '_self');
     } catch (e) {
       console.error(e);
       toast.error('Failed to submit the form. Please try again.');

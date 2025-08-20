@@ -17,77 +17,135 @@ import { Input } from '@ui/ui/input';
 import { format } from 'date-fns';
 import { Popover, PopoverContent, PopoverTrigger } from '@ui/ui/popover';
 import { Calendar } from '@ui/ui/calendar';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Eye, EyeClosed } from 'lucide-react';
+import { PhoneInput } from '@ui/inputs/PhoneInput';
+import { Separator } from '@radix-ui/react-dropdown-menu';
+import type { APIResponse, AuthResponse, SignUpRequest } from '@/env';
+import { isValidPhoneNumber } from 'react-phone-number-input';
+import { useState } from 'react';
 
 const formSchema = z.object({
-  first_name_field: z
+  firstNameField: z
     .string()
-    .min(2, { error: 'First name must be longer thant 2 characters' })
+    .min(2, { error: 'First name must be longer than 2 characters' })
     .max(255, { error: 'First name must not be longer than 255 characters' }),
-  last_name_field: z
+  lastNameField: z
     .string()
-    .min(2, { error: 'Last name must be longer thant 2 characters' })
+    .min(2, { error: 'Last name must be longer than 2 characters' })
     .max(255, { error: 'Last name must not be longer than 255 characters' }),
-  email_field: z.email(),
-  phone_number_field: z.string(),
-  birth_date_field: z.date(),
-  username_field: z
+  emailField: z.email(),
+  phoneNumberField: z
     .string()
-    .min(4, { error: 'Username must be longer thant 4 characters' })
+    .refine(isValidPhoneNumber, { message: 'Phone number is not valid' }),
+  birthDateField: z.date(),
+  usernameField: z
+    .string()
+    .min(4, { error: 'Username must be longer than 4 characters' })
     .max(255, { error: 'Usernam must not be longer than 255 characters' })
     .optional(),
-  password_field: z
+  passwordField: z
     .string()
-    .min(2, { error: 'Password must be longer thant 2 characters' })
+    .min(4, { error: 'Password must be longer than 4 characters' })
     .max(255, { error: 'Password must not be longer than 255 characters' }),
-  confirm_password_field: z
+  confirmPasswordField: z
     .string()
-    .min(4, { error: 'Password must be longer thant 2 characters' })
+    .min(4, { error: 'Password must be longer than 4 characters' })
     .max(255, { error: 'Password must not be longer than 255 characters' }),
 });
 
 type Schema = z.infer<typeof formSchema>;
 
 export default function MyForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const form = useForm<Schema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      birth_date_field: new Date(),
+      firstNameField: '',
+      lastNameField: '',
+      emailField: '',
+      phoneNumberField: '',
+      birthDateField: new Date(),
+      usernameField: '',
+      passwordField: '',
+      confirmPasswordField: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const togglePassword = (
+    value: boolean,
+    setValue: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+    setValue(!value);
+  };
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      if (values.passwordField !== values.confirmPasswordField) {
+        form.setError('confirmPasswordField', {
+          message: "The passwords don't match",
+        });
+        return;
+      }
+
+      const birthDate = values.birthDateField;
+
+      const signUpDto: SignUpRequest = {
+        first_name: values.firstNameField,
+        last_name: values.lastNameField,
+        phone_number: values.phoneNumberField,
+        birth_date: Date.UTC(
+          birthDate.getUTCFullYear(),
+          birthDate.getUTCMonth(),
+          birthDate.getUTCDate(),
+          birthDate.getUTCHours(),
+          birthDate.getUTCMinutes(),
+          birthDate.getUTCSeconds()
+        ),
+        email: values.emailField,
+        username: values.usernameField ?? '',
+        password: values.passwordField,
+      };
+      const req = await fetch('/api/auth/signup', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(signUpDto),
+        method: 'POST',
+      });
+      if (!req.ok) {
+        const res: APIResponse<AuthResponse> = await req.json();
+        toast.error(res.message);
+        return;
+      }
+
+      toast.success('Welcome!');
+      window.open('/', '_self');
     } catch (error) {
       console.error('Form submission error', error);
       toast.error('Failed to submit the form. Please try again.');
     }
-  }
+  };
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="mx-auto max-w-3xl space-y-8 py-10"
+        className="flex flex-col gap-4"
       >
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid gap-4 sm:grid-cols-12">
           <div className="col-span-6">
             <FormField
               control={form.control}
-              name="first_name_field"
+              name="firstNameField"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel>First name</FormLabel>
                   <FormControl>
-                    <Input placeholder="First name..." type="text" {...field} />
+                    <Input placeholder="Name..." type="text" {...field} />
                   </FormControl>
-                  <FormDescription>Type here your first name.</FormDescription>
+                  <FormDescription>Type your first name.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -97,14 +155,14 @@ export default function MyForm() {
           <div className="col-span-6">
             <FormField
               control={form.control}
-              name="last_name_field"
+              name="lastNameField"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Last name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Last name..." type="text" {...field} />
+                    <Input placeholder="Name..." type="text" {...field} />
                   </FormControl>
-                  <FormDescription>Type here your last name.</FormDescription>
+                  <FormDescription>Type your last name.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -112,50 +170,32 @@ export default function MyForm() {
           </div>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
-          <div className="col-span-4">
+        <div className="grid gap-4 sm:grid-cols-12">
+          <div className="col-span-6">
             <FormField
               control={form.control}
-              name="email_field"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Email..." type="email" {...field} />
-                  </FormControl>
-                  <FormDescription>Type here your email.</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="col-span-4">
-            <FormField
-              control={form.control}
-              name="phone_number_field"
+              name="phoneNumberField"
               render={({ field }) => (
                 <FormItem className="flex flex-col items-start">
                   <FormLabel>Phone number</FormLabel>
                   <FormControl className="w-full">
-                    <Input
-                      type="tel"
-                      placeholder="Phone number..."
+                    <PhoneInput
+                      placeholder="Number..."
                       {...field}
-                      // defaultCountry="TR"
+                      defaultCountry="VE"
                     />
                   </FormControl>
-                  <FormDescription>Enter your phone number.</FormDescription>
+                  <FormDescription>Type your phone number.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          <div className="col-span-4">
+          <div className="col-span-6">
             <FormField
               control={form.control}
-              name="birth_date_field"
+              name="birthDateField"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Date of birth</FormLabel>
@@ -165,7 +205,7 @@ export default function MyForm() {
                         <Button
                           variant={'outline'}
                           className={cn(
-                            'w-[240px] pl-3 text-left font-normal',
+                            'w-auto pl-3 text-left font-normal',
                             !field.value && 'text-muted-foreground'
                           )}
                         >
@@ -183,13 +223,12 @@ export default function MyForm() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        initialFocus
+                        captionLayout="dropdown"
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    Your date of birth is used to calculate your age.
-                  </FormDescription>
+                  <FormDescription>Enter your date of birth.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -199,7 +238,22 @@ export default function MyForm() {
 
         <FormField
           control={form.control}
-          name="username_field"
+          name="emailField"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="Email..." type="email" {...field} />
+              </FormControl>
+              <FormDescription>Type here your email.</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="usernameField"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>
@@ -207,7 +261,7 @@ export default function MyForm() {
                 <Input placeholder="Username..." type="text" {...field} />
               </FormControl>
               <FormDescription>
-                You can choose a username, if not your email will be used
+                Type here your username, if empty your email will be used
                 instead.
               </FormDescription>
               <FormMessage />
@@ -215,22 +269,34 @@ export default function MyForm() {
           )}
         />
 
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid gap-4 sm:grid-cols-12">
           <div className="col-span-6">
             <FormField
               control={form.control}
-              name="password_field"
+              name="passwordField"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password..."
-                      {...field}
-                    />
+                    <div className="flex items-center justify-between">
+                      <Input
+                        placeholder="Password..."
+                        type={showPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        onClick={() => {
+                          togglePassword(showPassword, setShowPassword);
+                        }}
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                      >
+                        {showPassword ? <EyeClosed /> : <Eye />}
+                      </Button>
+                    </div>
                   </FormControl>
-                  <FormDescription>Enter your password.</FormDescription>
+                  <FormDescription>Type your password.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -240,24 +306,42 @@ export default function MyForm() {
           <div className="col-span-6">
             <FormField
               control={form.control}
-              name="confirm_password_field"
+              name="confirmPasswordField"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirm password</FormLabel>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password..."
-                      {...field}
-                    />
+                    <div className="flex items-center justify-between">
+                      <Input
+                        placeholder="Password..."
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        {...field}
+                      />
+                      <Button
+                        onClick={() => {
+                          togglePassword(
+                            showConfirmPassword,
+                            setShowConfirmPassword
+                          );
+                        }}
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                      >
+                        {showConfirmPassword ? <EyeClosed /> : <Eye />}
+                      </Button>
+                    </div>
                   </FormControl>
-                  <FormDescription>Enter your password again.</FormDescription>
+                  <FormDescription>Type your password again.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
         </div>
+
+        <Separator />
+
         <Button type="submit">Submit</Button>
       </form>
     </Form>

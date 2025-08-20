@@ -1,28 +1,59 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@ui/ui/avatar';
-import { cn } from '@/lib/utils';
 import { Skeleton } from '@ui/ui/skeleton';
-import LinkButton from '@ui/buttons/LinkButton';
+import { Button } from '@/components/ui/button';
+import { LogOutIcon } from 'lucide-react';
+import { Popover, PopoverTrigger, PopoverContent } from '@ui/ui/popover';
+import { actions } from 'astro:actions';
+import { toast } from 'sonner';
+import { navigate } from 'astro/virtual-modules/transitions-router.js';
 
-type Props = {
-  src: string;
-  alt?: string;
-  className?: string;
-};
+export function ProfileButton() {
+  const src = 'https://github.com/shadcn.png';
+  const alt = 'GU';
 
-export function ProfileButton({ className, src, alt = 'GU' }: Props) {
+  const logOut = async () => {
+    const { error } = await actions.auth.logOut();
+
+    if (error) {
+      toast.error(
+        `${error.name}: ${error.message}${error.cause ?? `, ${error.cause}`}`
+      );
+      return;
+    }
+
+    const { error: sessionError } = await actions.session.deleteSession();
+    if (sessionError) {
+      toast.error(
+        `${sessionError.name}: ${sessionError.message}${sessionError.cause ?? `, ${sessionError.cause}`}`
+      );
+      return;
+    }
+
+    navigate('/');
+  };
+
   return (
-    <LinkButton
-      href="/profile"
-      variant="link"
-      className={cn('rounded-full', className)}
-      size="icon"
-    >
-      <Avatar>
-        <AvatarImage loading="eager" src={src} alt={alt} />
-        <AvatarFallback>
-          <Skeleton className="rounded-full" />
-        </AvatarFallback>
-      </Avatar>
-    </LinkButton>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Avatar className="cursor-pointer">
+          <AvatarImage loading="eager" src={src} alt={alt} />
+          <AvatarFallback>
+            <Skeleton className="rounded-full" />
+          </AvatarFallback>
+        </Avatar>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto">
+        <div className="flex flex-col items-center justify-center gap-4">
+          <Button
+            type="button"
+            onClick={logOut}
+            className="inline-flex cursor-pointer items-center justify-center gap-x-2"
+            variant="destructive"
+          >
+            Log out <LogOutIcon />
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

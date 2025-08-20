@@ -20,7 +20,6 @@ export default defineConfig({
   env: {
     schema: {
       SERVER_URL: envField.string({
-        default: '',
         context: 'server',
         access: 'secret',
         optional: false,

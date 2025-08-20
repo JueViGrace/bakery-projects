@@ -1,12 +1,11 @@
 ---
 import { Separator } from '@ui/ui/separator';
-import TopUserMenu from '@ui/bars/TopUserMenu.astro';
+import TopUserMenu from '@ui/bars/TopUserMenu';
 import LogoIcon from '@ui/icons/LogoIcon.astro';
 import { navOptionList } from '@/common/navOptions';
 import { Button } from '@ui/ui/button';
 import { Menu } from 'lucide-react';
 import ThemeToggle from '@ui/buttons/ThemeToggle';
-import { Skeleton } from '@ui/ui/skeleton';
 import LinkButton from '@ui/buttons/LinkButton';
 
 export const prerender = true;
@@ -47,13 +46,10 @@ export const prerender = true;
     </nav>
 
     <div class="order-2 flex items-center justify-center gap-2 lg:order-3">
-      <ThemeToggle client:only="react" />
-      <TopUserMenu className="order-2 lg:order-3" server:defer>
-        <div class="flex items-center justify-center gap-2" slot="fallback">
-          <Skeleton className="h-8 w-16 rounded-md" />
-          <Skeleton className="size-8 rounded-full" />
-        </div>
-      </TopUserMenu>
+      <ThemeToggle client:load />
+      <div class="order-2 lg:order-3">
+        <TopUserMenu client:load />
+      </div>
     </div>
   </div>
   <Separator />

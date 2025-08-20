@@ -8,20 +8,37 @@ interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
 
-export type Theme = 'light' | 'dark' | 'system' | undefined;
+declare namespace App {
+  interface Locals {
+    user: User;
+  }
+  interface SessionData {
+    session: Session;
+  }
+}
 
-export type FooterOptions = {
-  title: string;
-  options: NavOption[];
+type Session = {
+  id: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
-export type NavOption = {
+type User = {
+  firstName: string;
+  lastName: string;
+  displayName: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  birthDate: string;
+  profileImgUrl: string;
+};
+
+type Category = {
   name: string;
-  href: string;
-  icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
-  expand?: boolean;
 };
 
+//------------Requests-----------
 export type APIResponse<T> = {
   status: int;
   description: string;
@@ -30,7 +47,6 @@ export type APIResponse<T> = {
   time: string;
 };
 
-//------------------------
 export type SignInRequest = {
   username: string;
   password: string;
@@ -45,7 +61,7 @@ export type SignUpRequest = {
   first_name: string;
   last_name: string;
   phone_number: string;
-  birth_date: string;
+  birth_date: number;
   email: string;
   username: string;
   password: string;
@@ -56,13 +72,20 @@ export type AuthResponse = {
   access_token: string;
   refresh_token: string;
 };
-//------------------------
+//------------Requests-----------
 
-export type User = {
-  name: string;
-  profileImgUrl: string;
+//------------UI-----------
+export type Theme = 'light' | 'dark' | 'system' | undefined;
+
+export type FooterOptions = {
+  title: string;
+  options: NavOption[];
 };
 
-export type Category = {
+export type NavOption = {
   name: string;
+  href: string;
+  icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
+  expand?: boolean;
 };
+//------------UI-----------

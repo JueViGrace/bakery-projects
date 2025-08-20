@@ -1,23 +1,14 @@
 import type { APIResponse, AuthResponse, SignInRequest } from '@/env';
-import type { APIRoute } from 'astro';
+import type { APIContext } from 'astro';
+import { actions } from 'astro:actions';
 import { SERVER_URL } from 'astro:env/server';
 
-export const POST: APIRoute = async ({ request }) => {
+export async function POST({
+  request,
+  callAction,
+}: APIContext): Promise<Response> {
   const body: SignInRequest = await request.json();
-
-  if (!body.username || !body.password) {
-    const errors = {
-      errors: {
-        username: body.username ?? 'Username required',
-        password: body.password ?? 'Password required',
-      },
-    };
-    return new Response(JSON.stringify(errors), {
-      status: 400,
-      statusText: 'Bad Request',
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  let res: APIResponse<AuthResponse | null>;
 
   try {
     const req = await fetch(`${SERVER_URL}/api/auth/signin`, {
@@ -28,7 +19,35 @@ export const POST: APIRoute = async ({ request }) => {
       method: 'POST',
     });
 
-    const res: APIResponse<AuthResponse> = await req.json();
+    res = await req.json();
+
+    if (req.ok) {
+      const session = await callAction(actions.session.saveSession, {
+        id: res.data!!.id,
+        accessToken: res.data!!.access_token,
+        refreshToken: res.data!!.refresh_token,
+      });
+
+      if (session.error) {
+        res = {
+          status: 404,
+          description: 'Not Found',
+          data: null,
+          message: 'Unable to save user session',
+          time: new Date().toString(),
+        };
+
+        await callAction(actions.auth.logOut, null);
+        await fetch(`${SERVER_URL}/api/auth/logout`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-redirect-to': '/',
+            Authorization: `Bearer ${res.data!!.access_token}`,
+          },
+          method: 'POST',
+        });
+      }
+    }
 
     return new Response(JSON.stringify(res), {
       status: res.status,
@@ -37,7 +56,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
   } catch (e) {
     console.error('Sign in request failed', e);
-    const res: APIResponse<any> = {
+    res = {
       status: 500,
       description: 'Internal Server Error',
       data: null,
@@ -52,4 +71,4 @@ export const POST: APIRoute = async ({ request }) => {
       },
     });
   }
-};
+}
