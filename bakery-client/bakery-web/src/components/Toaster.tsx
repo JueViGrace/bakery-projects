@@ -1,5 +1,5 @@
 import type { Theme } from '@/env';
-import { getThemePreference } from '@/scripts/theme';
+import { getThemePreference } from '@scripts/theme';
 import { useEffect, useState } from 'react';
 import { Toaster as SonnerToaster } from 'sonner';
 

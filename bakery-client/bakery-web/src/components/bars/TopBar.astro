@@ -1,12 +1,12 @@
 ---
-import { Separator } from '@ui/ui/separator';
-import TopUserMenu from '@ui/bars/TopUserMenu';
-import LogoIcon from '@ui/icons/LogoIcon.astro';
+import { Separator } from '@components/ui/separator';
+import TopUserMenu from '@components/bars/TopUserMenu';
+import LogoIcon from '@components/icons/LogoIcon.astro';
 import { navOptionList } from '@/common/navOptions';
-import { Button } from '@ui/ui/button';
+import { Button } from '@components/ui/button';
 import { Menu } from 'lucide-react';
-import ThemeToggle from '@ui/buttons/ThemeToggle';
-import LinkButton from '@ui/buttons/LinkButton';
+import ThemeToggle from '@components/buttons/ThemeToggle';
+import LinkButton from '@components/buttons/LinkButton';
 
 export const prerender = true;
 ---
@@ -47,9 +47,7 @@ export const prerender = true;
 
     <div class="order-2 flex items-center justify-center gap-2 lg:order-3">
       <ThemeToggle client:load />
-      <div class="order-2 lg:order-3">
-        <TopUserMenu client:load />
-      </div>
+      <TopUserMenu client:load />
     </div>
   </div>
   <Separator />

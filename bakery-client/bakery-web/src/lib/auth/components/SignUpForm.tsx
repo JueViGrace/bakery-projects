@@ -1,9 +1,8 @@
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { cn } from '@/lib/utils';
-import { Button } from '@ui/ui/button';
+import { Button } from '@components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,55 +11,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@ui/ui/form';
-import { Input } from '@ui/ui/input';
+} from '@components/ui/form';
+import { Input } from '@components/ui/input';
 import { format } from 'date-fns';
-import { Popover, PopoverContent, PopoverTrigger } from '@ui/ui/popover';
-import { Calendar } from '@ui/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { Calendar } from '@components/ui/calendar';
 import { Calendar as CalendarIcon, Eye, EyeClosed } from 'lucide-react';
-import { PhoneInput } from '@ui/inputs/PhoneInput';
+import { PhoneInput } from '@components/inputs/PhoneInput';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import type { APIResponse, AuthResponse, SignUpRequest } from '@/env';
-import { isValidPhoneNumber } from 'react-phone-number-input';
-import { useState } from 'react';
+import type { APIResponse } from '@/env';
+import { useState, type Dispatch, type SetStateAction } from 'react';
+import {
+  type SignUpFormSchema,
+  type AuthResponse,
+  type SignUpRequest,
+  signUpFormSchema,
+} from '@auth/types';
 
-const formSchema = z.object({
-  firstNameField: z
-    .string()
-    .min(2, { error: 'First name must be longer than 2 characters' })
-    .max(255, { error: 'First name must not be longer than 255 characters' }),
-  lastNameField: z
-    .string()
-    .min(2, { error: 'Last name must be longer than 2 characters' })
-    .max(255, { error: 'Last name must not be longer than 255 characters' }),
-  emailField: z.email(),
-  phoneNumberField: z
-    .string()
-    .refine(isValidPhoneNumber, { message: 'Phone number is not valid' }),
-  birthDateField: z.date(),
-  usernameField: z
-    .string()
-    .min(4, { error: 'Username must be longer than 4 characters' })
-    .max(255, { error: 'Usernam must not be longer than 255 characters' })
-    .optional(),
-  passwordField: z
-    .string()
-    .min(4, { error: 'Password must be longer than 4 characters' })
-    .max(255, { error: 'Password must not be longer than 255 characters' }),
-  confirmPasswordField: z
-    .string()
-    .min(4, { error: 'Password must be longer than 4 characters' })
-    .max(255, { error: 'Password must not be longer than 255 characters' }),
-});
-
-type Schema = z.infer<typeof formSchema>;
-
-export default function MyForm() {
+export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const form = useForm<Schema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignUpFormSchema>({
+    resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       firstNameField: '',
       lastNameField: '',
@@ -75,12 +52,12 @@ export default function MyForm() {
 
   const togglePassword = (
     value: boolean,
-    setValue: React.Dispatch<React.SetStateAction<boolean>>
+    setValue: Dispatch<SetStateAction<boolean>>
   ) => {
     setValue(!value);
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: SignUpFormSchema) => {
     try {
       if (values.passwordField !== values.confirmPasswordField) {
         form.setError('confirmPasswordField', {

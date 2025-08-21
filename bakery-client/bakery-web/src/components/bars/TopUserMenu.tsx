@@ -1,19 +1,16 @@
 import { useEffect, useState } from 'react';
-import LinkButton from '../buttons/LinkButton';
-import { ProfileButton } from '@/features/profile/components/ProfileButton';
-import { getSession } from '@/lib/session';
+import LinkButton from '@components/buttons/LinkButton';
+import { ProfileButton } from '@profile/components/ProfileButton';
 import CartSVG from '@assets/shopping_cart.svg';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '@components/ui/skeleton';
 
 export default function TopUserMenu() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    getSession().then((session) => {
-      setIsAuthenticated(session !== undefined);
-      setIsLoading(false);
-    });
+    setIsAuthenticated(false);
+    setIsLoading(false);
   }, []);
 
   return (

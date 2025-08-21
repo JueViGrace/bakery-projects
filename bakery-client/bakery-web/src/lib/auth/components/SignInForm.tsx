@@ -5,40 +5,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@ui/ui/form';
+} from '@components/ui/form';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import type { APIResponse, AuthResponse, SignInRequest } from '@/env';
-
-const formSchema = z.object({
-  username: z
-    .string()
-    .min(2, { error: 'Username must be longer thant 2 characters' })
-    .max(255, { error: 'Username must not be longer than 255 characters' })
-    .nonoptional(),
-  password: z
-    .string()
-    .min(2, { error: 'Password must be longer thant 2 characters' })
-    .max(255, { error: 'Password must not be longer than 255 characters' })
-    .nonoptional(),
-});
-
-type Schema = z.infer<typeof formSchema>;
+import { Button } from '@components/ui/button';
+import { Input } from '@components/ui/input';
+import type { APIResponse } from '@/env';
+import {
+  type AuthResponse,
+  type SignInRequest,
+  type SignInFormSchema,
+  signInFormSchema,
+} from '@auth/types';
 
 export default function SignInForm() {
-  const form = useForm<Schema>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignInFormSchema>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       username: '',
       password: '',
     },
   });
 
-  const onSubmit = async ({ username, password }: Schema) => {
+  const onSubmit = async ({ username, password }: SignInFormSchema) => {
     try {
       const signInDto: SignInRequest = {
         username: username,

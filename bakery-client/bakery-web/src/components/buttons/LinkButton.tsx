@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Button } from '@ui/ui/button';
+import { Button } from '@components/ui/button';
 import { type ReactNode } from 'react';
 
 type Props = {

@@ -15,26 +15,41 @@
       "@/*": [
         "./src/*"
       ],
+      "@actions/*": [
+        "./src/actions/*"
+      ],
       "@assets/*": [
         "./src/assets/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
       ],
       "@layouts/*": [
         "./src/layouts/*"
       ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
       "@scripts/*": [
         "./src/scripts/*"
       ],
-      "@ui/*": [
-        "./src/components/*"
-      ],
       "@auth/*": [
-        "./src/features/auth/*"
+        "./src/lib/auth/*"
       ],
       "@cart/*": [
-        "./src/features/cart/*"
+        "./src/lib/cart/*"
+      ],
+      "@categories/*": [
+        "./src/lib/categories/*"
+      ],
+      "@products/*": [
+        "./src/lib/products/*"
       ],
       "@profile/*": [
-        "./src/features/profile/*"
+        "./src/lib/profile/*"
+      ],
+      "@user/*": [
+        "./src/lib/user/*"
       ]
     }
   }

@@ -1,7 +1,5 @@
-import { auth } from './auth';
-import { session } from './session';
+import { auth } from '@auth/actions';
 
 export const server = {
   auth,
-  session,
 };

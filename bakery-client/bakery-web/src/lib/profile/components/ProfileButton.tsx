@@ -1,8 +1,12 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@ui/ui/avatar';
-import { Skeleton } from '@ui/ui/skeleton';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Skeleton } from '@components/ui/skeleton';
+import { Button } from '@components/ui/button';
 import { LogOutIcon } from 'lucide-react';
-import { Popover, PopoverTrigger, PopoverContent } from '@ui/ui/popover';
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from '@components/ui/popover';
 import { actions } from 'astro:actions';
 import { toast } from 'sonner';
 import { navigate } from 'astro/virtual-modules/transitions-router.js';
@@ -21,7 +25,7 @@ export function ProfileButton() {
       return;
     }
 
-    const { error: sessionError } = await actions.session.deleteSession();
+    const { error: sessionError } = await actions.auth.deleteSession();
     if (sessionError) {
       toast.error(
         `${sessionError.name}: ${sessionError.message}${sessionError.cause ?? `, ${sessionError.cause}`}`
