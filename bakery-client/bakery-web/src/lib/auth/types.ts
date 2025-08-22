@@ -76,6 +76,18 @@ export type SignUpRequest = {
   password: string;
 };
 
+export type RequestPasswordReset = {
+  email: string;
+};
+
+export type ConfirmPasswordReset = {
+  code: string;
+};
+
+export type RecoverPasswordRequest = {
+  new_password: string;
+};
+
 // Responses
 export type AuthResponse = {
   id: string;

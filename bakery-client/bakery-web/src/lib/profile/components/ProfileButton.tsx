@@ -7,33 +7,29 @@ import {
   PopoverTrigger,
   PopoverContent,
 } from '@components/ui/popover';
-import { actions } from 'astro:actions';
 import { toast } from 'sonner';
-import { navigate } from 'astro/virtual-modules/transitions-router.js';
+import { navigate } from 'astro:transitions/client';
 
-export function ProfileButton() {
+export default function ProfileButton() {
   const src = 'https://github.com/shadcn.png';
   const alt = 'GU';
 
   const logOut = async () => {
-    const { error } = await actions.auth.logOut();
+    try {
+      const req = await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
 
-    if (error) {
-      toast.error(
-        `${error.name}: ${error.message}${error.cause ?? `, ${error.cause}`}`
-      );
-      return;
+      if (!req.ok) {
+        const res = await req.json();
+        throw Error(res.message);
+      }
+
+      navigate('/');
+    } catch (e) {
+      console.error(e);
+      toast.error('Unable to request log out');
     }
-
-    const { error: sessionError } = await actions.auth.deleteSession();
-    if (sessionError) {
-      toast.error(
-        `${sessionError.name}: ${sessionError.message}${sessionError.cause ?? `, ${sessionError.cause}`}`
-      );
-      return;
-    }
-
-    navigate('/');
   };
 
   return (

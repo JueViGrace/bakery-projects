@@ -11,13 +11,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
-import type { APIResponse } from '@/env';
 import {
-  type AuthResponse,
   type SignInRequest,
   type SignInFormSchema,
   signInFormSchema,
 } from '@auth/types';
+import { navigate } from 'astro:transitions/client';
 
 export default function SignInForm() {
   const form = useForm<SignInFormSchema>({
@@ -29,11 +28,11 @@ export default function SignInForm() {
   });
 
   const onSubmit = async ({ username, password }: SignInFormSchema) => {
+    const signInDto: SignInRequest = {
+      username: username,
+      password: password,
+    };
     try {
-      const signInDto: SignInRequest = {
-        username: username,
-        password: password,
-      };
       const req = await fetch('/api/auth/signin', {
         headers: {
           'Content-Type': 'application/json',
@@ -41,16 +40,17 @@ export default function SignInForm() {
         body: JSON.stringify(signInDto),
         method: 'POST',
       });
+
       if (!req.ok) {
-        const res: APIResponse<AuthResponse> = await req.json();
+        const res = await req.json();
         toast.error(res.message);
         return;
       }
 
       toast.success('Welcome!');
-      window.open('/', '_self');
+      navigate('/');
     } catch (e) {
-      console.error(e);
+      console.error('Sign in form submission error', e);
       toast.error('Failed to submit the form. Please try again.');
     }
   };
@@ -83,13 +83,18 @@ export default function SignInForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem className="w-full">
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <Input type="password" placeholder="Password..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <div className="flex w-full flex-col items-center justify-center gap-1">
+              <FormItem className="w-full">
+                <FormLabel>Password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="Password..." {...field} />
+                </FormControl>
+                <FormMessage />
+                <a className="ml-auto cursor-pointer text-sm underline">
+                  Forgot password?
+                </a>
+              </FormItem>
+            </div>
           )}
         />
 

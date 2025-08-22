@@ -1,0 +1,35 @@
+---
+import LinkButton from '@components/buttons/LinkButton';
+import CartSVG from '@assets/shopping_cart.svg';
+import ProfileButton from '@profile/components/ProfileButton';
+import { actions } from 'astro:actions';
+
+let isAuthenticated: boolean = false;
+
+const { data, error } = await Astro.callAction(actions.auth.getSession, null);
+
+if (!data && error) {
+  isAuthenticated = false;
+} else {
+  isAuthenticated = true;
+}
+---
+
+{
+  isAuthenticated ? (
+    <div class="flex items-center justify-center gap-2">
+      <LinkButton href="/cart" size="icon" variant="outline">
+        <CartSVG />
+      </LinkButton>
+      <ProfileButton client:load />
+    </div>
+  ) : (
+    <div class="flex items-center justify-center gap-2">
+      <LinkButton variant="outline" href="/auth/signin">
+        {' '}
+        Sign in{' '}
+      </LinkButton>
+      <LinkButton href="/auth/signup">Sign up</LinkButton>
+    </div>
+  )
+}

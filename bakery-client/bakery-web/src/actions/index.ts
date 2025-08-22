@@ -1,5 +1,5 @@
-import { auth } from '@auth/actions';
+import { authActions } from '@auth/actions';
 
 export const server = {
-  auth,
+  auth: authActions,
 };

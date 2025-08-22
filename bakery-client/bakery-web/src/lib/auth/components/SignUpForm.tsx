@@ -23,14 +23,13 @@ import { Calendar } from '@components/ui/calendar';
 import { Calendar as CalendarIcon, Eye, EyeClosed } from 'lucide-react';
 import { PhoneInput } from '@components/inputs/PhoneInput';
 import { Separator } from '@radix-ui/react-dropdown-menu';
-import type { APIResponse } from '@/env';
 import { useState, type Dispatch, type SetStateAction } from 'react';
 import {
   type SignUpFormSchema,
-  type AuthResponse,
   type SignUpRequest,
   signUpFormSchema,
 } from '@auth/types';
+import { navigate } from 'astro:transitions/client';
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,32 +57,33 @@ export default function SignUpForm() {
   };
 
   const onSubmit = async (values: SignUpFormSchema) => {
+    if (values.passwordField !== values.confirmPasswordField) {
+      form.setError('confirmPasswordField', {
+        message: "The passwords don't match",
+      });
+      return;
+    }
+
+    const birthDate = values.birthDateField;
+
+    const signUpDto: SignUpRequest = {
+      first_name: values.firstNameField,
+      last_name: values.lastNameField,
+      phone_number: values.phoneNumberField,
+      birth_date: Date.UTC(
+        birthDate.getUTCFullYear(),
+        birthDate.getUTCMonth(),
+        birthDate.getUTCDate(),
+        birthDate.getUTCHours(),
+        birthDate.getUTCMinutes(),
+        birthDate.getUTCSeconds()
+      ),
+      email: values.emailField,
+      username: values.usernameField ?? '',
+      password: values.passwordField,
+    };
+
     try {
-      if (values.passwordField !== values.confirmPasswordField) {
-        form.setError('confirmPasswordField', {
-          message: "The passwords don't match",
-        });
-        return;
-      }
-
-      const birthDate = values.birthDateField;
-
-      const signUpDto: SignUpRequest = {
-        first_name: values.firstNameField,
-        last_name: values.lastNameField,
-        phone_number: values.phoneNumberField,
-        birth_date: Date.UTC(
-          birthDate.getUTCFullYear(),
-          birthDate.getUTCMonth(),
-          birthDate.getUTCDate(),
-          birthDate.getUTCHours(),
-          birthDate.getUTCMinutes(),
-          birthDate.getUTCSeconds()
-        ),
-        email: values.emailField,
-        username: values.usernameField ?? '',
-        password: values.passwordField,
-      };
       const req = await fetch('/api/auth/signup', {
         headers: {
           'Content-Type': 'application/json',
@@ -91,16 +91,17 @@ export default function SignUpForm() {
         body: JSON.stringify(signUpDto),
         method: 'POST',
       });
+
       if (!req.ok) {
-        const res: APIResponse<AuthResponse> = await req.json();
+        const res = await req.json();
         toast.error(res.message);
         return;
       }
 
       toast.success('Welcome!');
-      window.open('/', '_self');
-    } catch (error) {
-      console.error('Form submission error', error);
+      navigate('/');
+    } catch (e) {
+      console.error('Sign up form submission error', e);
       toast.error('Failed to submit the form. Please try again.');
     }
   };

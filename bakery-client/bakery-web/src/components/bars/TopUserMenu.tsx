@@ -3,14 +3,28 @@ import LinkButton from '@components/buttons/LinkButton';
 import { ProfileButton } from '@profile/components/ProfileButton';
 import CartSVG from '@assets/shopping_cart.svg';
 import { Skeleton } from '@components/ui/skeleton';
+import { actions } from 'astro:actions';
 
 export default function TopUserMenu() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    setIsAuthenticated(false);
-    setIsLoading(false);
+    actions.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (!data && error) {
+          throw error;
+        }
+
+        setIsAuthenticated(true);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.error(e);
+        setIsAuthenticated(false);
+        setIsLoading(false);
+      });
   }, []);
 
   return (
