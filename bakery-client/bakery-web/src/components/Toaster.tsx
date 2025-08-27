@@ -1,7 +1,6 @@
-import type { Theme } from '@/env';
-import { getThemePreference } from '@scripts/theme';
 import { useEffect, useState } from 'react';
 import { Toaster as SonnerToaster } from 'sonner';
+import { getThemePreference, type Theme } from '@lib/Theme';
 
 export function Toaster() {
   const [theme, setTheme] = useState<Theme>(getThemePreference());

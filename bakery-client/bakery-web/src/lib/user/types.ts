@@ -1,4 +1,4 @@
-export type User = {
+type User = {
   firstName: string;
   lastName: string;
   displayName: string;
@@ -8,3 +8,5 @@ export type User = {
   birthDate: string;
   profileImgUrl: string;
 };
+
+export type { User };

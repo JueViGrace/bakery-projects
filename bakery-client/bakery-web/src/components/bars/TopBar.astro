@@ -1,59 +1,52 @@
 ---
 import { Separator } from '@components/ui/separator';
-import TopUserMenu from '@components/bars/TopUserMenu.astro';
 import LogoIcon from '@components/icons/LogoIcon.astro';
-import { navOptionList } from '@/common/navOptions';
 import { Button } from '@components/ui/button';
 import { Menu } from 'lucide-react';
 import ThemeToggle from '@components/buttons/ThemeToggle';
 import LinkButton from '@components/buttons/LinkButton';
-import { Skeleton } from '../ui/skeleton';
+import { Skeleton } from '@components/ui/skeleton';
+import NavMenu from '@components/menu/NavMenu.astro';
 
 export const prerender = true;
+
+// TODO: swap auth section with htmx
 ---
 
 <header class="flex w-full flex-col">
-  <div class="flex items-center justify-between gap-4 px-2 py-2 lg:px-4">
-    <Button
-      variant="ghost"
-      size="icon"
-      className="order-1 cursor-pointer lg:hidden"
-      data-open-drawer-button
-    >
-      <Menu className="size-fit" />
-    </Button>
+  <div class="flex items-center justify-between gap-2 px-2 py-2 lg:px-4">
+    <div class="flex grow items-center justify-start">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="cursor-pointer lg:hidden"
+        data-open-drawer-button
+      >
+        <Menu className="size-fit" />
+      </Button>
 
-    <LinkButton
-      href="/"
-      variant="link"
-      size="icon"
-      className="hidden lg:order-1 lg:inline-block"
-    >
-      <LogoIcon className="hover:scale-105" />
-    </LinkButton>
+      <LinkButton
+        href="/"
+        variant="link"
+        size="icon"
+        className="hidden lg:inline-block"
+      >
+        <LogoIcon className="hover:scale-105" />
+      </LinkButton>
 
-    <nav class="hidden lg:order-2 lg:flex lg:flex-1">
-      <ul class="flex grow items-center justify-start gap-6">
-        {
-          navOptionList.map(({ href, name }) => (
-            <li>
-              <a href={href} class="hover:underline">
-                <p class="text-base font-bold">{name}</p>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
-
-    <div class="order-2 flex items-center justify-center gap-2 lg:order-3">
+      <NavMenu className="hidden lg:inline-flex" />
+    </div>
+    <div class="flex items-center justify-center gap-2">
       <ThemeToggle client:load />
-      <TopUserMenu server:defer>
-        <div class="flex items-center justify-center gap-2" slot="fallback">
-          <Skeleton className="h-8 w-16 rounded-md" />
-          <Skeleton className="size-8 rounded-full" />
-        </div>
-      </TopUserMenu>
+      <div
+        class="flex items-center justify-center gap-2"
+        hx-get="/profile/menu"
+        hx-swap="innerHTML"
+        hx-trigger="load"
+      >
+        <Skeleton className="h-8 w-16 rounded-md" />
+        <Skeleton className="size-8 rounded-full" />
+      </div>
     </div>
   </div>
   <Separator />

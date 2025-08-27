@@ -21,7 +21,6 @@ const products: NavOption = {
   name: 'Products',
   href: '/products',
   icon: StackSVG,
-  expand: false,
 };
 
 const about: NavOption = {

@@ -1,10 +1,8 @@
 ---
-import { navOptionList } from '@/common/navOptions';
 import { Separator } from '@components/ui/separator';
 import { Button } from '@components/ui/button';
 import { Menu } from 'lucide-react';
-import LinkButton from '@components/buttons/LinkButton';
-import { Image } from 'astro:assets';
+import NavMenu from '@components/menu/NavMenu.astro';
 
 export const prerender = true;
 ---
@@ -33,32 +31,8 @@ export const prerender = true;
         <p class="text-base">Bakery and Deserts</p>
       </div>
       <Separator />
-      <nav class="flex w-full items-center justify-center py-2">
-        <ul class="flex grow flex-col items-center justify-center gap-2 px-2">
-          {
-            navOptionList.map(({ name, href, icon }) => (
-              <li class="w-full">
-                <LinkButton
-                  href={href}
-                  variant="ghost"
-                  className="w-full inline-flex items-center justify-start gap-4"
-                >
-                  {icon && (
-                    <Image
-                      loading="eager"
-                      src={icon}
-                      alt={name}
-                      class="icon-image"
-                    />
-                  )}
-                  <p>{name}</p>
-                </LinkButton>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
+      <NavMenu orientation={'vertical'} />
     </div>
   </div>
 </aside>
-<script src="@/scripts/drawer"></script>
+<script src="@lib/Drawer"></script>

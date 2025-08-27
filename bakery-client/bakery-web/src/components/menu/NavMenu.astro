@@ -1,0 +1,38 @@
+---
+import { Image } from 'astro:assets';
+import { navOptionList } from '@/common/navOptions';
+import LinkButton from '../buttons/LinkButton';
+import { cn } from '@/lib/utils';
+
+type Orientation = 'vertical' | 'horizontal';
+
+interface Props {
+  className?: string;
+  orientation?: Orientation | undefined;
+}
+
+const { className, orientation = 'horizontal' } = Astro.props;
+---
+
+<nav class={cn('grow w-full', className)}>
+  <ul
+    class={cn(
+      'flex grow items-center justify-start gap-1',
+      orientation === 'vertical' ? 'flex-col w-full' : ''
+    )}
+  >
+    {
+      navOptionList.map(({ href, name, icon }) => (
+        <li class="w-auto">
+          <LinkButton href={href} variant="ghost" className="w-full">
+            {orientation === 'vertical' && icon && (
+              <Image src={icon} alt={name} />
+            )}
+
+            <p class="text-base font-medium">{name}</p>
+          </LinkButton>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

@@ -1,0 +1,20 @@
+---
+import ProfileMenu from '@user/components/menu/ProfileMenu.astro';
+import { experimental_AstroContainer } from 'astro/container';
+import { getContainerRenderer as reactContainerRenderer } from '@astrojs/react';
+import { actions } from 'astro:actions';
+import { loadRenderers } from 'astro:container';
+import AuthMenu from '@/lib/auth/components/menu/AuthMenu.astro';
+
+const renderers = await loadRenderers([reactContainerRenderer()]);
+const container = await experimental_AstroContainer.create({ renderers });
+const { data, error } = await Astro.callAction(actions.auth.getSession, null);
+
+if (!data && error) {
+  return await container.renderToResponse(AuthMenu);
+} else {
+  return await container.renderToResponse(ProfileMenu);
+}
+---
+
+<div hx-get="./"></div>

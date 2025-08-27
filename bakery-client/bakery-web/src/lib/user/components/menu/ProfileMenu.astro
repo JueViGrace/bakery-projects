@@ -1,0 +1,12 @@
+---
+import LinkButton from '@components/buttons/LinkButton';
+import CartSVG from '@assets/shopping_cart.svg';
+import ProfileButton from '@user/components/buttons/ProfileButton';
+
+export const prerender = true;
+---
+
+<LinkButton href="/cart" size="icon" variant="outline">
+  <CartSVG />
+</LinkButton>
+<ProfileButton client:load />

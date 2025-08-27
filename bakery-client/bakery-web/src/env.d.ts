@@ -1,6 +1,6 @@
 import type { ImageMetadata } from 'astro';
-import type { Session } from './lib/auth/types';
-import type { User } from './lib/user/types';
+import type { Session } from '@lib/auth/types';
+import type { User } from '@lib/user/types';
 
 interface ImportMetaEnv {
   readonly SERVER_URL: string;
@@ -11,11 +11,9 @@ interface ImportMeta {
 }
 
 declare namespace App {
-  interface Locals {
-    user: User;
-  }
   interface SessionData {
     session: Session;
+    user: User;
   }
 }
 
@@ -32,7 +30,6 @@ export type APIResponse<T> = {
 //------------Requests-----------
 
 //------------UI-----------
-export type Theme = 'light' | 'dark' | 'system' | undefined;
 
 export type FooterOptions = {
   title: string;
@@ -43,6 +40,8 @@ export type NavOption = {
   name: string;
   href: string;
   icon?: ((_props: astroHTML.JSX.SVGAttributes) => any) & ImageMetadata;
+  description?: string;
   expand?: boolean;
 };
+
 //------------UI-----------
