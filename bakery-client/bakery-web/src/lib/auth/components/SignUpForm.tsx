@@ -30,6 +30,7 @@ import {
   signUpFormSchema,
 } from '@auth/types';
 import { navigate } from 'astro:transitions/client';
+import type { ActionError } from 'astro:actions';
 
 export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -93,7 +94,7 @@ export default function SignUpForm() {
       });
 
       if (!req.ok) {
-        const res = await req.json();
+        const res: ActionError = await req.json();
         toast.error(res.message);
         return;
       }

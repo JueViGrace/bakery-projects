@@ -9,12 +9,12 @@ import { Skeleton } from '@components/ui/skeleton';
 import NavMenu from '@components/menu/NavMenu.astro';
 
 export const prerender = true;
-
-// TODO: swap auth section with htmx
 ---
 
 <header class="flex w-full flex-col">
-  <div class="flex items-center justify-between gap-2 px-2 py-2 lg:px-4">
+  <div
+    class="flex items-center justify-between gap-2 px-2 py-2 lg:px-4 lg:py-0"
+  >
     <div class="flex grow items-center justify-start">
       <Button
         variant="ghost"
@@ -40,7 +40,7 @@ export const prerender = true;
       <ThemeToggle client:load />
       <div
         class="flex items-center justify-center gap-2"
-        hx-get="/profile/menu"
+        hx-get="/partials/profile/menu"
         hx-swap="innerHTML"
         hx-trigger="load"
       >

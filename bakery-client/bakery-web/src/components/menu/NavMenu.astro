@@ -12,21 +12,27 @@ interface Props {
 }
 
 const { className, orientation = 'horizontal' } = Astro.props;
+
+export const prerender = true;
 ---
 
 <nav class={cn('grow w-full', className)}>
   <ul
     class={cn(
-      'flex grow items-center justify-start gap-1',
+      'flex grow items-center justify-start gap-2 p-2',
       orientation === 'vertical' ? 'flex-col w-full' : ''
     )}
   >
     {
       navOptionList.map(({ href, name, icon }) => (
-        <li class="w-auto">
-          <LinkButton href={href} variant="ghost" className="w-full">
+        <li class={cn(orientation === 'vertical' ? 'w-full' : '')}>
+          <LinkButton
+            href={href}
+            variant="ghost"
+            className="flex grow items-center justify-start"
+          >
             {orientation === 'vertical' && icon && (
-              <Image src={icon} alt={name} />
+              <Image src={icon} alt={name} class="icon-image" />
             )}
 
             <p class="text-base font-medium">{name}</p>

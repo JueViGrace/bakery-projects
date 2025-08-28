@@ -17,7 +17,7 @@ type UserResponse struct {
 	Password    string    `json:"-"`
 	PhoneNumber string    `json:"phone_number"`
 	BirthDate   string    `json:"birth_date"`
-	Role        string    `json:"-"`
+	Role        string    `json:"role"`
 	CreatedAt   string    `json:"created_at"`
 	UpdatedAt   string    `json:"updated_at"`
 	DeletedAt   string    `json:"-"`

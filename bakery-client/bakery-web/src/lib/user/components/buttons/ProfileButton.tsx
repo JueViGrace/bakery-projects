@@ -9,6 +9,7 @@ import {
 } from '@components/ui/popover';
 import { toast } from 'sonner';
 import { navigate } from 'astro:transitions/client';
+import LinkButton from '@/components/buttons/LinkButton';
 
 export default function ProfileButton() {
   const src = 'https://github.com/shadcn.png';
@@ -43,11 +44,14 @@ export default function ProfileButton() {
         </Avatar>
       </PopoverTrigger>
       <PopoverContent className="w-auto">
-        <div className="flex flex-col items-center justify-center gap-4">
+        <div className="flex max-w-max flex-col items-center justify-center gap-2">
+          <LinkButton href="/profile" className="inline-flex w-full">
+            Your profile
+          </LinkButton>
           <Button
             type="button"
             onClick={logOut}
-            className="inline-flex cursor-pointer items-center justify-center gap-x-2"
+            className="inline-flex w-full cursor-pointer items-center justify-center gap-x-2"
             variant="destructive"
           >
             Log out <LogOutIcon />

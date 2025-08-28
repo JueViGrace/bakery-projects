@@ -39,7 +39,7 @@ type SignUpRequest struct {
 }
 
 type RequestPasswordReset struct {
-	Email string `json:"email" validate:"required,min=1,max=255"`
+	Email string `json:"email" validate:"required,email,max=255"`
 }
 
 type ConfirmPasswordReset struct {
@@ -47,8 +47,7 @@ type ConfirmPasswordReset struct {
 }
 
 type RecoverPasswordRequest struct {
-	Password    string `json:"password" validate:"required,min=1,max255"`
-	NewPassword string `json:"new_password" validate:"required,min=1,max255"`
+	NewPassword string `json:"new_password" validate:"required,min=4,max255"`
 }
 
 func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error) {

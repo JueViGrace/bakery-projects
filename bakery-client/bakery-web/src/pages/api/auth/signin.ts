@@ -45,16 +45,24 @@ export async function POST({
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {
+    let body: ActionError;
     if (e instanceof ActionError) {
-      return new Response(JSON.stringify({ message: e.message }), {
-        status: ActionError.codeToStatus(e.code),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      body = {
+        ...e,
+        message: e.message,
+      };
+    } else {
+      const err = new ActionError({
+        code: 'INTERNAL_SERVER_ERROR',
       });
+      body = {
+        ...err,
+        message: `${e}`,
+      };
     }
-    return new Response(JSON.stringify({ message: e }), {
-      status: 500,
+
+    return new Response(JSON.stringify(body), {
+      status: ActionError.codeToStatus(body.code),
       headers: {
         'Content-Type': 'application/json',
       },

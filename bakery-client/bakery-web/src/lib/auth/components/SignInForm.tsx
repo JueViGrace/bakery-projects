@@ -17,6 +17,7 @@ import {
   signInFormSchema,
 } from '@auth/types';
 import { navigate } from 'astro:transitions/client';
+import type { ActionError } from 'astro:actions';
 
 export default function SignInForm() {
   const form = useForm<SignInFormSchema>({
@@ -42,7 +43,7 @@ export default function SignInForm() {
       });
 
       if (!req.ok) {
-        const res = await req.json();
+        const res: ActionError = await req.json();
         toast.error(res.message);
         return;
       }

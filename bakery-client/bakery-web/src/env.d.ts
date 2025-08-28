@@ -1,6 +1,7 @@
 import type { ImageMetadata } from 'astro';
 import type { Session } from '@lib/auth/types';
 import type { User } from '@lib/user/types';
+import type { ActionError } from 'astro:actions';
 
 interface ImportMetaEnv {
   readonly SERVER_URL: string;
@@ -11,6 +12,9 @@ interface ImportMeta {
 }
 
 declare namespace App {
+  interface Locals {
+    middlewareError: ActionError;
+  }
   interface SessionData {
     session: Session;
     user: User;
@@ -25,6 +29,11 @@ export type APIResponse<T> = {
   data: T;
   message: string;
   time: string;
+};
+
+export type PageResponse<T> = {
+  data: T;
+  message: string;
 };
 
 //------------Requests-----------

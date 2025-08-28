@@ -1,7 +1,7 @@
 ---
 import LinkButton from '@components/buttons/LinkButton';
 import CartSVG from '@assets/shopping_cart.svg';
-import ProfileButton from '@user/components/buttons/ProfileButton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const prerender = true;
 ---
@@ -9,4 +9,9 @@ export const prerender = true;
 <LinkButton href="/cart" size="icon" variant="outline">
   <CartSVG />
 </LinkButton>
-<ProfileButton client:load />
+<Skeleton
+  className="size-8 rounded-full"
+  hx-get="/partials/profile/button"
+  hx-trigger="load"
+  hx-swap="outerHTML"
+/>

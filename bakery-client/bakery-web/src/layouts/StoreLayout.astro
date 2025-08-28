@@ -14,12 +14,12 @@ export const prerender = true;
 ---
 
 <Layout title={title}>
-  <DrawerMenu transition:persist />
+  <DrawerMenu transition:name="drawer-menu" transition:persist />
   <section class="flex min-h-screen w-full flex-col">
-    <TopBar />
+    <TopBar transition:name="top-bar" transition:persist />
     <section class="flex flex-1 items-center justify-center">
       <slot />
     </section>
-    <Footer />
+    <Footer transition:name="footer" transition:persist />
   </section>
 </Layout>
