@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Toaster as SonnerToaster } from 'sonner';
-import { getThemePreference, type Theme } from '@lib/Theme';
+import { getThemePreference, type Theme } from '@lib/ui/theme';
 
 export function Toaster() {
   const [theme, setTheme] = useState<Theme>(getThemePreference());

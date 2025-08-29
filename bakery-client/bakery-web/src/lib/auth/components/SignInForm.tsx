@@ -91,7 +91,10 @@ export default function SignInForm() {
                   <Input type="password" placeholder="Password..." {...field} />
                 </FormControl>
                 <FormMessage />
-                <a className="ml-auto cursor-pointer text-sm underline">
+                <a
+                  className="ml-auto cursor-pointer text-sm underline"
+                  href="/auth/forgot/password"
+                >
                   Forgot password?
                 </a>
               </FormItem>

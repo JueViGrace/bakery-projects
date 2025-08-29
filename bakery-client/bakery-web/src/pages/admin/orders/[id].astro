@@ -1,24 +1,24 @@
 ---
 import Main from '@components/Main.astro';
-import StoreLayout from '@layouts/StoreLayout.astro';
+import AdminLayout from '@layouts/AdminLayout.astro';
 
 export async function getStaticPaths() {
-  const products = [
+  const orders = [
     { id: 1, name: 'Poceta' },
     { id: 2, name: 'Lavamano' },
   ];
 
-  return products.map(({ id, name }) => ({
+  return orders.map(({ id, name }) => ({
     params: { id: id },
     props: { id: id, name: name },
   }));
 }
 
-const { id, name } = Astro.props;
+const { id } = Astro.props;
 ---
 
-<StoreLayout title={name}>
+<AdminLayout>
   <Main>
-    <h1>Product {id}</h1>
+    <h1>Order panel {id}</h1>
   </Main>
-</StoreLayout>
+</AdminLayout>

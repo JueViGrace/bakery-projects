@@ -12,6 +12,7 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import { ActionError, actions, defineAction } from 'astro:actions';
 import { SERVER_URL } from 'astro:env/server';
 import { z } from 'astro:schema';
+import type { User } from '../user/types';
 
 export const authActions = {
   signIn: defineAction({

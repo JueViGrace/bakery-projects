@@ -1,4 +1,4 @@
-type Theme = 'light' | 'dark' | 'system' | undefined;
+type Theme = 'light' | 'dark' | 'system';
 
 const getThemePreference = (): Theme => {
   if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
@@ -11,7 +11,7 @@ const getThemePreference = (): Theme => {
 
 function setTheme(theme: Theme) {
   document.documentElement.classList.toggle('dark', theme === 'dark');
-  if (typeof localStorage !== 'undefined' && theme) {
+  if (typeof localStorage !== 'undefined') {
     localStorage.setItem('theme', theme);
   }
 }

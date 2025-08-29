@@ -1,7 +1,12 @@
 import { defineAction } from 'astro:actions';
+import type { User } from '@user/types';
 
 export const userActions = {
-  getUser: defineAction({
-    handler: async (_, ctx) => {},
+  getUserFromSession: defineAction({
+    handler: async (_, ctx) => {
+      const user: User | undefined = await ctx.session?.get<User>('user');
+
+      return { user: user };
+    },
   }),
 };
