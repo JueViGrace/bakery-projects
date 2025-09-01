@@ -12,9 +12,168 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import { ActionError, actions, defineAction } from 'astro:actions';
 import { SERVER_URL } from 'astro:env/server';
 import { z } from 'astro:schema';
-import type { User } from '../user/types';
+import { nodeModuleNameResolver } from 'typescript';
+import { AwardIcon } from 'lucide-react';
 
 export const authActions = {
+  authPing: defineAction({
+    input: z.string(),
+    handler: async (input) => {
+      const req = await fetch(`${SERVER_URL}/api/auth/ping`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${input}`,
+        },
+        method: 'POST',
+      });
+
+      if (!req.ok) {
+        const res: APIResponse<null> = await req.json();
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return true;
+    },
+  }),
+  logOut: defineAction({
+    input: z.string(),
+    handler: async (input) => {
+      const req = await fetch(`${SERVER_URL}/api/auth/logout`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${input}`,
+        },
+        method: 'POST',
+      });
+
+      if (!req.ok) {
+        const res: APIResponse<null> = await req.json();
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return;
+    },
+  }),
+  requestPasswordReset: defineAction({
+    input: z.object({
+      email: z.string().email(),
+    }),
+    handler: async (input) => {
+      const body: RequestPasswordReset = {
+        email: input.email,
+      };
+
+      const req = await fetch(
+        `${SERVER_URL}/api/auth/recover/password/request`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify(body),
+        }
+      );
+
+      const res: APIResponse<string | null> = await req.json();
+      if (!req.ok) {
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return res as APIResponse<string>;
+    },
+  }),
+  confirmPasswordReset: defineAction({
+    input: z.string(),
+    handler: async (input) => {
+      const body: ConfirmPasswordReset = {
+        code: input,
+      };
+
+      const req = await fetch(
+        `${SERVER_URL}/api/auth/recover/password/confirm`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify(body),
+        }
+      );
+
+      const res: APIResponse<string | null> = await req.json();
+      if (!req.ok) {
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return res as APIResponse<string>;
+    },
+  }),
+  recoverPassword: defineAction({
+    input: z
+      .string()
+      .min(4, { message: 'Password must be longer than 4 characters' })
+      .max(255, {
+        message: 'Password must not be longer than 255 characters',
+      }),
+
+    handler: async (input) => {
+      const body: RecoverPasswordRequest = {
+        new_password: input,
+      };
+
+      const req = await fetch(`${SERVER_URL}/api/auth/recover/password`, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
+
+      const res: APIResponse<string | null> = await req.json();
+      if (!req.ok) {
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return res as APIResponse<string>;
+    },
+  }),
+  refresh: defineAction({
+    input: z.string(),
+    handler: async (input) => {
+      const req = await fetch(`${SERVER_URL}/api/auth/refresh`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${input}`,
+        },
+        method: 'POST',
+      });
+
+      const res: APIResponse<AuthResponse | null> = await req.json();
+      if (!req.ok) {
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return res as APIResponse<AuthResponse>;
+    },
+  }),
   signIn: defineAction({
     input: z.object({
       username: z
@@ -51,40 +210,20 @@ export const authActions = {
         });
       }
 
-      return { res: res as APIResponse<AuthResponse> };
+      return res as APIResponse<AuthResponse>;
     },
   }),
   signUp: defineAction({
     input: z.object({
-      firstNameField: z
-        .string()
-        .min(2, { message: 'First name must be longer than 2 characters' })
-        .max(255, {
-          message: 'First name must not be longer than 255 characters',
-        }),
-      lastNameField: z
-        .string()
-        .min(2, { message: 'Last name must be longer than 2 characters' })
-        .max(255, {
-          message: 'Last name must not be longer than 255 characters',
-        }),
+      firstNameField: z.string(),
+      lastNameField: z.string(),
       emailField: z.string().email(),
       phoneNumberField: z
         .string()
         .refine(isValidPhoneNumber, { message: 'Phone number is not valid' }),
       birthDateField: z.number(),
-      usernameField: z
-        .string()
-        .min(4, { message: 'Username must be longer than 4 characters' })
-        .max(255, {
-          message: 'Usernam must not be longer than 255 characters',
-        }),
-      passwordField: z
-        .string()
-        .min(4, { message: 'Password must be longer than 4 characters' })
-        .max(255, {
-          message: 'Password must not be longer than 255 characters',
-        }),
+      usernameField: z.string(),
+      passwordField: z.string(),
     }),
     handler: async (input) => {
       const body: SignUpRequest = {
@@ -93,7 +232,7 @@ export const authActions = {
         email: input.emailField,
         phone_number: input.phoneNumberField,
         birth_date: input.birthDateField,
-        username: input.usernameField,
+        username: input.usernameField ?? '',
         password: input.passwordField,
       };
 
@@ -113,153 +252,7 @@ export const authActions = {
         });
       }
 
-      return { res: res as APIResponse<AuthResponse> };
-    },
-  }),
-  logOut: defineAction({
-    input: z.object({
-      token: z.string(),
-    }),
-    handler: async (input) => {
-      const req = await fetch(`${SERVER_URL}/api/auth/logout`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${input.token}`,
-        },
-        method: 'POST',
-      });
-
-      if (!req.ok) {
-        const res: APIResponse<null> = await req.json();
-        throw new ActionError({
-          message: res.message,
-          code: ActionError.statusToCode(res.status),
-        });
-      }
-
-      return;
-    },
-  }),
-  refresh: defineAction({
-    handler: async () => {
-      const { data, error } = await actions.auth.getSession();
-
-      if (!data && error) {
-        throw error;
-      }
-
-      const req = await fetch(`${SERVER_URL}/api/auth/refresh`, {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${data.session.refreshToken}`,
-        },
-        method: 'POST',
-      });
-
-      const res: APIResponse<AuthResponse | null> = await req.json();
-      if (!req.ok) {
-        throw new ActionError({
-          message: res.message,
-          code: ActionError.statusToCode(res.status),
-        });
-      }
-
-      return { res: res as APIResponse<AuthResponse> };
-    },
-  }),
-  requestPasswordReset: defineAction({
-    input: z.object({
-      email: z.string().email(),
-    }),
-    handler: async (input) => {
-      const body: RequestPasswordReset = {
-        email: input.email,
-      };
-
-      const req = await fetch(
-        `${SERVER_URL}/api/auth/recover/password/request`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify(body),
-        }
-      );
-
-      const res: APIResponse<string | null> = await req.json();
-      if (!req.ok) {
-        throw new ActionError({
-          message: res.message,
-          code: ActionError.statusToCode(res.status),
-        });
-      }
-
-      return { res: res as APIResponse<string> };
-    },
-  }),
-  confirmPasswordReset: defineAction({
-    input: z.object({
-      code: z.string(),
-    }),
-    handler: async (input) => {
-      const body: ConfirmPasswordReset = {
-        code: input.code,
-      };
-
-      const req = await fetch(
-        `${SERVER_URL}/api/auth/recover/password/confirm`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify(body),
-        }
-      );
-
-      const res: APIResponse<string | null> = await req.json();
-      if (!req.ok) {
-        throw new ActionError({
-          message: res.message,
-          code: ActionError.statusToCode(res.status),
-        });
-      }
-
-      return { res: res as APIResponse<string> };
-    },
-  }),
-  recoverPassword: defineAction({
-    input: z.object({
-      newPassword: z
-        .string()
-        .min(4, { message: 'Password must be longer than 4 characters' })
-        .max(255, {
-          message: 'Password must not be longer than 255 characters',
-        }),
-    }),
-    handler: async (input) => {
-      const body: RecoverPasswordRequest = {
-        new_password: input.newPassword,
-      };
-
-      const req = await fetch(`${SERVER_URL}/api/auth/recover/password`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(body),
-      });
-
-      const res: APIResponse<string | null> = await req.json();
-      if (!req.ok) {
-        throw new ActionError({
-          message: res.message,
-          code: ActionError.statusToCode(res.status),
-        });
-      }
-
-      return { res: res as APIResponse<string> };
+      return res as APIResponse<AuthResponse>;
     },
   }),
   saveSession: defineAction({
@@ -273,6 +266,7 @@ export const authActions = {
         id: input.id,
         accessToken: input.accessToken,
         refreshToken: input.refreshToken,
+        user: null,
       });
     },
   }),
@@ -288,7 +282,7 @@ export const authActions = {
         });
       }
 
-      return { session: session };
+      return session;
     },
   }),
   deleteSession: defineAction({

@@ -1,5 +1,7 @@
 type Role = 'admin' | 'user';
 
+declare const USER_ROLES: readonly ['admin', 'user'];
+
 type User = {
   firstName: string;
   lastName: string;
@@ -12,4 +14,4 @@ type User = {
   role: Role;
 };
 
-export type { User };
+export { USER_ROLES, type User, type Role };

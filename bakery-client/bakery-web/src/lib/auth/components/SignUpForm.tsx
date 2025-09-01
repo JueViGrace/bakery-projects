@@ -44,7 +44,6 @@ export default function SignUpForm() {
       emailField: '',
       phoneNumberField: '',
       birthDateField: new Date(),
-      usernameField: '',
       passwordField: '',
       confirmPasswordField: '',
     },
@@ -321,7 +320,9 @@ export default function SignUpForm() {
 
         <Separator />
 
-        <Button type="submit">Submit</Button>
+        <Button className="cursor-pointer" type="submit">
+          Submit
+        </Button>
       </form>
     </Form>
   );

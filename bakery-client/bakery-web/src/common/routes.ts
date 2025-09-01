@@ -11,6 +11,6 @@ const publicRoutes = [
   '/terms',
 ];
 
-const securedRoutes = ['/profile'];
+const securedRoutes = ['/profile', '/admin'];
 
 export { publicRoutes, securedRoutes };

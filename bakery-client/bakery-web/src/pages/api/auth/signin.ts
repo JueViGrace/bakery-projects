@@ -17,20 +17,20 @@ export async function POST({
       throw error;
     }
 
-    const { res } = data;
     const { data: sessionData, error: sessionError } = await callAction(
       actions.auth.saveSession,
       {
-        id: res.data!!.id,
-        accessToken: res.data!!.access_token,
-        refreshToken: res.data!!.refresh_token,
+        id: data.data!!.id,
+        accessToken: data.data!!.access_token,
+        refreshToken: data.data!!.refresh_token,
       }
     );
 
     if (!sessionData && sessionError) {
-      const { error: logOutError } = await callAction(actions.auth.logOut, {
-        token: res.data!!.access_token,
-      });
+      const { error: logOutError } = await callAction(
+        actions.auth.logOut,
+        data.data!!.access_token
+      );
 
       if (logOutError) {
         throw logOutError;
@@ -39,9 +39,9 @@ export async function POST({
       throw sessionError;
     }
 
-    return new Response(JSON.stringify(res), {
-      status: res.status,
-      statusText: res.description,
+    return new Response(JSON.stringify(data), {
+      status: data.status,
+      statusText: data.description,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {

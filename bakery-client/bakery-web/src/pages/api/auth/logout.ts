@@ -21,9 +21,10 @@ export async function POST({ callAction }: APIContext): Promise<Response> {
       }
     };
 
-    const { error } = await callAction(actions.auth.logOut, {
-      token: sessionData.session.accessToken,
-    });
+    const { error } = await callAction(
+      actions.auth.logOut,
+      sessionData.accessToken
+    );
     if (error) {
       if (error.code === 'UNAUTHORIZED' || error.code === 'FORBIDDEN') {
         await deleteSession();
