@@ -35,13 +35,11 @@ export async function POST({
       if (logOutError) {
         throw logOutError;
       }
-
       throw sessionError;
     }
 
     return new Response(JSON.stringify(data), {
       status: data.status,
-      statusText: data.description,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {
@@ -62,7 +60,7 @@ export async function POST({
     }
 
     return new Response(JSON.stringify(body), {
-      status: ActionError.codeToStatus(body.code),
+      status: body.status,
       headers: {
         'Content-Type': 'application/json',
       },

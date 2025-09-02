@@ -12,9 +12,7 @@ interface ImportMeta {
 }
 
 declare namespace App {
-  interface Locals {
-    middlewareError: ActionError;
-  }
+  interface Locals {}
   interface SessionData {
     session: Session;
     user: User;

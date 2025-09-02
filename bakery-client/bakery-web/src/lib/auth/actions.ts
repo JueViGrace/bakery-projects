@@ -9,11 +9,11 @@ import type {
   SignUpRequest,
 } from '@auth/types';
 import { isValidPhoneNumber } from 'react-phone-number-input';
-import { ActionError, actions, defineAction } from 'astro:actions';
+import { ActionError, defineAction } from 'astro:actions';
 import { SERVER_URL } from 'astro:env/server';
 import { z } from 'astro:schema';
-import { nodeModuleNameResolver } from 'typescript';
-import { AwardIcon } from 'lucide-react';
+import { refresher } from '@lib/app/Refresher';
+import { isNonNullExpression } from 'typescript';
 
 export const authActions = {
   authPing: defineAction({
@@ -262,12 +262,20 @@ export const authActions = {
       refreshToken: z.string(),
     }),
     handler: async (input, ctx) => {
-      ctx.session?.set<Session>('session', {
+      let inputSession: Session = {
         id: input.id,
         accessToken: input.accessToken,
         refreshToken: input.refreshToken,
-        user: null,
-      });
+      };
+      const savedSession: Session | undefined =
+        await ctx.session?.get<Session>('session');
+
+      if (savedSession && savedSession.user) {
+        inputSession.user = savedSession.user;
+      }
+
+      ctx.session?.set<Session>('session', inputSession);
+      refresher.updateLastRefresh(new Date());
     },
   }),
   getSession: defineAction({
@@ -288,6 +296,7 @@ export const authActions = {
   deleteSession: defineAction({
     handler: async (_, ctx) => {
       ctx.session?.delete('session');
+      refresher.resetRefresh();
     },
   }),
 };

@@ -26,6 +26,7 @@ export async function GET({ callAction }: APIContext): Promise<Response> {
   }
 
   return new Response(res, {
+    status: 200,
     headers: {
       'Content-Type': 'text/html',
     },

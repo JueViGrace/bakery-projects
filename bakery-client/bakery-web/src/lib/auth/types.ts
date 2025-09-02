@@ -7,7 +7,7 @@ export type Session = {
   id: string;
   accessToken: string;
   refreshToken: string;
-  user: User | null;
+  user?: User;
 };
 
 // Schemas

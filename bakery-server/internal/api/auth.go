@@ -18,4 +18,5 @@ func (a *api) AuthRoutes(api fiber.Router) {
 	authGroup.Post("/refresh", a.authenticatedMiddleware(authHandler.Refresh))
 	authGroup.Post("/signin", validatedMiddleware(types.SignInRequest{}, authHandler.SignIn))
 	authGroup.Post("/signup", validatedMiddleware(types.SignUpRequest{}, authHandler.SignUp))
+	authGroup.Post("/ping", a.authenticatedMiddleware(authHandler.Ping))
 }

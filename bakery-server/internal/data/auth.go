@@ -13,10 +13,11 @@ import (
 
 type AuthStore interface {
 	LogOut(sessionId uuid.UUID) (msg string, err error)
-	SignIn(r *types.SignInRequest) (*types.AuthResponse, error)
-	SignUp(r *types.SignUpRequest) (*types.AuthResponse, error)
-	Refresh(a *types.AuthData) (*types.AuthResponse, error)
-	RecoverPassword(r *types.RecoverPasswordRequest) (string, error)
+	Ping(sessionId uuid.UUID) (valid bool, err error)
+	SignIn(r *types.SignInRequest) (res *types.AuthResponse, err error)
+	SignUp(r *types.SignUpRequest) (res *types.AuthResponse, err error)
+	Refresh(a *types.AuthData) (res *types.AuthResponse, err error)
+	RecoverPassword(r *types.RecoverPasswordRequest) (msg string, err error)
 }
 
 func (s *storage) AuthStore() AuthStore {
@@ -42,6 +43,15 @@ func (s *authStore) LogOut(sessionId uuid.UUID) (string, error) {
 	}
 
 	return "Logged out!", nil
+}
+
+func (s *authStore) Ping(sessionId uuid.UUID) (bool, error) {
+	_, err := s.db.GetSessionById(s.ctx, sessionId.String())
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
 }
 
 // TODO: limit sessions to 5?

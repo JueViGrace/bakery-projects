@@ -22,16 +22,13 @@ export async function POST({
       throw error;
     }
 
-    const { data: sessionData, error: sessionError } = await callAction(
-      actions.auth.saveSession,
-      {
-        id: data.data!!.id,
-        accessToken: data.data!!.access_token,
-        refreshToken: data.data!!.refresh_token,
-      }
-    );
+    const { error: sessionError } = await callAction(actions.auth.saveSession, {
+      id: data.data.id,
+      accessToken: data.data.access_token,
+      refreshToken: data.data.refresh_token,
+    });
 
-    if (!sessionData && sessionError) {
+    if (sessionError) {
       const { error: logOutError } = await callAction(
         actions.auth.logOut,
         data.data!!.access_token
@@ -45,7 +42,6 @@ export async function POST({
 
     return new Response(JSON.stringify(data), {
       status: data.status,
-      statusText: data.description,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {
@@ -63,7 +59,7 @@ export async function POST({
     }
 
     return new Response(JSON.stringify(body), {
-      status: ActionError.codeToStatus(body.code),
+      status: body.status,
       headers: {
         'Content-Type': 'application/json',
       },

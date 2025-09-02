@@ -10,10 +10,11 @@ type AuthHandler interface {
 	RequestPasswordReset(c *fiber.Ctx, body *types.RequestPasswordReset) error
 	ConfirmPasswordReset(c *fiber.Ctx, body *types.ConfirmPasswordReset) error
 	RecoverPassword(c *fiber.Ctx, body *types.RecoverPasswordRequest) error
-	Refresh(c *fiber.Ctx, data *types.AuthData) error
 	LogOut(c *fiber.Ctx, data *types.AuthData) error
+	Ping(c *fiber.Ctx, data *types.AuthData) error
 	SignIn(c *fiber.Ctx, body *types.SignInRequest) error
 	SignUp(c *fiber.Ctx, body *types.SignUpRequest) error
+	Refresh(c *fiber.Ctx, data *types.AuthData) error
 }
 
 type authHandler struct {
@@ -47,19 +48,6 @@ func (h *authHandler) RecoverPassword(c *fiber.Ctx, body *types.RecoverPasswordR
 	return c.Status(res.Status).JSON(res)
 }
 
-func (h *authHandler) Refresh(c *fiber.Ctx, data *types.AuthData) error {
-	res := new(types.APIResponse)
-
-	msg, err := h.db.Refresh(data)
-	if err != nil {
-		res = types.RespondNotFound(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	res = types.RespondAccepted(msg, "Success")
-	return c.Status(res.Status).JSON(res)
-}
-
 func (h *authHandler) LogOut(c *fiber.Ctx, data *types.AuthData) error {
 	res := new(types.APIResponse)
 
@@ -72,6 +60,20 @@ func (h *authHandler) LogOut(c *fiber.Ctx, data *types.AuthData) error {
 
 	res = types.RespondAccepted(msg, "Success")
 	return c.Status(res.Status).JSON(res)
+}
+
+func (h *authHandler) Ping(c *fiber.Ctx, data *types.AuthData) error {
+	res := new(types.APIResponse)
+
+	valid, err := h.db.Ping(data.SessionId)
+	if err != nil {
+		res = types.RespondNotFound(nil, err.Error())
+		return c.Status(res.Status).JSON(res)
+	}
+
+	res = types.RespondOk(valid, "Success")
+	return c.Status(res.Status).JSON(res)
+
 }
 
 func (h *authHandler) SignIn(c *fiber.Ctx, body *types.SignInRequest) error {
@@ -97,5 +99,18 @@ func (h *authHandler) SignUp(c *fiber.Ctx, body *types.SignUpRequest) error {
 	}
 
 	res = types.RespondCreated(token, "Success")
+	return c.Status(res.Status).JSON(res)
+}
+
+func (h *authHandler) Refresh(c *fiber.Ctx, data *types.AuthData) error {
+	res := new(types.APIResponse)
+
+	msg, err := h.db.Refresh(data)
+	if err != nil {
+		res = types.RespondNotFound(nil, err.Error())
+		return c.Status(res.Status).JSON(res)
+	}
+
+	res = types.RespondAccepted(msg, "Success")
 	return c.Status(res.Status).JSON(res)
 }

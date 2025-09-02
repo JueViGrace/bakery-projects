@@ -10,6 +10,7 @@ import {
 import { toast } from 'sonner';
 import { navigate } from 'astro:transitions/client';
 import LinkButton from '@/components/buttons/LinkButton';
+import type { ActionError } from 'astro:actions';
 
 export default function ProfileButton() {
   const src = 'https://github.com/shadcn.png';
@@ -18,11 +19,14 @@ export default function ProfileButton() {
   const logOut = async () => {
     try {
       const req = await fetch('/api/auth/logout', {
-        method: 'POST',
+        headers: {
+          'x-call-server-logout': '',
+        },
+        method: 'GET',
       });
 
       if (!req.ok) {
-        const res = await req.json();
+        const res: ActionError = await req.json();
         throw Error(res.message);
       }
 

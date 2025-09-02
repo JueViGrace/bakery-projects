@@ -34,7 +34,7 @@ type SignUpRequest struct {
 	PhoneNumber string `json:"phone_number" validate:"required,min=1,max=20"`
 	BirthDate   int    `json:"birth_date" validate:"required"`
 	Email       string `json:"email" validate:"required,email,max=255"`
-	Username    string `json:"username" validate:"min=4,max=255"`
+	Username    string `json:"username" validate:"max=255"`
 	Password    string `json:"password" validate:"required,min=4,max=255"`
 }
 
@@ -67,7 +67,7 @@ func SignUpRequestToDbUser(r *SignUpRequest) (*database.CreateUserParams, error)
 	birthDate := time.Unix(int64(r.BirthDate)/1000, 0)
 
 	username := strings.TrimSpace(r.Username)
-	if username == "" {
+	if username == "" || len(username) < 4 {
 		username = r.Email
 	}
 
