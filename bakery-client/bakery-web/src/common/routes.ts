@@ -1,16 +1,7 @@
-const publicRoutes = [
-  '/',
-  '/auth/signin',
-  '/auth/signup',
-  '/about',
-  '/cart',
-  '/contact',
-  '/faq',
-  '/privacy',
-  '/products',
-  '/terms',
-];
+const securedRoutes = {
+  profile: '/profile',
+};
 
-const securedRoutes = ['/profile', '/admin'];
+const securedRoutesList = [securedRoutes.profile];
 
-export { publicRoutes, securedRoutes };
+export { securedRoutes, securedRoutesList };

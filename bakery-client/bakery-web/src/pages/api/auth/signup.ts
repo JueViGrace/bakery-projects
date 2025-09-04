@@ -22,17 +22,19 @@ export async function POST({
       throw error;
     }
 
-    const { error: sessionError } = await callAction(actions.auth.saveSession, {
-      id: data.data.id,
-      accessToken: data.data.access_token,
-      refreshToken: data.data.refresh_token,
-    });
+    const { error: sessionError } = await callAction(
+      actions.session.saveSession,
+      {
+        id: data.data.id,
+        accessToken: data.data.access_token,
+        refreshToken: data.data.refresh_token,
+      }
+    );
 
     if (sessionError) {
-      const { error: logOutError } = await callAction(
-        actions.auth.logOut,
-        data.data!!.access_token
-      );
+      const { error: logOutError } = await callAction(actions.auth.logOut, {
+        token: data.data.access_token,
+      });
 
       if (logOutError) {
         throw logOutError;

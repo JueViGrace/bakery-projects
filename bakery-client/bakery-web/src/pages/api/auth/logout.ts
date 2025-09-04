@@ -1,41 +1,38 @@
 import { type APIContext } from 'astro';
 import { ActionError, actions } from 'astro:actions';
 
-export async function GET({
+export async function POST({
   callAction,
   request,
 }: APIContext): Promise<Response> {
   try {
     if (request.headers.has('x-call-server-logout')) {
       const { data: sessionData, error: sessionError } = await callAction(
-        actions.auth.getSession,
+        actions.session.getSession,
         null
       );
       if (!sessionData && sessionError) {
         throw sessionError;
       }
 
-      const { error } = await callAction(
-        actions.auth.logOut,
-        sessionData.accessToken
-      );
-      if (error) {
-        if (error.code !== 'UNAUTHORIZED') {
-          throw error;
-        }
+      const { error } = await callAction(actions.auth.logOut, {
+        token: sessionData.accessToken,
+      });
+      if (error && error.code !== 'UNAUTHORIZED') {
+        throw error;
       }
     }
 
     const { error: deleteSessionError } = await callAction(
-      actions.auth.deleteSession,
+      actions.session.deleteSession,
       null
     );
     if (deleteSessionError) {
       throw deleteSessionError;
     }
 
-    return new Response(null, {
-      status: 204,
+    return new Response('Success', {
+      status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
   } catch (e) {

@@ -19,6 +19,11 @@ export default defineConfig({
 
   env: {
     schema: {
+      BASE_URL: envField.string({
+        context: 'server',
+        access: 'secret',
+        optional: false,
+      }),
       SERVER_URL: envField.string({
         context: 'server',
         access: 'secret',

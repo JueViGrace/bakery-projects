@@ -65,15 +65,8 @@ func (h *authHandler) LogOut(c *fiber.Ctx, data *types.AuthData) error {
 func (h *authHandler) Ping(c *fiber.Ctx, data *types.AuthData) error {
 	res := new(types.APIResponse)
 
-	valid, err := h.db.Ping(data.SessionId)
-	if err != nil {
-		res = types.RespondNotFound(nil, err.Error())
-		return c.Status(res.Status).JSON(res)
-	}
-
-	res = types.RespondOk(valid, "Success")
+	res = types.RespondOk(true, "Success")
 	return c.Status(res.Status).JSON(res)
-
 }
 
 func (h *authHandler) SignIn(c *fiber.Ctx, body *types.SignInRequest) error {

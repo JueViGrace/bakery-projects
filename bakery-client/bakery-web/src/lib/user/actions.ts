@@ -1,11 +1,37 @@
-import { actions, defineAction } from 'astro:actions';
-import { USER_ROLES } from '@user/types';
+import { ActionError, defineAction } from 'astro:actions';
+import { USER_ROLES, type User, type UserResponse } from '@user/types';
 import { z } from 'astro:schema';
-import type { Session } from '../auth/types';
+import { SERVER_URL } from 'astro:env/server';
+import type { APIResponse } from '@/env';
 
 export const userActions = {
+  requestUserData: defineAction({
+    input: z.object({
+      token: z.string(),
+    }),
+    handler: async (input) => {
+      const req = await fetch(`${SERVER_URL}/api/users/me`, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${input.token}`,
+        },
+        method: 'POST',
+      });
+
+      const res: APIResponse<UserResponse | null> = await req.json();
+      if (!req.ok) {
+        throw new ActionError({
+          message: res.message,
+          code: ActionError.statusToCode(res.status),
+        });
+      }
+
+      return res as APIResponse<UserResponse>;
+    },
+  }),
   saveUserData: defineAction({
     input: z.object({
+      id: z.string(),
       firstName: z.string(),
       lastName: z.string(),
       displayName: z.string(),
@@ -13,21 +39,13 @@ export const userActions = {
       email: z.string(),
       phoneNumber: z.string(),
       birthDate: z.string(),
-      profileImgUrl: z.string(),
+      profileImg: z.string(),
       role: z.enum(USER_ROLES),
     }),
     handler: async (input, ctx) => {
-      const { data, error } = await actions.auth.getSession();
-      if (!data && error) {
-        throw error;
-      }
+      ctx.session?.set<User>('user', input);
 
-      ctx.session?.set<Session>('session', {
-        id: data.id,
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-        user: input,
-      });
+      return await ctx.session?.get<User>('user');
     },
   }),
 };

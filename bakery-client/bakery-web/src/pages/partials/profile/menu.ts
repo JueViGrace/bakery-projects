@@ -16,7 +16,7 @@ export async function GET({ callAction }: APIContext): Promise<Response> {
     entrypoint: '@astrojs/react/client.js',
   });
 
-  const { data, error } = await callAction(actions.auth.getSession, null);
+  const { data, error } = await callAction(actions.session.getSession, null);
   let res: string;
 
   if (!data && error) {

@@ -1,13 +1,11 @@
 import { isValidPhoneNumber } from 'react-phone-number-input';
 import { z } from 'zod';
-import type { User } from '@user/types';
 
 // App
 export type Session = {
   id: string;
   accessToken: string;
   refreshToken: string;
-  user?: User;
 };
 
 // Schemas

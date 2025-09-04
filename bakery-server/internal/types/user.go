@@ -14,7 +14,6 @@ type UserResponse struct {
 	LastName    string    `json:"last_name"`
 	Username    string    `json:"username"`
 	Email       string    `json:"email"`
-	Password    string    `json:"-"`
 	PhoneNumber string    `json:"phone_number"`
 	BirthDate   string    `json:"birth_date"`
 	Role        string    `json:"role"`
@@ -48,7 +47,6 @@ func DbUserToUser(db *database.User) (user *UserResponse, err error) {
 		LastName:    db.LastName,
 		Username:    db.Username,
 		Email:       db.Email,
-		Password:    db.Password,
 		PhoneNumber: db.PhoneNumber,
 		BirthDate:   db.BirthDate,
 		Role:        db.Role,

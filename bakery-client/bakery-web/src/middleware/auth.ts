@@ -1,63 +1,32 @@
-import { publicRoutes } from '@/common/routes';
-import type { Session } from '@/lib/auth/types';
-import type { APIContext } from 'astro';
-import { actions } from 'astro:actions';
-import { defineMiddleware } from 'astro:middleware';
+import { securedRoutesList } from '@/common/routes';
+import type { User } from '@user/types';
+import { BASE_URL } from 'astro:env/server';
+import { defineMiddleware, sequence } from 'astro:middleware';
 
-export const authMiddleware = defineMiddleware((ctx, next) => {
-  if (
-    publicRoutes.includes(ctx.url.pathname) ||
-    ctx.url.pathname.split('/').includes('partials')
-  ) {
-    return next();
-  }
+const sessionMiddleware = defineMiddleware(async (ctx, next) => {
+  if (securedRoutesList.includes(ctx.url.pathname)) {
+    const userReq = await fetch(`${BASE_URL}/api/users/me`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'GET',
+    });
 
-  if (ctx.url.pathname.startsWith('/api')) {
-    // NOTE: do i need to protect this?
-    return next();
-  }
+    if (!userReq.ok) {
+      return Response.redirect(new URL('/auth/signin', ctx.url));
+    }
 
-  return verifySession(ctx, next);
-});
+    const user: User = await userReq.json();
 
-const verifySession = defineMiddleware(async (ctx, next) => {
-  const redirect = (path: string) => {
-    return Response.redirect(new URL(path, ctx.url));
-  };
+    const isAdminRoute =
+      ctx.url.pathname.split('/').filter((str) => str !== '')[0] === 'admin';
 
-  const session = await checkValidSession(ctx);
-
-  if (!session) {
-    await ctx.callAction(actions.auth.deleteSession, null);
-    return redirect('/auth/signin');
-  }
-
-  const isAdminRoute =
-    ctx.url.pathname.split('/').filter((str) => str !== '')[0] === 'admin';
-  if (isAdminRoute && session.user?.role !== 'admin') {
-    return redirect('/');
+    if (isAdminRoute && user?.role !== 'admin') {
+      return Response.redirect(new URL('/', ctx.url));
+    }
   }
 
   return next();
 });
 
-async function checkValidSession({
-  callAction,
-}: APIContext): Promise<Session | null> {
-  const { data, error } = await callAction(actions.auth.getSession, null);
-
-  if (!data && error) {
-    return null;
-  }
-
-  const { error: pingError } = await callAction(
-    actions.auth.authPing,
-    data.accessToken
-  );
-
-  if (pingError) {
-    return null;
-  }
-
-  return data;
-}
+export const authMiddleware = sequence(sessionMiddleware);

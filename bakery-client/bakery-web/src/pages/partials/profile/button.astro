@@ -1,7 +1,26 @@
 ---
+import type { User } from '@/lib/user/types';
 import ProfileButton from '@user/components/buttons/ProfileButton';
 
-export const prerender = true;
+let profileImg: string | undefined;
+let alt: string = 'GE';
+try {
+  const req = await fetch('http://localhost:4321/api/users/me', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'GET',
+  });
+
+  if (req.ok) {
+    const res: User = await req.json();
+    profileImg = res.profileImg;
+    alt = `${res.firstName.at(0)?.toUpperCase()}${res.lastName.at(0)?.toUpperCase()}`;
+  }
+} catch (e) {
+  profileImg = undefined;
+  console.error(e);
+}
 ---
 
-<ProfileButton client:load />
+<ProfileButton profileImg={profileImg} alt={alt} client:load />

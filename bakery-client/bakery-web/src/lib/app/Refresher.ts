@@ -1,39 +1,63 @@
+import type { APIContext } from 'astro';
+import { actions } from 'astro:actions';
+
 interface Refresher {
-  resetRefresh(): void;
-  shouldRefresh(): boolean;
-  updateLastRefresh(date: Date): void;
+  resetRefresh(): Promise<void>;
+  shouldRefresh(): Promise<boolean>;
+  updateLastRefresh(date: Date): Promise<void>;
 }
 
 class RefresherImpl implements Refresher {
   private static REFRESH_TIME: number = 3300000;
-  private lastRefresh: Date | null = null;
+  private ctx: APIContext;
 
-  static getInstance(): Refresher {
-    return new RefresherImpl();
+  constructor(ctx: APIContext) {
+    this.ctx = ctx;
   }
 
-  resetRefresh(): void {
-    this.lastRefresh = null;
-  }
-
-  updateLastRefresh(date: Date): void {
-    this.lastRefresh = date;
-  }
-
-  shouldRefresh(): boolean {
-    let refresh: boolean = false;
-    if (this.lastRefresh) {
-      const difference = Math.abs(
-        this.lastRefresh.getTime() - new Date().getTime()
-      );
-      if (difference >= RefresherImpl.REFRESH_TIME) {
-        refresh = true;
-      }
+  async getLastRefresh(): Promise<Date | null> {
+    const { data, error } = await this.ctx.callAction(
+      actions.session.getLastRefresh,
+      null
+    );
+    if (!data && error) {
+      console.error('Get last refresh error:', error.message);
+      return null;
     }
+
+    return new Date(data);
+  }
+
+  async resetRefresh(): Promise<void> {
+    await this.ctx.callAction(actions.session.resetRefresh, null);
+  }
+
+  async updateLastRefresh(date: Date): Promise<void> {
+    await this.ctx.callAction(actions.session.updateRefresher, {
+      date: date.getTime(),
+    });
+  }
+
+  async shouldRefresh(): Promise<boolean> {
+    let refresh: boolean = false;
+
+    try {
+      let lastRefresh = await this.getLastRefresh();
+      if (lastRefresh) {
+        const difference = Math.abs(
+          lastRefresh.getTime() - new Date().getTime()
+        );
+        if (difference >= RefresherImpl.REFRESH_TIME) {
+          refresh = true;
+        }
+      }
+    } catch (e) {
+      refresh = false;
+      console.error('Should refresh error:', e);
+    }
+
     return refresh;
   }
 }
 
-const refresher = RefresherImpl.getInstance();
-
-export { type Refresher, refresher };
+export { type Refresher, RefresherImpl };

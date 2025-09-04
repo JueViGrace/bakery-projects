@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Skeleton } from '@components/ui/skeleton';
 import { Button } from '@components/ui/button';
 import { LogOutIcon } from 'lucide-react';
 import {
@@ -12,17 +11,19 @@ import { navigate } from 'astro:transitions/client';
 import LinkButton from '@/components/buttons/LinkButton';
 import type { ActionError } from 'astro:actions';
 
-export default function ProfileButton() {
-  const src = 'https://github.com/shadcn.png';
-  const alt = 'GU';
+type Props = {
+  profileImg?: string | undefined;
+  alt: string;
+};
 
+export default function ProfileButton({ profileImg, alt }: Props) {
   const logOut = async () => {
     try {
       const req = await fetch('/api/auth/logout', {
         headers: {
           'x-call-server-logout': '',
         },
-        method: 'GET',
+        method: 'POST',
       });
 
       if (!req.ok) {
@@ -41,9 +42,11 @@ export default function ProfileButton() {
     <Popover>
       <PopoverTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage loading="eager" src={src} alt={alt} />
+          <AvatarImage loading="eager" src={profileImg} alt={alt} />
           <AvatarFallback>
-            <Skeleton className="rounded-full" />
+            <div className="bg-primary flex size-full items-center justify-center rounded-full">
+              <p className="text-primary-foreground text-sm">{alt}</p>
+            </div>
           </AvatarFallback>
         </Avatar>
       </PopoverTrigger>

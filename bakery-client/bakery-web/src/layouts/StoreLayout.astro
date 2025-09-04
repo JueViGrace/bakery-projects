@@ -15,8 +15,8 @@ export const prerender = true;
 ---
 
 <Layout title={title}>
-  <DrawerMenu transition:name="drawer-menu" transition:persist />
   <PageWrapper>
+    <DrawerMenu transition:name="drawer-menu" transition:persist />
     <TopBar transition:name="top-bar" transition:persist />
     <section class="flex flex-1 items-center justify-center">
       <slot />

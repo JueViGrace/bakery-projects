@@ -12,17 +12,76 @@ import { isValidPhoneNumber } from 'react-phone-number-input';
 import { ActionError, defineAction } from 'astro:actions';
 import { SERVER_URL } from 'astro:env/server';
 import { z } from 'astro:schema';
-import { refresher } from '@lib/app/Refresher';
-import { isNonNullExpression } from 'typescript';
+
+export const sessionActions = {
+  saveSession: defineAction({
+    input: z.object({
+      id: z.string(),
+      accessToken: z.string(),
+      refreshToken: z.string(),
+    }),
+    handler: async (input, ctx) => {
+      ctx.session?.set<Session>('session', input as Session);
+    },
+  }),
+  getSession: defineAction({
+    handler: async (_, ctx) => {
+      const session: Session | undefined =
+        await ctx.session?.get<Session>('session');
+
+      if (!session) {
+        throw new ActionError({
+          message: 'Session not found',
+          code: 'NOT_FOUND',
+        });
+      }
+
+      return session;
+    },
+  }),
+  deleteSession: defineAction({
+    handler: async (_, ctx) => {
+      ctx.session?.delete('session');
+    },
+  }),
+  getLastRefresh: defineAction({
+    handler: async (_, ctx) => {
+      const refresh: number | undefined = await ctx.session?.get('lastRefresh');
+      if (!refresh) {
+        throw new ActionError({
+          message: 'Refresh date not found',
+          code: 'NOT_FOUND',
+        });
+      }
+
+      return refresh;
+    },
+  }),
+  updateRefresher: defineAction({
+    input: z.object({
+      date: z.number(),
+    }),
+    handler: async (input, ctx) => {
+      ctx.session?.set('lastRefresh', input.date);
+    },
+  }),
+  resetRefresh: defineAction({
+    handler: async (_, ctx) => {
+      ctx.session?.delete('lastRefresh');
+    },
+  }),
+};
 
 export const authActions = {
   authPing: defineAction({
-    input: z.string(),
+    input: z.object({
+      token: z.string(),
+    }),
     handler: async (input) => {
       const req = await fetch(`${SERVER_URL}/api/auth/ping`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${input}`,
+          Authorization: `Bearer ${input.token}`,
         },
         method: 'POST',
       });
@@ -39,12 +98,14 @@ export const authActions = {
     },
   }),
   logOut: defineAction({
-    input: z.string(),
+    input: z.object({
+      token: z.string(),
+    }),
     handler: async (input) => {
       const req = await fetch(`${SERVER_URL}/api/auth/logout`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${input}`,
+          Authorization: `Bearer ${input.token}`,
         },
         method: 'POST',
       });
@@ -92,10 +153,12 @@ export const authActions = {
     },
   }),
   confirmPasswordReset: defineAction({
-    input: z.string(),
+    input: z.object({
+      code: z.string(),
+    }),
     handler: async (input) => {
       const body: ConfirmPasswordReset = {
-        code: input,
+        code: input.code,
       };
 
       const req = await fetch(
@@ -121,16 +184,17 @@ export const authActions = {
     },
   }),
   recoverPassword: defineAction({
-    input: z
-      .string()
-      .min(4, { message: 'Password must be longer than 4 characters' })
-      .max(255, {
-        message: 'Password must not be longer than 255 characters',
-      }),
-
+    input: z.object({
+      newPassword: z
+        .string()
+        .min(4, { message: 'Password must be longer than 4 characters' })
+        .max(255, {
+          message: 'Password must not be longer than 255 characters',
+        }),
+    }),
     handler: async (input) => {
       const body: RecoverPasswordRequest = {
-        new_password: input,
+        new_password: input.newPassword,
       };
 
       const req = await fetch(`${SERVER_URL}/api/auth/recover/password`, {
@@ -153,12 +217,14 @@ export const authActions = {
     },
   }),
   refresh: defineAction({
-    input: z.string(),
+    input: z.object({
+      refreshToken: z.string(),
+    }),
     handler: async (input) => {
       const req = await fetch(`${SERVER_URL}/api/auth/refresh`, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${input}`,
+          Authorization: `Bearer ${input.refreshToken}`,
         },
         method: 'POST',
       });
@@ -253,50 +319,6 @@ export const authActions = {
       }
 
       return res as APIResponse<AuthResponse>;
-    },
-  }),
-  saveSession: defineAction({
-    input: z.object({
-      id: z.string(),
-      accessToken: z.string(),
-      refreshToken: z.string(),
-    }),
-    handler: async (input, ctx) => {
-      let inputSession: Session = {
-        id: input.id,
-        accessToken: input.accessToken,
-        refreshToken: input.refreshToken,
-      };
-      const savedSession: Session | undefined =
-        await ctx.session?.get<Session>('session');
-
-      if (savedSession && savedSession.user) {
-        inputSession.user = savedSession.user;
-      }
-
-      ctx.session?.set<Session>('session', inputSession);
-      refresher.updateLastRefresh(new Date());
-    },
-  }),
-  getSession: defineAction({
-    handler: async (_, ctx) => {
-      const session: Session | undefined =
-        await ctx.session?.get<Session>('session');
-
-      if (!session) {
-        throw new ActionError({
-          message: 'Session not found',
-          code: 'NOT_FOUND',
-        });
-      }
-
-      return session;
-    },
-  }),
-  deleteSession: defineAction({
-    handler: async (_, ctx) => {
-      ctx.session?.delete('session');
-      refresher.resetRefresh();
     },
   }),
 };
