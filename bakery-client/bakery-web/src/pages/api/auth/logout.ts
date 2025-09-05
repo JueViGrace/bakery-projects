@@ -23,11 +23,11 @@ export async function POST({
       }
     }
 
-    const { error: deleteSessionError } = await callAction(
+    const { data: deleteSession, error: deleteSessionError } = await callAction(
       actions.session.deleteSession,
       null
     );
-    if (deleteSessionError) {
+    if (deleteSession && deleteSessionError) {
       throw deleteSessionError;
     }
 

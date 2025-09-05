@@ -1,0 +1,41 @@
+---
+import { actions } from 'astro:actions';
+import type { ActionError } from 'astro:actions';
+import { BASE_URL } from 'astro:env/server';
+
+try {
+  const { data, error } = await Astro.callAction(
+    actions.session.getSession,
+    null
+  );
+  if (!data && error) {
+    throw error;
+  }
+
+  const req = await fetch(`${BASE_URL}/api/auth/refresh`, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+    method: 'POST',
+  });
+
+  if (!req.ok) {
+    const logoutReq = await fetch(`${BASE_URL}/api/auth/logout`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+    });
+
+    if (!logoutReq.ok) {
+      const logoutBody: ActionError = await logoutReq.json();
+      throw logoutBody;
+    }
+  }
+} catch (e) {
+  console.error(e);
+}
+---
+
+<slot />

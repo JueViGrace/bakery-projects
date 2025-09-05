@@ -1,9 +1,9 @@
 import type { ImageMetadata } from 'astro';
 import type { Session } from '@lib/auth/types';
 import type { User } from '@lib/user/types';
-import type { ActionError } from 'astro:actions';
 
 interface ImportMetaEnv {
+  readonly BASE_URL: string;
   readonly SERVER_URL: string;
 }
 

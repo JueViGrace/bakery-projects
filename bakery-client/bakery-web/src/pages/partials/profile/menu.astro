@@ -1,0 +1,12 @@
+---
+import ProfileMenu from '@user/components/menu/ProfileMenu.astro';
+import AuthMenu from '@auth/components/menu/AuthMenu.astro';
+import { actions } from 'astro:actions';
+
+const { data, error } = await Astro.callAction(
+  actions.session.getSession,
+  null
+);
+---
+
+{!data && error ? <AuthMenu /> : <ProfileMenu />}

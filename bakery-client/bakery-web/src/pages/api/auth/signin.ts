@@ -17,7 +17,7 @@ export async function POST({
       throw error;
     }
 
-    const { data: sessionData, error: sessionError } = await callAction(
+    const { error: sessionError } = await callAction(
       actions.session.saveSession,
       {
         id: data.data!!.id,
@@ -26,7 +26,7 @@ export async function POST({
       }
     );
 
-    if (!sessionData && sessionError) {
+    if (sessionError) {
       const { error: logOutError } = await callAction(actions.auth.logOut, {
         token: data.data.access_token,
       });

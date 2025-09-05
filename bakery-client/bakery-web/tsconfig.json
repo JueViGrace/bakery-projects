@@ -22,7 +22,7 @@
         "./src/assets/*"
       ],
       "@components/*": [
-        "./src/components/*"
+        "./src/lib/app/components/*"
       ],
       "@layouts/*": [
         "./src/layouts/*"

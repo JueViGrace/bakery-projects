@@ -5,6 +5,11 @@ import { SERVER_URL } from 'astro:env/server';
 import type { APIResponse } from '@/env';
 
 export const userActions = {
+  getUserData: defineAction({
+    handler: async (_, ctx) => {
+      return await ctx.session?.get<User>('user');
+    },
+  }),
   requestUserData: defineAction({
     input: z.object({
       token: z.string(),
@@ -15,7 +20,7 @@ export const userActions = {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${input.token}`,
         },
-        method: 'POST',
+        method: 'GET',
       });
 
       const res: APIResponse<UserResponse | null> = await req.json();
@@ -43,9 +48,7 @@ export const userActions = {
       role: z.enum(USER_ROLES),
     }),
     handler: async (input, ctx) => {
-      ctx.session?.set<User>('user', input);
-
-      return await ctx.session?.get<User>('user');
+      ctx.session?.set<User>('user', input as User);
     },
   }),
 };

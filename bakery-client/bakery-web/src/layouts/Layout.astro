@@ -1,6 +1,7 @@
 ---
 import { Toaster } from '@components/Toaster';
 import '@/styles/global.css';
+import Refresher from '@lib/app/components/Refresher.astro';
 
 interface Props {
   title: string;
@@ -46,6 +47,8 @@ const { title } = Astro.props;
       transition:persist
       transition:name="global-toaster"
     />
-    <slot />
+    <Refresher>
+      <slot />
+    </Refresher>
   </body>
 </html>

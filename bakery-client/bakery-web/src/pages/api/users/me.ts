@@ -1,15 +1,13 @@
+import type { Session } from '@/lib/auth/types';
 import { type APIContext } from 'astro';
 import { ActionError, actions } from 'astro:actions';
 
-export async function GET({ callAction }: APIContext): Promise<Response> {
+export async function POST({
+  request,
+  callAction,
+}: APIContext): Promise<Response> {
   try {
-    const { data: session, error: sessionErr } = await callAction(
-      actions.session.getSession,
-      null
-    );
-    if (!session && sessionErr) {
-      throw sessionErr;
-    }
+    const session: Session = await request.json();
 
     const { data: userData, error: userDataErr } = await callAction(
       actions.user.requestUserData,
@@ -22,24 +20,31 @@ export async function GET({ callAction }: APIContext): Promise<Response> {
     }
 
     const { data, status } = userData;
-    const { data: savedUserData, error: saveUserErr } =
-      await actions.user.saveUserData({
-        id: data.id,
-        firstName: data.first_name,
-        lastName: data.last_name,
-        displayName: data.display_name,
-        username: data.username,
-        email: data.email,
-        phoneNumber: data.phone_number,
-        birthDate: data.birth_date,
-        profileImg: data.profile_img,
-        role: data.role,
-      });
-    if (!savedUserData && saveUserErr) {
+    const { error: saveUserErr } = await callAction(actions.user.saveUserData, {
+      id: data.id,
+      firstName: data.first_name,
+      lastName: data.last_name,
+      displayName: data.display_name,
+      username: data.username,
+      email: data.email,
+      phoneNumber: data.phone_number,
+      birthDate: data.birth_date,
+      profileImg: data.profile_img,
+      role: data.role,
+    });
+    if (saveUserErr) {
       throw saveUserErr;
     }
 
-    return new Response(JSON.stringify(userData), {
+    const { data: user, error: userErr } = await callAction(
+      actions.user.getUserData,
+      null
+    );
+    if (!user && userErr) {
+      throw userErr;
+    }
+
+    return new Response(JSON.stringify(user), {
       status: status,
       headers: {
         'Content-Type': 'application/json',

@@ -1,21 +1,36 @@
 ---
 import type { User } from '@/lib/user/types';
 import ProfileButton from '@user/components/buttons/ProfileButton';
+import type { ActionError } from 'astro:actions';
+import { actions } from 'astro:actions';
+import { BASE_URL } from 'astro:env/server';
 
 let profileImg: string | undefined;
 let alt: string = 'GE';
 try {
-  const req = await fetch('http://localhost:4321/api/users/me', {
+  const { data: session, error: sessionErr } = await Astro.callAction(
+    actions.session.getSession,
+    null
+  );
+  if (!session && sessionErr) {
+    throw sessionErr;
+  }
+
+  const req = await fetch(`${BASE_URL}/api/users/me`, {
     headers: {
       'Content-Type': 'application/json',
     },
-    method: 'GET',
+    body: JSON.stringify(session),
+    method: 'POST',
   });
 
   if (req.ok) {
     const res: User = await req.json();
     profileImg = res.profileImg;
     alt = `${res.firstName.at(0)?.toUpperCase()}${res.lastName.at(0)?.toUpperCase()}`;
+  } else {
+    const error: ActionError = await req.json();
+    throw error;
   }
 } catch (e) {
   profileImg = undefined;

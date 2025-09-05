@@ -41,7 +41,7 @@ export const sessionActions = {
   }),
   deleteSession: defineAction({
     handler: async (_, ctx) => {
-      ctx.session?.delete('session');
+      return ctx.session?.set('session', undefined);
     },
   }),
   getLastRefresh: defineAction({

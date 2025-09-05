@@ -8,7 +8,7 @@ import {
 } from '@components/ui/popover';
 import { toast } from 'sonner';
 import { navigate } from 'astro:transitions/client';
-import LinkButton from '@/components/buttons/LinkButton';
+import LinkButton from '@components/buttons/LinkButton';
 import type { ActionError } from 'astro:actions';
 
 type Props = {

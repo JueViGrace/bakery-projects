@@ -8,7 +8,7 @@ interface Refresher {
 }
 
 class RefresherImpl implements Refresher {
-  private static REFRESH_TIME: number = 3300000;
+  private static REFRESH_TIME: number = 60000;
   private ctx: APIContext;
 
   constructor(ctx: APIContext) {
@@ -21,7 +21,6 @@ class RefresherImpl implements Refresher {
       null
     );
     if (!data && error) {
-      console.error('Get last refresh error:', error.message);
       return null;
     }
 
@@ -40,20 +39,12 @@ class RefresherImpl implements Refresher {
 
   async shouldRefresh(): Promise<boolean> {
     let refresh: boolean = false;
-
-    try {
-      let lastRefresh = await this.getLastRefresh();
-      if (lastRefresh) {
-        const difference = Math.abs(
-          lastRefresh.getTime() - new Date().getTime()
-        );
-        if (difference >= RefresherImpl.REFRESH_TIME) {
-          refresh = true;
-        }
+    let lastRefresh = await this.getLastRefresh();
+    if (lastRefresh) {
+      const difference = Math.abs(lastRefresh.getTime() - new Date().getTime());
+      if (difference >= RefresherImpl.REFRESH_TIME) {
+        refresh = true;
       }
-    } catch (e) {
-      refresh = false;
-      console.error('Should refresh error:', e);
     }
 
     return refresh;
